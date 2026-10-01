@@ -3352,3 +3352,351 @@ body {
 .photo-viewer-comment-input {
     transition: none !important;
 }
+
+
+/* =========================================================
+   LIGHT PRODUCT + CLEAR COMMENT THREADS — comments-light47
+   Согласованный светлый вариант: красный остаётся фирменным акцентом,
+   длинный текст и комментарии читаются на белых карточках.
+   ========================================================= */
+
+#photoViewerScreen {
+    min-height: calc(100dvh - 64px);
+    padding: 12px 0 150px;
+    background: #f4f5f7;
+    color: #17181a;
+}
+
+.photo-viewer-media {
+    width: calc(100% - 20px);
+    margin: 0 10px 12px;
+    border-radius: 16px;
+    background: #eef0f2;
+    box-shadow: 0 2px 8px rgba(24, 27, 31, 0.06);
+}
+
+.photo-viewer-image {
+    background: #eef0f2;
+}
+
+.photo-viewer-description {
+    margin: 0 10px 12px;
+    padding: 16px 17px;
+    border: 1px solid #e2e5e9;
+    border-radius: 16px;
+    background: #ffffff;
+    color: #18191b;
+    font-size: 16px;
+    line-height: 1.58;
+    box-shadow: 0 2px 8px rgba(24, 27, 31, 0.045);
+}
+
+.photo-viewer-stats {
+    margin: 0 10px 14px;
+    padding: 11px 16px;
+    border: 1px solid #e2e5e9;
+    border-radius: 14px;
+    background: #ffffff;
+}
+
+.photo-viewer-stat {
+    color: #34373b;
+    font-size: 15px;
+}
+
+.photo-viewer-comments-section {
+    padding: 0 0 8px;
+    border: 0;
+    background: transparent;
+    color: #17181a;
+}
+
+.photo-viewer-section-title {
+    padding: 8px 16px 10px;
+    color: #17181a;
+    font-size: 21px;
+    font-weight: 750;
+}
+
+.photo-viewer-comments {
+    padding: 0 10px 12px;
+}
+
+.photo-viewer-comment {
+    margin: 0 0 10px;
+    padding: 13px 14px;
+    border: 1px solid #e2e5e9;
+    border-radius: 15px;
+    background: #ffffff;
+    color: #17181a;
+    box-shadow: 0 2px 8px rgba(24, 27, 31, 0.045);
+}
+
+#photoViewerScreen .comment-text {
+    color: #17181a;
+    font-size: 16px;
+    line-height: 1.45;
+}
+
+#photoViewerScreen .comment-date,
+#photoViewerScreen .photo-viewer-reply-target {
+    color: #7b818a;
+}
+
+#photoViewerScreen .comment-author-link,
+#photoViewerScreen .comment-inline-link,
+#photoViewerScreen .comment-reply-link,
+#photoViewerScreen .photo-viewer-reply-author {
+    color: var(--app-red-700);
+}
+
+.photo-viewer-comment-reply {
+    width: calc(100% - 64px);
+    margin-left: 64px;
+    padding-left: 14px;
+    border-left: 4px solid var(--app-red-500);
+    background: #fff3f4;
+}
+
+.photo-viewer-comment-reply::before {
+    content: "↳";
+    left: -51px;
+    top: 14px;
+    color: #8a9098;
+    font-size: 24px;
+}
+
+.photo-viewer-comment-reply::after {
+    content: "Ответ";
+    position: absolute;
+    left: -58px;
+    top: 40px;
+    width: 50px;
+    color: #7b818a;
+    font-size: 11px;
+    line-height: 1.15;
+    text-align: center;
+}
+
+.photo-viewer-comment-unanswered {
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(24, 27, 31, 0.045);
+}
+
+.photo-viewer-unanswered-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.photo-viewer-comment-unanswered .photo-viewer-comment-top {
+    padding-right: 112px;
+}
+
+.photo-viewer-composer {
+    border-top: 1px solid #dde1e5;
+    background: rgba(255, 255, 255, 0.98);
+}
+
+.photo-viewer-reply-cancel {
+    background: #f0f1f3;
+    color: #4d5157;
+}
+
+.photo-viewer-comment-input {
+    border-color: #d9dde2;
+    background: #ffffff;
+    color: #17181a;
+}
+
+.photo-viewer-comment-input:focus {
+    border-color: var(--app-red-500);
+    box-shadow: 0 0 0 3px rgba(243, 59, 78, 0.10);
+}
+
+/* Общая лента комментариев */
+#commentsScreen {
+    background: #f4f5f7;
+}
+
+.comments-toolbar {
+    padding: 15px 14px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7ea;
+}
+
+.comments-title {
+    color: #17181a;
+    font-size: 20px;
+    font-weight: 750;
+}
+
+.comments-list {
+    padding: 12px 10px 18px;
+}
+
+.comment-card,
+.comment-card-rich {
+    align-items: flex-start;
+    margin-bottom: 12px;
+    padding: 13px;
+    border: 1px solid #e2e5e9;
+    border-radius: 15px;
+    background: #ffffff;
+    color: #17181a;
+    box-shadow: 0 2px 8px rgba(24, 27, 31, 0.045);
+}
+
+.comment-header {
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 2px;
+}
+
+.comment-author-link {
+    color: #17181a !important;
+    font-weight: 750;
+}
+
+.comment-album {
+    margin: 2px 0 5px;
+    color: #747a84;
+    font-size: 13px;
+    line-height: 1.3;
+}
+
+.comment-album::before {
+    content: "♥";
+    margin-right: 5px;
+    color: var(--app-red-600);
+}
+
+.comment-text {
+    color: #17181a;
+    line-height: 1.43;
+}
+
+.comment-date {
+    color: #868c95;
+}
+
+.comment-reply-link {
+    color: var(--app-red-700) !important;
+    font-weight: 650;
+}
+
+/* Неотвеченный комментарий остаётся обычной белой карточкой.
+   Жёлтый используется только в компактной статусной плашке. */
+.comment-card-rich.comment-unanswered {
+    border-color: #e2e5e9;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(24, 27, 31, 0.045);
+}
+
+.comment-unanswered-badge {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 29px;
+    padding: 4px 9px;
+    border: 1px solid #f0cc65;
+    border-radius: 10px;
+    background: #fff2bd;
+    color: #6f4d00;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.comment-unanswered-badge-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #9b6b00;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+/* Ответ всегда непосредственно под исходным комментарием. */
+.comment-card-rich.comment-thread-reply {
+    width: calc(100% - 68px);
+    margin: -4px 0 16px 68px;
+    padding-left: 13px;
+    border: 1px solid #f0d6d9;
+    border-left: 4px solid var(--app-red-500);
+    background: #fff3f4;
+    box-shadow: 0 2px 8px rgba(24, 27, 31, 0.035);
+}
+
+.comment-card-rich.comment-thread-reply::before {
+    content: "↳";
+    position: absolute;
+    left: -54px;
+    top: 13px;
+    color: #8a9098;
+    font-size: 25px;
+    line-height: 1;
+}
+
+.comment-card-rich.comment-thread-reply::after {
+    content: "Ответ на\A комментарий";
+    white-space: pre;
+    position: absolute;
+    left: -64px;
+    top: 40px;
+    width: 58px;
+    color: #7b818a;
+    font-size: 10px;
+    line-height: 1.15;
+    text-align: center;
+}
+
+@media (max-width: 420px) {
+    .photo-viewer-description {
+        padding: 15px;
+        font-size: 16px;
+    }
+
+    .photo-viewer-comment-reply {
+        width: calc(100% - 58px);
+        margin-left: 58px;
+        padding-left: 11px;
+    }
+
+    .photo-viewer-comment-reply::before {
+        left: -46px;
+    }
+
+    .photo-viewer-comment-reply::after {
+        left: -54px;
+        width: 48px;
+        font-size: 10px;
+    }
+
+    .comment-card-rich.comment-thread-reply {
+        width: calc(100% - 60px);
+        margin-left: 60px;
+    }
+
+    .comment-card-rich.comment-thread-reply::before {
+        left: -48px;
+    }
+
+    .comment-card-rich.comment-thread-reply::after {
+        left: -57px;
+        width: 51px;
+        font-size: 9px;
+    }
+
+    .comment-unanswered-badge {
+        padding: 4px 7px;
+        font-size: 11px;
+    }
+}
