@@ -3240,3 +3240,115 @@ body {
     border-color: #ff7d86;
     box-shadow: 0 0 0 3px rgba(255, 111, 121, 0.12);
 }
+
+/* =========================================================
+   SCROLL PERFORMANCE + CLEAN MEDIA CARDS — scrollfix46
+   Убираем цветную дымку/тени с самих альбомов и фотографий.
+   На сетке фото также убраны дорогостоящие blur-эффекты, которые
+   особенно заметно тормозят прокрутку в мобильном VK WebView.
+   ========================================================= */
+
+html,
+body {
+    scroll-behavior: auto !important;
+}
+
+/* Липкая строка поиска остаётся непрозрачной: размытие движущейся под ней
+   сетки больше не пересчитывается на каждом кадре прокрутки. */
+.search-container {
+    background: #fff7f7;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* Альбом: изображение показывается без красной вуали и без внешней тени. */
+.album-card {
+    border: 0;
+    background: #eeeeee;
+    box-shadow: none !important;
+}
+
+.album-card::before,
+.album-card::after {
+    display: none !important;
+}
+
+/* Тёмная плашка только под текстом вместо затемнения самой обложки. */
+.album-info {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    padding: 6px 8px;
+    border-radius: 9px;
+    background: rgba(0, 0, 0, 0.62);
+}
+
+.album-name,
+.album-count {
+    text-shadow: none !important;
+}
+
+.album-count {
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* Основная сетка фотографий: никаких теней, цветной подложки и blur. */
+.photos-grid {
+    gap: 3px;
+    padding: 3px;
+}
+
+.photo-card {
+    border: 0;
+    border-radius: 8px;
+    background: #eeeeee;
+    box-shadow: none !important;
+    contain: layout paint style;
+    content-visibility: auto;
+    contain-intrinsic-size: 160px 160px;
+}
+
+.photo-card img {
+    border-radius: 0;
+    transition: none !important;
+}
+
+.photo-card:active img {
+    transform: none;
+    opacity: 1;
+}
+
+.photo-card-date,
+.photo-card-stat {
+    border: 0;
+    background: rgba(0, 0, 0, 0.64);
+    box-shadow: none !important;
+    text-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* Оверлеи редакторов/меню больше не размывают весь экран за собой.
+   Это уменьшает compositor-нагрузку при появлении экранной клавиатуры. */
+.modal-overlay,
+.album-context-overlay,
+.photo-viewer-album-context-overlay,
+.context-menu-overlay,
+.photo-delete-overlay {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* Поля открываются без декоративных CSS-переходов. */
+.form-input,
+.form-textarea,
+.comment-reply-input,
+.photo-viewer-comment-input {
+    transition: none !important;
+}
