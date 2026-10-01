@@ -1,12 +1,12 @@
-import { state } from "./state.js?v=20261001-owner-red44";
-import { dom } from "./dom.js?v=20261001-owner-red44";
-import { vkApi } from "./vk-api.js?v=20261001-owner-red44";
-import { getErrorMessage } from "./helpers.js?v=20261001-owner-red44";
-import { loadAlbums } from "./albums.js?v=20261001-owner-red44";
-import { closeMenu } from "./main-menu.js?v=20261001-owner-red44";
-import { getGroupId, getOwnerId, isGroupMode } from "./group-context.js?v=20261001-owner-red44";
-import { invalidateAlbumCaches } from "./cache.js?v=20261001-owner-red44";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-owner-red44";
+import { state } from "./state.js?v=20261001-appidfix45";
+import { dom } from "./dom.js?v=20261001-appidfix45";
+import { vkApi } from "./vk-api.js?v=20261001-appidfix45";
+import { getErrorMessage } from "./helpers.js?v=20261001-appidfix45";
+import { loadAlbums } from "./albums.js?v=20261001-appidfix45";
+import { closeMenu } from "./main-menu.js?v=20261001-appidfix45";
+import { getGroupId, getOwnerId, isGroupMode } from "./group-context.js?v=20261001-appidfix45";
+import { invalidateAlbumCaches } from "./cache.js?v=20261001-appidfix45";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-appidfix45";
 
 async function openModal() {
     await closeMenu();

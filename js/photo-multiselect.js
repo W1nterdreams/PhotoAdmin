@@ -1,5 +1,5 @@
-import { state } from "./state.js?v=20261001-owner-red44";
-import { openPhotoTransferMany } from "./photo-transfer.js?v=20261001-owner-red44";
+import { state } from "./state.js?v=20261001-appidfix45";
+import { openPhotoTransferMany } from "./photo-transfer.js?v=20261001-appidfix45";
 
 let active = false;
 let selectedIds = new Set();

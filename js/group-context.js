@@ -1,5 +1,5 @@
-import { state } from "./state.js?v=20261001-owner-red44";
-import { ALLOW_USERS, ALLOWED_GROUP_IDS } from "./config.js?v=20261001-owner-red44";
+import { state } from "./state.js?v=20261001-appidfix45";
+import { ALLOW_USERS, ALLOWED_GROUP_IDS } from "./config.js?v=20261001-appidfix45";
 
 let lastAccessDiagnostic = null;
 

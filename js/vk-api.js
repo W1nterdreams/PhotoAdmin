@@ -1,7 +1,7 @@
-import { VK_APP_ID, VK_API_VERSION } from "./config.js?v=20261001-owner-red44";
-import { state } from "./state.js?v=20261001-owner-red44";
-import { dom } from "./dom.js?v=20261001-owner-red44";
-import { logError } from "./helpers.js?v=20261001-owner-red44";
+import { VK_APP_ID, VK_API_VERSION } from "./config.js?v=20261001-appidfix45";
+import { state } from "./state.js?v=20261001-appidfix45";
+import { dom } from "./dom.js?v=20261001-appidfix45";
+import { logError } from "./helpers.js?v=20261001-appidfix45";
 
 let apiStats = createEmptyStats();
 
@@ -38,18 +38,54 @@ export async function loadUser() {
     dom.user.textContent = `${result.first_name || ""} ${result.last_name || ""}`.trim() || "Пользователь";
 }
 
+function readLaunchAppId() {
+    const params = new URLSearchParams(window.location.search);
+    const id = Number(params.get("vk_app_id"));
+    return Number.isInteger(id) && id > 0 ? id : null;
+}
+
+function getAuthAppId() {
+    // Для VKWebAppGetAuthToken app_id должен совпадать именно с приложением,
+    // из которого VK сформировал текущий launch URL. Поэтому в первую очередь
+    // используем подписанный launch-параметр vk_app_id, а константу из config.js
+    // оставляем как fallback для старых/тестовых запусков.
+    const launchAppId = readLaunchAppId();
+
+    if (launchAppId && launchAppId !== Number(VK_APP_ID)) {
+        console.warn(
+            `VK app id from launch params (${launchAppId}) differs from config (${VK_APP_ID}). ` +
+            "For auth the launch app id will be used."
+        );
+    }
+
+    return launchAppId || Number(VK_APP_ID);
+}
+
 export async function getAccessToken() {
-    const result = await vkBridge.send("VKWebAppGetAuthToken", {
-        app_id: VK_APP_ID,
-        scope: "photos"
-    });
+    const appId = getAuthAppId();
 
-    state.accessToken = result.access_token;
-    state.accessScope = Array.isArray(result.scope)
-        ? result.scope.join(",")
-        : String(result.scope || "photos");
+    console.log("VK AUTH APP ID:", appId);
 
-    if (!state.accessToken) throw new Error("VK не вернул access token.");
+    try {
+        const result = await vkBridge.send("VKWebAppGetAuthToken", {
+            app_id: appId,
+            scope: "photos"
+        });
+
+        state.accessToken = result.access_token;
+        state.accessScope = Array.isArray(result.scope)
+            ? result.scope.join(",")
+            : String(result.scope || "photos");
+
+        if (!state.accessToken) throw new Error("VK не вернул access token.");
+    } catch (error) {
+        console.error("VK auth failed. app_id diagnostics:", {
+            launchAppId: readLaunchAppId(),
+            configuredAppId: Number(VK_APP_ID),
+            usedAppId: appId
+        });
+        throw error;
+    }
 }
 
 export async function vkApi(method, params = {}) {

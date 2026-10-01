@@ -1,4 +1,4 @@
-export const VK_APP_ID = 54771516;
+export const VK_APP_ID = 54771516; // fallback; в VK берём фактический vk_app_id из launch params
 export const VK_API_VERSION = "5.199";
 
 // =========================================================
