@@ -1,0 +1,2540 @@
+
+.menu-item-danger {
+    color: #ff7b7b;
+}
+
+.menu-item-danger:hover,
+.menu-item-danger:active {
+    color: #ff9b9b;
+}
+
+/* =========================================================
+   VK PHOTO MANAGER
+   style.css
+   ========================================================= */
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    min-height: 100%;
+
+    background: #111315;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    min-height: 100vh;
+
+    background: #111315;
+    color: #ffffff;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+img {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =========================================================
+   APP
+   ========================================================= */
+
+#app {
+    position: relative;
+
+    width: 100%;
+    min-height: 100vh;
+
+    background: #111315;
+
+    overflow: visible;
+}
+
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+.topbar {
+    position: sticky;
+    top: 0;
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    min-height: 58px;
+
+    padding-left: 6px;
+    padding-right: 6px;
+
+    background: #39779b;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.30);
+
+    /*
+     * ВАЖНО:
+     * меню выходит за пределы шапки.
+     */
+    overflow: visible;
+}
+
+
+/* =========================================================
+   TOP BAR TITLE
+   ========================================================= */
+
+.topbar-title {
+    flex: 1;
+
+    min-width: 0;
+
+    padding-left: 5px;
+    padding-right: 5px;
+
+    color: #ffffff;
+
+    font-size: 20px;
+    font-weight: 600;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.topbar-sort-controls {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+    padding: 0 3px;
+}
+
+.topbar-sort-button {
+    flex: 0 1 auto;
+    min-width: 0;
+    min-height: 34px;
+    padding: 5px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.46);
+    border-radius: 18px;
+    background: rgba(0, 0, 0, 0.10);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+
+.topbar-sort-button.active {
+    border-color: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.topbar-sort-button.loading {
+    opacity: 0.62;
+}
+
+.topbar-sort-button:disabled {
+    cursor: default;
+}
+
+
+/* =========================================================
+   USER
+   ========================================================= */
+
+.topbar-user {
+    flex: 0 1 auto;
+
+    max-width: 180px;
+
+    margin-left: 8px;
+    margin-right: 4px;
+
+    color: rgba(255, 255, 255, 0.85);
+
+    font-size: 13px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   TOP BAR BUTTON
+   ========================================================= */
+
+.topbar-button {
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+
+    margin: 0 2px;
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    outline: none;
+
+    background: transparent;
+    color: #ffffff;
+
+    font-size: 27px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease;
+}
+
+.topbar-button:hover {
+    background:
+        rgba(255, 255, 255, 0.12);
+}
+
+.topbar-button:active {
+    transform: scale(0.92);
+
+    background:
+        rgba(255, 255, 255, 0.18);
+}
+
+
+/* =========================================================
+   MENU CONTAINER
+   ========================================================= */
+
+.menu-container {
+    position: relative;
+
+    z-index: 5000;
+
+    flex: 0 0 auto;
+
+    overflow: visible;
+}
+
+
+/* =========================================================
+   MENU BUTTON
+   ========================================================= */
+
+.menu-button {
+    position: relative;
+
+    z-index: 5001;
+
+    font-size: 25px;
+}
+
+
+/* =========================================================
+   POPUP MENU
+   ========================================================= */
+
+.main-menu {
+    /*
+     * FIXED намеренно: меню не зависит от sticky-шапки,
+     * overflow родительских элементов и stacking context WebView VK.
+     */
+    position: fixed !important;
+
+    top: 62px !important;
+    left: 8px !important;
+
+    z-index: 2147483647 !important;
+
+    display: block;
+
+    width: 240px;
+
+    padding: 6px;
+
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 12px;
+
+    background: #24272a !important;
+    color: #ffffff;
+
+    box-shadow:
+        0 10px 40px
+        rgba(0, 0, 0, 0.75);
+
+    overflow: visible;
+
+    visibility: visible;
+    opacity: 1;
+
+    transform: none;
+    isolation: isolate;
+}
+
+
+/* =========================================================
+   MENU ITEM
+   ========================================================= */
+
+.menu-item {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    width: 100%;
+
+    min-height: 46px;
+
+    padding:
+        10px
+        11px;
+
+    border: none;
+    border-radius: 8px;
+
+    outline: none;
+
+    background: transparent;
+    color: #ffffff;
+
+    font-size: 16px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.12s ease;
+}
+
+.menu-item:hover {
+    background: #35393d;
+}
+
+.menu-item:active {
+    background: #41464b;
+}
+
+
+/* =========================================================
+   MENU ICON
+   ========================================================= */
+
+.menu-item-icon {
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 25px;
+
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   SCREEN
+   ========================================================= */
+
+.screen {
+    position: relative;
+
+    z-index: 1;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   SEARCH AREA
+   ========================================================= */
+
+.search-container {
+    position: sticky;
+
+    top: 58px;
+
+    z-index: 100;
+
+    width: 100%;
+
+    padding: 10px;
+
+    background: #111315;
+}
+
+
+/* =========================================================
+   SEARCH BOX
+   ========================================================= */
+
+.search-box {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    height: 44px;
+
+    padding:
+        0
+        10px;
+
+    border:
+        1px solid
+        #42464a;
+
+    border-radius: 10px;
+
+    background: #202326;
+
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease;
+}
+
+.search-box:focus-within {
+    border-color: #518fbb;
+
+    background: #25282b;
+}
+
+
+/* =========================================================
+   SEARCH ICON
+   ========================================================= */
+
+.search-icon {
+    flex: 0 0 auto;
+
+    margin-right: 8px;
+
+    font-size: 17px;
+
+    opacity: 0.7;
+}
+
+
+/* =========================================================
+   SEARCH INPUT
+   ========================================================= */
+
+#albumSearch,
+#photoSearch {
+    flex: 1;
+
+    min-width: 0;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+    color: #ffffff;
+
+    font-size: 17px;
+}
+
+#albumSearch::placeholder,
+#photoSearch::placeholder {
+    color: #96999d;
+}
+
+#albumSearch::-webkit-search-cancel-button,
+#photoSearch::-webkit-search-cancel-button {
+    display: none;
+}
+
+
+/* =========================================================
+   CLEAR SEARCH
+   ========================================================= */
+
+.clear-search {
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+
+    margin-left: 7px;
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #55595d;
+    color: #ffffff;
+
+    font-size: 20px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.clear-search:hover {
+    background: #666b70;
+}
+
+
+/* =========================================================
+   ALBUM GRID
+   ========================================================= */
+
+.albums-grid {
+    position: relative;
+
+    z-index: 1;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 3px;
+
+    width: 100%;
+
+    padding:
+        0
+        3px
+        3px;
+}
+
+
+/* =========================================================
+   ALBUM CARD
+   ========================================================= */
+
+.album-card {
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 1.45 / 1;
+
+    overflow: hidden;
+
+    border-radius: 4px;
+
+    background: #303438;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    transition:
+        transform 0.1s ease,
+        opacity 0.1s ease;
+}
+
+.album-card:active {
+    transform: scale(0.985);
+
+    opacity: 0.9;
+}
+
+
+/* =========================================================
+   ALBUM IMAGE
+   ========================================================= */
+
+.album-cover {
+    position: absolute;
+
+    inset: 0;
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    background: #303438;
+}
+
+
+/* =========================================================
+   ALBUM PLACEHOLDER
+   ========================================================= */
+
+.album-placeholder {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #8998a3,
+            #424a50
+        );
+
+    color:
+        rgba(255, 255, 255, 0.7);
+
+    font-size: 52px;
+}
+
+
+/* =========================================================
+   ALBUM GRADIENT
+   ========================================================= */
+
+.album-card::after {
+    content: "";
+
+    position: absolute;
+
+    z-index: 1;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 62%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0),
+            rgba(0, 0, 0, 0.86)
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   ALBUM INFO
+   ========================================================= */
+
+.album-info {
+    position: absolute;
+
+    z-index: 2;
+
+    left: 8px;
+    right: 8px;
+    bottom: 7px;
+
+    display: flex;
+    align-items: flex-end;
+
+    gap: 8px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   ALBUM NAME
+   ========================================================= */
+
+.album-name {
+    flex: 1;
+
+    min-width: 0;
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.15;
+
+    /* Название больше не обрезается многоточием: показываем его целиком. */
+    white-space: normal;
+    overflow: visible;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+
+    text-shadow:
+        0 1px 4px
+        rgba(0, 0, 0, 0.95);
+}
+
+
+/* =========================================================
+   ALBUM COUNT
+   ========================================================= */
+
+.album-count {
+    flex: 0 0 auto;
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    text-shadow:
+        0 1px 4px
+        rgba(0, 0, 0, 0.95);
+}
+
+
+/* =========================================================
+   ALBUM HEADER
+   ========================================================= */
+
+.album-header {
+    width: 100%;
+
+    padding: 14px;
+
+    border-bottom:
+        1px solid #34383b;
+
+    background: #1b1e20;
+}
+
+.album-header-main {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+.album-header h1 {
+    flex: 1;
+
+    min-width: 0;
+
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 20px;
+    font-weight: 600;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.photo-count {
+    flex: 0 0 auto;
+
+    color: #999fa4;
+
+    font-size: 14px;
+}
+
+.album-description {
+    margin-top: 7px;
+
+    color: #aeb3b7;
+
+    font-size: 14px;
+
+    line-height: 1.4;
+
+    white-space: pre-wrap;
+}
+
+.photo-search-container {
+    width: 100%;
+    margin-top: 11px;
+}
+
+.photo-search-box {
+    height: 40px;
+    background: #151719;
+}
+
+#photoSearch {
+    font-size: 15px;
+}
+
+
+
+/* =========================================================
+   PHOTOS GRID
+   ========================================================= */
+
+.photos-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 2px;
+
+    width: 100%;
+
+    padding: 2px;
+}
+
+
+/* =========================================================
+   PHOTO CARD
+   ========================================================= */
+
+.photo-card {
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    overflow: hidden;
+
+    background: #25282b;
+
+    cursor: pointer;
+}
+
+.photo-card img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.1s ease,
+        opacity 0.1s ease;
+}
+
+.photo-card:active img {
+    transform: scale(0.97);
+
+    opacity: 0.8;
+}
+
+
+/* =========================================================
+   COMMENTS TOOLBAR
+   ========================================================= */
+
+.comments-toolbar {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    width: 100%;
+
+    padding: 12px;
+
+    border-bottom:
+        1px solid #34383b;
+
+    background: #1b1e20;
+}
+
+.comments-title {
+    flex: 1;
+
+    min-width: 0;
+
+    font-size: 18px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   COMMENTS LIST
+   ========================================================= */
+
+.comments-list {
+    width: 100%;
+
+    padding: 10px;
+}
+
+
+/* =========================================================
+   COMMENT CARD
+   ========================================================= */
+
+.comment-card {
+    display: flex;
+
+    gap: 11px;
+
+    width: 100%;
+
+    margin-bottom: 9px;
+
+    padding: 11px;
+
+    border:
+        1px solid #34383b;
+
+    border-radius: 11px;
+
+    background: #1c1f21;
+}
+
+.comment-photo {
+    flex: 0 0 auto;
+
+    width: 72px;
+    height: 72px;
+
+    border-radius: 7px;
+
+    object-fit: cover;
+
+    background: #303438;
+}
+
+.comment-body {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.comment-album {
+    margin-bottom: 3px;
+
+    color: #75aee2;
+
+    font-size: 13px;
+}
+
+.comment-author {
+    margin-bottom: 5px;
+
+    color: #ffffff;
+
+    font-weight: 600;
+}
+
+.comment-text {
+    color: #dddddd;
+
+    line-height: 1.4;
+
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.comment-date {
+    margin-top: 7px;
+
+    color: #858b90;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   MODAL OVERLAY
+   ========================================================= */
+
+.modal-overlay {
+    position: fixed;
+
+    z-index: 100000;
+
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 16px;
+
+    background:
+        rgba(0, 0, 0, 0.74);
+}
+
+
+/* =========================================================
+   MODAL WINDOW
+   ========================================================= */
+
+.modal {
+    position: relative;
+
+    width: min(460px, 100%);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 17px;
+
+    border:
+        1px solid #41464b;
+
+    border-radius: 15px;
+
+    background: #202326;
+    color: #ffffff;
+
+    box-shadow:
+        0 15px 50px
+        rgba(0, 0, 0, 0.7);
+}
+
+
+/* =========================================================
+   MODAL HEADER
+   ========================================================= */
+
+.modal-header {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 18px;
+}
+
+.modal-title {
+    flex: 1;
+
+    min-width: 0;
+
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   MODAL CLOSE
+   ========================================================= */
+
+.modal-close {
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+    color: #bbbbbb;
+
+    font-size: 27px;
+
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    background: #35393d;
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.form-label {
+    display: block;
+
+    margin:
+        13px
+        0
+        6px;
+
+    color: #b9bec2;
+
+    font-size: 14px;
+}
+
+.form-input,
+.form-textarea {
+    display: block;
+
+    width: 100%;
+
+    margin: 0;
+
+    border:
+        1px solid #454a4f;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #151719;
+    color: #ffffff;
+
+    transition:
+        border-color 0.15s ease;
+}
+
+.form-input {
+    height: 43px;
+
+    padding:
+        0
+        11px;
+}
+
+.form-textarea {
+    min-height: 110px;
+
+    padding:
+        10px
+        11px;
+
+    line-height: 1.4;
+
+    resize: vertical;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    border-color: #518fbb;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: #74797d;
+}
+
+
+/* =========================================================
+   FORM ERROR
+   ========================================================= */
+
+.form-error {
+    margin-top: 12px;
+
+    padding: 9px;
+
+    border-radius: 7px;
+
+    background: #482424;
+    color: #ffbaba;
+
+    font-size: 14px;
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   MODAL ACTIONS
+   ========================================================= */
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    margin-top: 19px;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.primary-button,
+.secondary-button {
+    min-height: 38px;
+
+    padding:
+        7px
+        15px;
+
+    border: none;
+    border-radius: 8px;
+
+    outline: none;
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    transition:
+        background 0.12s ease,
+        opacity 0.12s ease;
+}
+
+.primary-button {
+    background: #39779b;
+}
+
+.primary-button:hover {
+    background: #4789af;
+}
+
+.primary-button:active {
+    background: #326986;
+}
+
+.secondary-button {
+    background: #3a3e42;
+}
+
+.secondary-button:hover {
+    background: #484d52;
+}
+
+.secondary-button:active {
+    background: #555a60;
+}
+
+.primary-button:disabled,
+.secondary-button:disabled {
+    cursor: default;
+
+    opacity: 0.5;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.status-message {
+    grid-column: 1 / -1;
+
+    width: 100%;
+
+    padding:
+        50px
+        20px;
+
+    color: #aeb2b6;
+
+    font-size: 16px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.error {
+    grid-column: 1 / -1;
+
+    margin: 15px;
+
+    padding: 15px;
+
+    border-radius: 10px;
+
+    background: #3a2020;
+    color: #ffb5b5;
+
+    line-height: 1.4;
+
+    word-break: break-word;
+}
+
+
+
+/* =========================================================
+   ALBUM LONG-PRESS CONTEXT MENU
+   ========================================================= */
+
+.album-menu-open {
+    overflow: hidden;
+}
+
+.album-context-overlay {
+    position: fixed;
+    z-index: 2147483646;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.18);
+}
+
+.album-context-menu {
+    width: min(340px, calc(100vw - 40px));
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+
+    padding: 10px 0;
+    border-radius: 3px;
+
+    background: #ffffff;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+}
+
+.album-context-item {
+    display: block;
+    width: 100%;
+
+    padding: 15px 28px;
+    border: 0;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+
+    background: transparent;
+    color: #263238;
+
+    font: inherit;
+    font-size: 16px;
+    line-height: 1.25;
+    text-align: left;
+
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.album-context-item:focus,
+.album-context-item:focus-visible {
+    outline: none;
+}
+
+.album-context-item:active {
+    background: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .album-context-item:hover {
+        background: #f1f3f5;
+    }
+}
+
+.album-context-item.danger {
+    color: #263238;
+}
+
+@media (max-width: 420px) {
+    .album-context-menu {
+        width: min(320px, calc(100vw - 34px));
+    }
+
+    .album-context-item {
+        padding: 14px 24px;
+        font-size: 15px;
+    }
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (min-width: 700px) {
+
+    .albums-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 5px;
+
+        padding:
+            0
+            5px
+            5px;
+    }
+
+    .photos-grid {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 3px;
+
+        padding: 3px;
+    }
+
+}
+
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media (min-width: 1100px) {
+
+    .albums-grid {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+    }
+
+    .photos-grid {
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+    .topbar {
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+
+    .topbar-user {
+        display: none;
+    }
+
+    .topbar-title {
+        font-size: 18px;
+    }
+
+    .topbar-button {
+        width: 42px;
+        height: 42px;
+    }
+
+    .main-menu {
+        left: 8px !important;
+        width: 225px;
+    }
+
+    .album-name {
+        font-size: 13px;
+    }
+
+    .album-count {
+        font-size: 14px;
+    }
+
+    .comment-photo {
+        width: 62px;
+        height: 62px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 340px) {
+
+    .topbar-title {
+        font-size: 16px;
+    }
+
+    .albums-grid {
+        gap: 2px;
+
+        padding:
+            0
+            2px
+            2px;
+    }
+
+    .album-info {
+        left: 6px;
+        right: 6px;
+        bottom: 6px;
+    }
+
+    .album-name {
+        font-size: 12px;
+    }
+
+    .album-count {
+        font-size: 13px;
+    }
+
+}
+
+
+/* =========================================================
+   COMMENT UI ENHANCED
+   ========================================================= */
+
+.comments-toolbar {
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.comments-title {
+    line-height: 1.25;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.comments-list {
+    padding: 10px;
+}
+
+.comment-card-rich {
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 14px;
+}
+
+.comment-thumb-button {
+    flex: 0 0 auto;
+    display: block;
+    width: 70px;
+    padding: 0;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    background: transparent;
+    cursor: pointer;
+}
+
+.comment-photo {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+}
+
+.comment-photo-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #32363a;
+    color: rgba(255,255,255,0.75);
+    font-size: 26px;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.comment-author-link,
+.comment-inline-link,
+.comment-reply-link {
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.comment-author-link {
+    color: #77afe3;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.comment-inline-link {
+    color: #77afe3;
+    font-size: inherit;
+}
+
+.comment-text {
+    margin-top: 2px;
+    line-height: 1.45;
+}
+
+.comment-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.comment-date {
+    margin-top: 0;
+}
+
+.comment-reply-link {
+    color: #8ebce8;
+    font-size: 14px;
+}
+
+.comment-reply-box {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #353a3f;
+    border-radius: 10px;
+    background: #16191b;
+}
+
+.comment-reply-input {
+    display: block;
+    width: 100%;
+    min-height: 82px;
+    padding: 10px 11px;
+    border: 1px solid #454a4f;
+    border-radius: 9px;
+    outline: none;
+    resize: vertical;
+    background: #111315;
+    color: #ffffff;
+    line-height: 1.4;
+}
+
+.comment-reply-input:focus {
+    border-color: #518fbb;
+}
+
+.comment-reply-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.context-menu-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100100;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.context-menu-sheet {
+    width: min(440px, 100%);
+    border: 1px solid #41464b;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #202326;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+}
+
+.context-menu-button {
+    display: block;
+    width: 100%;
+    min-height: 54px;
+    padding: 0 18px;
+    border: none;
+    border-bottom: 1px solid #32363a;
+    background: #202326;
+    color: #ffffff;
+    text-align: left;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.context-menu-button:last-child {
+    border-bottom: none;
+}
+
+.context-menu-button:hover {
+    background: #2a2f34;
+}
+
+.context-menu-button-danger {
+    color: #ff9999;
+}
+
+.context-menu-button-cancel {
+    color: #8ebce8;
+}
+
+@media (max-width: 420px) {
+    .comment-thumb-button {
+        width: 64px;
+    }
+
+    .comment-photo,
+    .comment-photo-placeholder {
+        width: 64px;
+        height: 64px;
+    }
+
+    .comment-author-link {
+        font-size: 15px;
+    }
+
+    .comment-text {
+        font-size: 15px;
+    }
+}
+
+
+/* =========================================================
+   QUICK REPLY TARGET
+   ========================================================= */
+
+.comment-reply-target {
+    margin-bottom: 8px;
+    color: #9fa6ac;
+    font-size: 13px;
+}
+
+.comment-reply-target-link,
+.photo-viewer-reply-author {
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #77afe3;
+    font: inherit;
+    cursor: pointer;
+}
+
+.comment-reply-error,
+.photo-viewer-comment-error {
+    white-space: pre-wrap;
+}
+
+
+/* =========================================================
+   ОБЩЕЕ ФОТО
+   ========================================================= */
+
+#photoViewerScreen {
+    width: 100%;
+    padding-bottom: 150px;
+}
+
+.photo-viewer-media {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 36vh;
+    max-height: 54vh;
+    background: #0a0b0c;
+    overflow: hidden;
+}
+
+.photo-viewer-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 54vh;
+    object-fit: contain;
+    background: #0a0b0c;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+}
+
+.photo-viewer-nav {
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    width: 46px;
+    height: 58px;
+    transform: translateY(-50%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.52);
+    color: #ffffff;
+    font-size: 42px;
+    line-height: 48px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    backdrop-filter: blur(3px);
+}
+
+.photo-viewer-nav:active {
+    transform: translateY(-50%) scale(0.94);
+    background: rgba(0, 0, 0, 0.72);
+}
+
+.photo-viewer-nav-prev {
+    left: 10px;
+}
+
+.photo-viewer-nav-next {
+    right: 10px;
+}
+
+@media (max-width: 520px) {
+    .photo-viewer-nav {
+        width: 42px;
+        height: 54px;
+        border-radius: 13px;
+        font-size: 38px;
+        line-height: 44px;
+    }
+
+    .photo-viewer-nav-prev {
+        left: 7px;
+    }
+
+    .photo-viewer-nav-next {
+        right: 7px;
+    }
+}
+
+.photo-viewer-image.is-loading {
+    visibility: hidden;
+}
+
+.photo-viewer-description {
+    padding: 12px 14px;
+    border-bottom: 1px solid #34383b;
+    background: #171a1c;
+    color: #e3e5e7;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.photo-viewer-stats {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid #34383b;
+    background: #171a1c;
+}
+
+.photo-viewer-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #b8bec4;
+    font-size: 14px;
+}
+
+.photo-viewer-stat-icon {
+    font-size: 21px;
+    line-height: 1;
+}
+
+.photo-viewer-comments-section {
+    width: 100%;
+}
+
+.photo-viewer-section-title {
+    padding: 12px 14px 8px;
+    color: #ffffff;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.photo-viewer-comments {
+    width: 100%;
+    padding: 0 10px 10px;
+}
+
+.photo-viewer-comment {
+    position: relative;
+    padding: 12px 10px;
+    border-bottom: 1px solid #34383b;
+    background: transparent;
+}
+
+.photo-viewer-comment-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.photo-viewer-comment-top .comment-date {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.photo-viewer-comment-actions {
+    margin-top: 7px;
+}
+
+.photo-viewer-composer {
+    position: fixed;
+    z-index: 9000;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+    border-top: 1px solid #3a3f43;
+    background: rgba(27, 30, 32, 0.98);
+    backdrop-filter: blur(10px);
+}
+
+.photo-viewer-reply-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 0;
+    margin-bottom: 6px;
+}
+
+.photo-viewer-reply-target {
+    flex: 1;
+    min-width: 0;
+    color: #aeb4b9;
+    font-size: 13px;
+}
+
+.photo-viewer-reply-cancel {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #3b4045;
+    color: #ffffff;
+    font-size: 19px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.photo-viewer-comment-input {
+    display: block;
+    width: 100%;
+    min-height: 58px;
+    max-height: 150px;
+    padding: 10px 11px;
+    border: 1px solid #454a4f;
+    border-radius: 10px;
+    outline: none;
+    resize: vertical;
+    background: #111315;
+    color: #ffffff;
+    line-height: 1.4;
+}
+
+.photo-viewer-comment-input:focus {
+    border-color: #518fbb;
+}
+
+.photo-viewer-composer-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+@media (min-width: 700px) {
+    .photo-viewer-composer {
+        left: 50%;
+        right: auto;
+        width: min(760px, 100%);
+        transform: translateX(-50%);
+    }
+
+    .photo-viewer-image {
+        width: auto;
+        max-width: 100%;
+    }
+}
+
+/* =========================================================
+   ALBUM EDIT CHECKBOXES
+   ========================================================= */
+
+.form-checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 16px;
+    color: #e7e9eb;
+    font-size: 15px;
+    line-height: 1.35;
+    cursor: pointer;
+    user-select: none;
+}
+
+.form-checkbox-row input[type="checkbox"] {
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    accent-color: #518fbb;
+    cursor: pointer;
+}
+
+.form-checkbox-hint {
+    margin: 6px 0 0 30px;
+    color: #8e9499;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+/* =========================================================
+   PHOTO GRID META
+   ========================================================= */
+
+.photo-card-date {
+    position: absolute;
+    z-index: 2;
+    top: 6px;
+    left: 6px;
+    display: inline-flex;
+    align-items: center;
+    min-height: 22px;
+    padding: 3px 7px;
+    border-radius: 11px;
+    background: rgba(0, 0, 0, 0.64);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+    pointer-events: none;
+}
+
+.photo-card-stats {
+    position: absolute;
+    z-index: 2;
+    right: 6px;
+    bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    pointer-events: none;
+}
+
+.photo-card-stat {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 3px 7px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.64);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+.photo-viewer-empty-comments {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0 14px;
+}
+
+.photo-viewer-empty-comments .status-message {
+    padding-bottom: 4px;
+}
+
+.photo-viewer-open-vk-comment {
+    width: auto;
+    max-width: calc(100% - 24px);
+}
+
+@media (max-width: 420px) {
+    .photo-card-stats {
+        right: 5px;
+        bottom: 5px;
+        gap: 4px;
+    }
+
+    .photo-card-stat {
+        min-height: 22px;
+        padding: 3px 6px;
+        font-size: 11px;
+    }
+}
+
+/* =========================================================
+   PHOTO COMMENT THREADS
+   ========================================================= */
+
+.photo-viewer-comment-reply {
+    margin-left: 30px;
+    padding-left: 14px;
+    border-left: 2px solid rgba(81, 143, 187, 0.55);
+    background: rgba(81, 143, 187, 0.045);
+}
+
+.photo-viewer-comment-reply::before {
+    content: "↳";
+    position: absolute;
+    left: -22px;
+    top: 13px;
+    color: #7fa9cc;
+    font-size: 15px;
+    line-height: 1;
+}
+
+@media (max-width: 420px) {
+    .photo-viewer-comment-reply {
+        margin-left: 22px;
+        padding-left: 11px;
+    }
+
+    .photo-viewer-comment-reply::before {
+        left: -18px;
+    }
+}
+
+
+/* =========================================================
+   COMMENT THREADS + UNANSWERED
+   ========================================================= */
+
+.comment-card-rich {
+    position: relative;
+}
+
+.comment-card-rich.comment-thread-reply {
+    width: calc(100% - 28px);
+    margin-left: 28px;
+    padding-left: 12px;
+    border-left: 2px solid rgba(81, 143, 187, 0.62);
+    background: rgba(81, 143, 187, 0.055);
+}
+
+.comment-card-rich.comment-thread-reply::before {
+    content: "↳";
+    position: absolute;
+    left: -20px;
+    top: 13px;
+    color: #7fa9cc;
+    font-size: 15px;
+    line-height: 1;
+}
+
+/* Тёплая подсветка означает: это корневой комментарий пользователя,
+   и среди загруженной ветки на него пока нет ответа. */
+.comment-card-rich.comment-unanswered {
+    border-color: rgba(226, 168, 74, 0.72);
+    background: rgba(226, 168, 74, 0.085);
+    box-shadow: inset 3px 0 0 rgba(226, 168, 74, 0.72);
+}
+
+.photo-viewer-comment-unanswered {
+    background: rgba(226, 168, 74, 0.075);
+    box-shadow: inset 3px 0 0 rgba(226, 168, 74, 0.68);
+}
+
+@media (max-width: 420px) {
+    .comment-card-rich.comment-thread-reply {
+        width: calc(100% - 22px);
+        margin-left: 22px;
+        padding-left: 10px;
+    }
+
+    .comment-card-rich.comment-thread-reply::before {
+        left: -17px;
+    }
+}
+
+
+/* =========================================================
+   PHOTO UPLOAD
+   ========================================================= */
+
+.upload-photo-album-name {
+    margin: -5px 0 8px;
+    color: #aeb5bb;
+    font-size: 14px;
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+.upload-photo-file-input {
+    height: auto;
+    min-height: 46px;
+    padding: 8px;
+}
+
+.upload-photo-file-input::file-selector-button {
+    margin-right: 10px;
+    padding: 7px 10px;
+    border: 0;
+    border-radius: 7px;
+    background: #353a3f;
+    color: #fff;
+}
+
+.upload-photo-selection,
+.upload-photo-progress {
+    margin-top: 8px;
+    color: #aeb5bb;
+    font-size: 13px;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.upload-photo-progress {
+    padding: 9px 10px;
+    border-radius: 8px;
+    background: #181b1e;
+    color: #c9d7e3;
+}
+
+/* =========================================================
+   PHOTO DATE SORT MENU
+   ========================================================= */
+.album-context-item.selected {
+    font-weight: 600;
+    background: #eef5fb;
+}
+
+
+/* =========================================================
+   EDIT ALBUM MODAL COMPACT LAYOUT
+   ========================================================= */
+
+.edit-album-modal-window {
+    width: min(440px, 100%);
+    max-height: 84vh;
+    padding: 12px 14px 14px;
+}
+
+.edit-album-modal-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    align-items: flex-start;
+    margin: -4px -2px 12px;
+    padding: 2px 2px 8px;
+    background: #202326;
+}
+
+.edit-album-modal-title {
+    font-size: 17px;
+    line-height: 1.05;
+    font-weight: 600;
+    white-space: normal;
+    max-width: none;
+}
+
+.modal-header-save {
+    flex: 0 0 auto;
+    margin-left: auto;
+    min-height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.edit-album-form .form-label {
+    margin: 10px 0 6px;
+}
+
+.edit-album-form .form-input {
+    height: 42px;
+}
+
+.edit-album-form .form-textarea {
+    min-height: 82px;
+    max-height: 140px;
+    resize: vertical;
+}
+
+.edit-album-form .form-checkbox-row {
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.edit-album-form .form-checkbox-hint {
+    margin-left: 30px;
+    font-size: 12px;
+}
+
+.edit-album-form .form-error {
+    margin-top: 12px;
+}
+
+@media (max-width: 420px) {
+    .album-header-main {
+        gap: 8px;
+    }
+
+    .album-header h1 {
+        font-size: 18px;
+    }
+
+    .photo-count {
+        font-size: 13px;
+    }
+
+    .album-header-actions {
+        gap: 6px;
+    }
+
+    .album-sort-button {
+        min-height: 32px;
+        padding: 5px 11px;
+        font-size: 13px;
+    }
+
+    .edit-album-modal-window {
+        max-height: 80vh;
+        padding: 10px 12px 12px;
+    }
+
+    .edit-album-modal-title {
+        font-size: 16px;
+        max-width: none;
+    }
+
+    .modal-header-save {
+        padding: 6px 10px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 420px) {
+    .topbar-sort-controls {
+        gap: 4px;
+        padding-left: 1px;
+        padding-right: 1px;
+    }
+
+    .topbar-sort-button {
+        min-height: 31px;
+        padding: 5px 7px;
+        font-size: 12px;
+    }
+}
+
+/* Dangerous action in the three-dots photo menu. */
+.menu-item.menu-item-danger {
+    color: #ff7b7b;
+}
+
+.menu-item.menu-item-danger:hover,
+.menu-item.menu-item-danger:active {
+    color: #ff9b9b;
+}
+
+
+/* =========================================================
+   NATIVE-LIKE PHOTO DELETE CONFIRMATION
+   ========================================================= */
+
+.photo-delete-overlay {
+    position: fixed;
+    z-index: 2147483647;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 12px 10px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: rgba(0, 0, 0, 0.58);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.photo-delete-sheet {
+    width: min(430px, 100%);
+    padding: 8px 12px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 18px;
+    background: #24272a;
+    color: #ffffff;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.42);
+}
+
+.photo-delete-handle {
+    width: 38px;
+    height: 4px;
+    margin: 1px auto 13px;
+    border-radius: 999px;
+    background: #686d72;
+}
+
+.photo-delete-title {
+    padding: 0 8px;
+    font-size: 19px;
+    font-weight: 650;
+    line-height: 1.25;
+    text-align: center;
+}
+
+.photo-delete-text {
+    max-width: 360px;
+    margin: 7px auto 15px;
+    padding: 0 8px;
+    color: #aeb3b7;
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.photo-delete-error {
+    margin: 0 4px 10px;
+    padding: 9px 10px;
+    border-radius: 9px;
+    background: rgba(230, 70, 70, 0.14);
+    color: #ff9b9b;
+    font-size: 13px;
+    line-height: 1.35;
+    text-align: center;
+}
+
+.photo-delete-actions {
+    display: grid;
+    gap: 8px;
+}
+
+.photo-delete-confirm,
+.photo-delete-cancel {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 11px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.photo-delete-confirm {
+    background: #e64646;
+    color: #ffffff;
+}
+
+.photo-delete-confirm:active:not(:disabled) {
+    background: #cf3f3f;
+}
+
+.photo-delete-cancel {
+    background: #34383c;
+    color: #ffffff;
+}
+
+.photo-delete-cancel:active:not(:disabled) {
+    background: #3f4449;
+}
+
+.photo-delete-confirm:disabled,
+.photo-delete-cancel:disabled {
+    opacity: 0.62;
+    cursor: default;
+}
+
+@media (min-width: 700px) {
+    .photo-delete-overlay {
+        align-items: center;
+        padding: 20px;
+    }
+}
+
+/* =========================================================
+   МЕНЮ ДОЛГОГО НАЖАТИЯ В ПРОСМОТРЩИКЕ ФОТО
+   ========================================================= */
+
+.photo-viewer-album-context-overlay {
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.photo-viewer-album-context-menu {
+    width: min(360px, calc(100vw - 40px));
+    max-height: calc(100vh - 80px);
+}
+
+
+/* =========================================================
+   РЕДАКТОР ОПИСАНИЯ ФОТОГРАФИИ
+   ========================================================= */
+
+.photo-description-edit-modal-window {
+    width: min(680px, calc(100vw - 24px));
+    max-height: 92dvh;
+    padding: 20px;
+}
+
+.photo-description-edit-textarea {
+    min-height: 260px;
+    max-height: 56dvh;
+    resize: vertical;
+    overflow-y: auto;
+    line-height: 1.5;
+    font-size: 16px;
+    caret-color: #ffffff;
+    user-select: text;
+    -webkit-user-select: text;
+    -webkit-touch-callout: default;
+}
+
+@media (max-width: 520px) {
+    .photo-description-edit-modal-window {
+        width: calc(100vw - 16px);
+        max-height: 94dvh;
+        padding: 16px;
+    }
+
+    .photo-description-edit-textarea {
+        min-height: 220px;
+        max-height: 52dvh;
+    }
+}

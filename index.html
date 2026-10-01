@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <!-- CACHE_VERSION: 20260927-captiontop43 -->
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <title>Фотоальбомы VK</title>
+
+    <link rel="stylesheet" href="./style.css?v=20260927-captiontop43">
+
+    <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+</head>
+
+<body>
+
+<div id="app">
+
+    <!-- ШАПКА -->
+    <header class="topbar">
+
+        <!-- Назад -->
+        <button
+            id="backButton"
+            class="topbar-button hidden"
+            type="button"
+            title="Назад"
+        >
+            ←
+        </button>
+
+        <!-- МЕНЮ -->
+        <div
+            id="menuContainer"
+            class="menu-container"
+        >
+
+            <button
+                id="menuButton"
+                class="topbar-button menu-button"
+                type="button"
+                title="Меню"
+            >
+                ☰
+            </button>
+
+            <!-- ВЫПАДАЮЩЕЕ МЕНЮ -->
+            <div
+                id="mainMenu"
+                class="main-menu hidden"
+            >
+
+                <button
+                    id="createAlbumMenuButton"
+                    class="menu-item"
+                    type="button"
+                >
+                    <span class="menu-item-icon">＋</span>
+
+                    <span>
+                        Создать альбом
+                    </span>
+                </button>
+
+                <button
+                    id="commentsMenuButton"
+                    class="menu-item"
+                    type="button"
+                >
+                    <span class="menu-item-icon">💬</span>
+
+                    <span>
+                        Комментарии
+                    </span>
+                </button>
+
+                <button
+                    id="globalPhotoSearchMenuButton"
+                    class="menu-item"
+                    type="button"
+                >
+                    <span class="menu-item-icon">🔎</span>
+                    <span>Поиск фотографий</span>
+                </button>
+
+                <button
+                    id="uploadPhotoMenuButton"
+                    class="menu-item hidden"
+                    type="button"
+                >
+                    <span class="menu-item-icon">⬆</span>
+
+                    <span>
+                        Загрузить фото
+                    </span>
+                </button>
+
+                <button
+                    id="reorderAlbumPhotosMenuButton"
+                    class="menu-item hidden"
+                    type="button"
+                >
+                    <span class="menu-item-icon">↕</span>
+                    <span>Изменить порядок</span>
+                </button>
+
+                <button
+                    id="copyAlbumLinkMenuButton"
+                    class="menu-item hidden"
+                    type="button"
+                >
+                    <span class="menu-item-icon">🔗</span>
+                    <span>Скопировать ссылку</span>
+                </button>
+
+                <button
+                    id="editAlbumMenuButton"
+                    class="menu-item hidden"
+                    type="button"
+                >
+                    <span class="menu-item-icon">✎</span>
+                    <span>Редактировать альбом</span>
+                </button>
+
+                <button
+                    id="downloadPhotoMenuButton"
+                    class="menu-item hidden"
+                    type="button"
+                >
+                    <span class="menu-item-icon">↓</span>
+                    <span>Скачать фото</span>
+                </button>
+
+                <button
+                    id="copyPhotoLinkMenuButton"
+                    class="menu-item hidden"
+                    type="button"
+                >
+                    <span class="menu-item-icon">🔗</span>
+                    <span>Скопировать ссылку</span>
+                </button>
+
+                <button
+                    id="editPhotoDescriptionMenuButton"
+                    class="menu-item hidden"
+                    type="button"
+                >
+                    <span class="menu-item-icon">✎</span>
+                    <span>Изменить описание</span>
+                </button>
+
+                <button
+                    id="copyPhotoMenuButton"
+                    class="menu-item hidden"
+                    type="button"
+                >
+                    <span class="menu-item-icon">⧉</span>
+                    <span>Копировать в альбом</span>
+                </button>
+
+                <button
+                    id="movePhotoMenuButton"
+                    class="menu-item hidden"
+                    type="button"
+                >
+                    <span class="menu-item-icon">↪</span>
+                    <span>Переместить в альбом</span>
+                </button>
+
+                <button
+                    id="reorderPhotoMenuButton"
+                    class="menu-item hidden"
+                    type="button"
+                >
+                    <span class="menu-item-icon">↕</span>
+                    <span>Переместить внутри альбома</span>
+                </button>
+
+                <button
+                    id="makeCoverPhotoMenuButton"
+                    class="menu-item hidden"
+                    type="button"
+                >
+                    <span class="menu-item-icon">▣</span>
+                    <span>Сделать обложкой альбома</span>
+                </button>
+
+                <button
+                    id="deletePhotoMenuButton"
+                    class="menu-item menu-item-danger hidden"
+                    type="button"
+                >
+                    <span class="menu-item-icon">🗑</span>
+                    <span>Удалить фото</span>
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="pageTitle"
+            class="topbar-title"
+        >
+            Фотоальбомы
+        </div>
+
+        <div
+            id="albumSortControls"
+            class="topbar-sort-controls hidden"
+            aria-label="Сортировка фотографий"
+        >
+            <button
+                id="sortNewestButton"
+                class="topbar-sort-button"
+                type="button"
+                aria-pressed="false"
+            >
+                Новые
+            </button>
+
+            <button
+                id="sortOldestButton"
+                class="topbar-sort-button"
+                type="button"
+                aria-pressed="false"
+            >
+                Старые
+            </button>
+
+            <button
+                id="sortCurrentButton"
+                class="topbar-sort-button"
+                type="button"
+                aria-pressed="true"
+                title="Текущий порядок фотографий в альбоме"
+            >
+                Текущая
+            </button>
+        </div>
+
+
+        <div
+            id="user"
+            class="topbar-user"
+        >
+            Загрузка...
+        </div>
+
+
+        <button
+            id="refreshAlbums"
+            class="topbar-button"
+            type="button"
+            title="Обновить"
+        >
+            ↻
+        </button>
+
+    </header>
+
+
+    <!-- ==============================
+         ЭКРАН АЛЬБОМОВ
+         ============================== -->
+
+    <main
+        id="albumsScreen"
+        class="screen"
+    >
+
+        <div class="search-container">
+
+            <div class="search-box">
+
+                <span class="search-icon">
+                    🔎
+                </span>
+
+                <input
+                    id="albumSearch"
+                    type="search"
+                    placeholder="Найти альбом..."
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+
+                <button
+                    id="clearSearch"
+                    class="clear-search hidden"
+                    type="button"
+                >
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="albums"
+            class="albums-grid"
+        >
+
+            <div class="status-message">
+                Загружаем альбомы...
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- ==============================
+         ЭКРАН ФОТОГРАФИЙ
+         ============================== -->
+
+    <main
+        id="photosScreen"
+        class="screen hidden"
+    >
+
+        <section
+            id="albumHeader"
+            class="album-header"
+        >
+
+            <div class="album-header-main">
+
+                <h1 id="albumTitle">
+                    Альбом
+                </h1>
+
+                <div
+                    id="photoCount"
+                    class="photo-count"
+                ></div>
+
+            </div>
+
+            <div
+                id="albumDescription"
+                class="album-description"
+            ></div>
+
+            <div class="photo-search-container">
+                <div class="search-box photo-search-box">
+                    <span class="search-icon">🔎</span>
+
+                    <input
+                        id="photoSearch"
+                        type="search"
+                        placeholder="Поиск по описанию фото..."
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+
+                    <button
+                        id="clearPhotoSearch"
+                        class="clear-search hidden"
+                        type="button"
+                        aria-label="Очистить поиск"
+                    >
+                        ×
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+
+        <div
+            id="photos"
+            class="photos-grid"
+        >
+
+            <div class="status-message">
+                Выберите альбом
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- ==============================
+         ЭКРАН КОММЕНТАРИЕВ
+         ============================== -->
+
+    <main
+        id="commentsScreen"
+        class="screen hidden"
+    >
+
+        <div class="comments-toolbar">
+
+            <div class="comments-title">
+                Комментарии к фотографиям
+            </div>
+
+            <button
+                id="refreshComments"
+                class="secondary-button"
+                type="button"
+            >
+                ↻ Обновить
+            </button>
+
+        </div>
+
+
+        <div
+            id="comments"
+            class="comments-list"
+        >
+
+            <div class="status-message">
+                Загрузка комментариев...
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- ==============================
+         ОБЩЕЕ ФОТО
+         ============================== -->
+
+    <main
+        id="photoViewerScreen"
+        class="screen hidden"
+    >
+
+        <section class="photo-viewer-media">
+            <button
+                id="photoViewerPrev"
+                class="photo-viewer-nav photo-viewer-nav-prev hidden"
+                type="button"
+                aria-label="Предыдущая фотография"
+                title="Предыдущая фотография"
+            >
+                ‹
+            </button>
+
+            <img
+                id="photoViewerImage"
+                class="photo-viewer-image"
+                alt="Фотография"
+            >
+
+            <button
+                id="photoViewerNext"
+                class="photo-viewer-nav photo-viewer-nav-next hidden"
+                type="button"
+                aria-label="Следующая фотография"
+                title="Следующая фотография"
+            >
+                ›
+            </button>
+        </section>
+
+        <div
+            id="photoViewerDescription"
+            class="photo-viewer-description hidden"
+        ></div>
+
+        <div class="photo-viewer-stats">
+            <div class="photo-viewer-stat">
+                <span class="photo-viewer-stat-icon">♡</span>
+                <span id="photoViewerLikes">0</span>
+            </div>
+
+            <div class="photo-viewer-stat">
+                <span class="photo-viewer-stat-icon">↗</span>
+                <span id="photoViewerReposts">0</span>
+            </div>
+        </div>
+
+        <section class="photo-viewer-comments-section">
+            <div class="photo-viewer-section-title">
+                Все комментарии
+            </div>
+
+            <div
+                id="photoViewerComments"
+                class="photo-viewer-comments"
+            >
+                <div class="status-message">
+                    Загрузка комментариев...
+                </div>
+            </div>
+        </section>
+
+
+
+    </main>
+
+</div>
+
+
+<!-- ==================================
+     СОЗДАНИЕ АЛЬБОМА
+     ================================== -->
+
+<div
+    id="createAlbumModal"
+    class="modal-overlay hidden"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div class="modal-title">
+                Создать альбом
+            </div>
+
+            <button
+                id="closeCreateAlbum"
+                class="modal-close"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="createAlbumForm">
+
+            <label class="form-label">
+                Название
+            </label>
+
+            <input
+                id="newAlbumTitle"
+                class="form-input"
+                type="text"
+                maxlength="100"
+                placeholder="Название альбома"
+                required
+            >
+
+
+            <label class="form-label">
+                Описание
+            </label>
+
+            <textarea
+                id="newAlbumDescription"
+                class="form-textarea"
+                maxlength="1000"
+                placeholder="Описание альбома"
+            ></textarea>
+
+
+            <div
+                id="createAlbumError"
+                class="form-error hidden"
+            ></div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    id="cancelCreateAlbum"
+                    class="secondary-button"
+                    type="button"
+                >
+                    Отмена
+                </button>
+
+                <button
+                    id="submitCreateAlbum"
+                    class="primary-button"
+                    type="submit"
+                >
+                    Создать
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ==================================
+     РЕДАКТИРОВАНИЕ АЛЬБОМА
+     ================================== -->
+
+<div
+    id="editAlbumModal"
+    class="modal-overlay hidden"
+>
+
+    <div class="modal edit-album-modal-window">
+
+        <div class="modal-header edit-album-modal-header">
+
+            <div class="modal-title edit-album-modal-title">
+                Редактировать<br>альбом
+            </div>
+
+            <button
+                id="saveEditAlbum"
+                class="primary-button modal-header-save"
+                type="submit"
+                form="editAlbumForm"
+            >
+                Сохранить
+            </button>
+
+            <button
+                id="closeEditAlbum"
+                class="modal-close"
+                type="button"
+                aria-label="Закрыть"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <form id="editAlbumForm" class="edit-album-form">
+
+            <label class="form-label" for="editAlbumTitle">
+                Название
+            </label>
+
+            <input
+                id="editAlbumTitle"
+                class="form-input"
+                type="text"
+                maxlength="100"
+                required
+            >
+
+            <label class="form-label" for="editAlbumDescription">
+                Описание
+            </label>
+
+            <textarea
+                id="editAlbumDescription"
+                class="form-textarea"
+                maxlength="1000"
+            ></textarea>
+
+            <label class="form-checkbox-row">
+                <input
+                    id="editAlbumAllowComments"
+                    type="checkbox"
+                >
+                <span>Разрешить комментарии</span>
+            </label>
+
+            <label class="form-checkbox-row">
+                <input
+                    id="editAlbumAllowUploads"
+                    type="checkbox"
+                >
+                <span>Разрешить загрузку фотографий всем</span>
+            </label>
+
+            <div class="form-checkbox-hint">
+                Если выключено — загружать фотографии смогут только администраторы.
+            </div>
+
+            <div
+                id="editAlbumError"
+                class="form-error hidden"
+            ></div>
+
+            <button
+                id="cancelEditAlbum"
+                class="hidden"
+                type="button"
+            >
+                Отмена
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+
+<!-- ==================================
+     ЗАГРУЗКА ФОТОГРАФИЙ
+     ================================== -->
+
+<div
+    id="uploadPhotoModal"
+    class="modal-overlay hidden"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div class="modal-title">
+                Загрузить фото
+            </div>
+
+            <button
+                id="closeUploadPhoto"
+                class="modal-close"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div
+            id="uploadPhotoAlbumName"
+            class="upload-photo-album-name"
+        ></div>
+
+        <label class="form-label" for="uploadPhotoFiles">
+            Фотографии
+        </label>
+
+        <input
+            id="uploadPhotoFiles"
+            class="form-input upload-photo-file-input"
+            type="file"
+            accept="image/*"
+            multiple
+        >
+
+        <div
+            id="uploadPhotoSelection"
+            class="upload-photo-selection"
+        >
+            Файлы не выбраны
+        </div>
+
+        <label class="form-label" for="uploadPhotoCaption">
+            Описание
+        </label>
+
+        <textarea
+            id="uploadPhotoCaption"
+            class="form-textarea"
+            maxlength="1000"
+            placeholder="Необязательно. Будет применено к загружаемым фотографиям."
+        ></textarea>
+
+        <div
+            id="uploadPhotoProgress"
+            class="upload-photo-progress hidden"
+        ></div>
+
+        <div
+            id="uploadPhotoError"
+            class="form-error hidden"
+        ></div>
+
+        <div class="modal-actions">
+
+            <button
+                id="cancelUploadPhoto"
+                class="secondary-button"
+                type="button"
+            >
+                Отмена
+            </button>
+
+            <button
+                id="submitUploadPhoto"
+                class="primary-button"
+                type="button"
+                disabled
+            >
+                Загрузить
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="module" src="./js/app.js?v=20260927-captiontop43"></script>
+    
+</body>
+</html>
