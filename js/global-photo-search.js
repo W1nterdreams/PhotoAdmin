@@ -1,12 +1,12 @@
-import { state } from "./state.js?v=20261001-appidfix45";
-import { vkApi } from "./vk-api.js?v=20261001-appidfix45";
-import { getOwnerId } from "./group-context.js?v=20261001-appidfix45";
-import { getPhotoPreviewUrl, getErrorMessage } from "./helpers.js?v=20261001-appidfix45";
-import { ensureAlbumIndex } from "./albums.js?v=20261001-appidfix45";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261001-appidfix45";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-appidfix45";
-import { getPhotoIndexSnapshot } from "./photo-index-db.js?v=20261001-appidfix45";
-import { synchronizePhotoIndex } from "./photo-index-sync.js?v=20261001-appidfix45";
+import { state } from "./state.js?v=20261001-scrollfix46";
+import { vkApi } from "./vk-api.js?v=20261001-scrollfix46";
+import { getOwnerId } from "./group-context.js?v=20261001-scrollfix46";
+import { getPhotoPreviewUrl, getErrorMessage } from "./helpers.js?v=20261001-scrollfix46";
+import { ensureAlbumIndex } from "./albums.js?v=20261001-scrollfix46";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261001-scrollfix46";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-scrollfix46";
+import { getPhotoIndexSnapshot } from "./photo-index-db.js?v=20261001-scrollfix46";
+import { synchronizePhotoIndex } from "./photo-index-sync.js?v=20261001-scrollfix46";
 
 const SEARCH_RESULTS_PAGE_SIZE = 100;
 const FALLBACK_PAGE_SIZE = 200;
@@ -185,10 +185,13 @@ function installStyles() {
             min-height: 0;
             overflow: hidden;
             padding: 0;
-            border: 1px solid rgba(174,0,23,.10);
-            border-radius: 12px;
-            background: #ead8da;
-            box-shadow: 0 3px 10px rgba(112,0,14,.08);
+            border: 0;
+            border-radius: 8px;
+            background: #eeeeee;
+            box-shadow: none;
+            contain: layout paint style;
+            content-visibility: auto;
+            contain-intrinsic-size: 180px 180px;
             cursor: pointer;
         }
 
@@ -208,7 +211,7 @@ function installStyles() {
             padding: 4px 6px;
             border-radius: 6px;
             overflow: hidden;
-            background: rgba(88,0,11,.74);
+            background: rgba(0,0,0,.64);
             color: #fff;
             font-size: 10px;
             line-height: 1.25;
@@ -224,7 +227,7 @@ function installStyles() {
             left: 5px;
             padding: 2px 5px;
             border-radius: 5px;
-            background: rgba(88,0,11,.70);
+            background: rgba(0,0,0,.62);
             color: #fff;
             font-size: 10px;
             pointer-events: none;

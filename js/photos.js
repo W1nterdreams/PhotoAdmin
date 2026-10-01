@@ -1,23 +1,23 @@
-import { state } from "./state.js?v=20261001-appidfix45";
-import { dom } from "./dom.js?v=20261001-appidfix45";
-import { vkApi } from "./vk-api.js?v=20261001-appidfix45";
-import { getPhotoPreviewUrl, escapeHtml, getErrorMessage } from "./helpers.js?v=20261001-appidfix45";
-import { showPhotosScreen, pushAlbumHistory } from "./navigation.js?v=20261001-appidfix45";
-import { CACHE_TTL } from "./config.js?v=20261001-appidfix45";
-import { cacheGet, cacheGetStale, cacheSet, albumPhotosKey } from "./cache.js?v=20261001-appidfix45";
-import { getOwnerId } from "./group-context.js?v=20261001-appidfix45";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261001-appidfix45";
-import { bindPhotoContextLongPress } from "./photo-context-menu.js?v=20261001-appidfix45";
-import { syncPhotoIndexAlbumIfDirty } from "./photo-index-sync.js?v=20261001-appidfix45";
-import { getDirtyPhotoIndexAlbums } from "./photo-index-db.js?v=20261001-appidfix45";
+import { state } from "./state.js?v=20261001-scrollfix46";
+import { dom } from "./dom.js?v=20261001-scrollfix46";
+import { vkApi } from "./vk-api.js?v=20261001-scrollfix46";
+import { getPhotoPreviewUrl, escapeHtml, getErrorMessage } from "./helpers.js?v=20261001-scrollfix46";
+import { showPhotosScreen, pushAlbumHistory } from "./navigation.js?v=20261001-scrollfix46";
+import { CACHE_TTL } from "./config.js?v=20261001-scrollfix46";
+import { cacheGet, cacheGetStale, cacheSet, albumPhotosKey } from "./cache.js?v=20261001-scrollfix46";
+import { getOwnerId } from "./group-context.js?v=20261001-scrollfix46";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261001-scrollfix46";
+import { bindPhotoContextLongPress } from "./photo-context-menu.js?v=20261001-scrollfix46";
+import { syncPhotoIndexAlbumIfDirty } from "./photo-index-sync.js?v=20261001-scrollfix46";
+import { getDirtyPhotoIndexAlbums } from "./photo-index-db.js?v=20261001-scrollfix46";
 import {
     isPhotoMultiSelectActive,
     isPhotoSelected,
     togglePhotoSelection,
     cancelPhotoMultiSelect
-} from "./photo-multiselect.js?v=20261001-appidfix45";
+} from "./photo-multiselect.js?v=20261001-scrollfix46";
 
-const PAGE_SIZE = 1000;
+const PAGE_SIZE = 240;
 const SORT_FETCH_SIZE = 1000;
 const UI_PHOTO_CACHE_LIMIT = 60;
 
@@ -654,7 +654,7 @@ function initPhotoPagination() {
     window.addEventListener("resize", handlePhotoScroll, { passive: true });
 }
 
-function createPhotoCard(photo) {
+function createPhotoCard(photo, { eager = false } = {}) {
     const card = document.createElement("div");
     card.className = "photo-card";
     card.dataset.photoId = String(photo.id);
@@ -664,8 +664,10 @@ function createPhotoCard(photo) {
         const image = document.createElement("img");
         image.src = url;
         image.alt = photo.text || "";
-        image.loading = "lazy";
+        image.loading = eager ? "eager" : "lazy";
         image.decoding = "async";
+        image.draggable = false;
+        if (eager) image.fetchPriority = "high";
         card.appendChild(image);
     }
 
@@ -762,8 +764,12 @@ function setPhotoLoadingMoreVisible(visible) {
 function appendPhotoCards(photos) {
     if (!Array.isArray(photos) || !photos.length) return;
 
+    const alreadyRendered = dom.photos.querySelectorAll(".photo-card").length;
+    const eagerUntil = Math.max(0, 24 - alreadyRendered);
     const fragment = document.createDocumentFragment();
-    photos.forEach(photo => fragment.appendChild(createPhotoCard(photo)));
+    photos.forEach((photo, index) => {
+        fragment.appendChild(createPhotoCard(photo, { eager: index < eagerUntil }));
+    });
 
     // Индикатор догрузки должен оставаться последним элементом сетки.
     const loading = getPhotoLoadingMoreNode();

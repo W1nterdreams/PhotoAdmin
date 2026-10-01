@@ -1,12 +1,12 @@
-import { state } from "./state.js?v=20261001-appidfix45";
-import { dom } from "./dom.js?v=20261001-appidfix45";
-import { vkApi } from "./vk-api.js?v=20261001-appidfix45";
-import { getErrorMessage } from "./helpers.js?v=20261001-appidfix45";
-import { loadAlbums } from "./albums.js?v=20261001-appidfix45";
-import { closeMenu } from "./main-menu.js?v=20261001-appidfix45";
-import { getGroupId, getOwnerId, isGroupMode } from "./group-context.js?v=20261001-appidfix45";
-import { invalidateAlbumCaches } from "./cache.js?v=20261001-appidfix45";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-appidfix45";
+import { state } from "./state.js?v=20261001-scrollfix46";
+import { dom } from "./dom.js?v=20261001-scrollfix46";
+import { vkApi } from "./vk-api.js?v=20261001-scrollfix46";
+import { getErrorMessage } from "./helpers.js?v=20261001-scrollfix46";
+import { loadAlbums } from "./albums.js?v=20261001-scrollfix46";
+import { closeMenu } from "./main-menu.js?v=20261001-scrollfix46";
+import { getGroupId, getOwnerId, isGroupMode } from "./group-context.js?v=20261001-scrollfix46";
+import { invalidateAlbumCaches } from "./cache.js?v=20261001-scrollfix46";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-scrollfix46";
 
 async function openModal() {
     await closeMenu();

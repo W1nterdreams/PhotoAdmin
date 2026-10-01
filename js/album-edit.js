@@ -1,11 +1,11 @@
-import { state } from "./state.js?v=20261001-appidfix45";
-import { dom } from "./dom.js?v=20261001-appidfix45";
-import { vkApi } from "./vk-api.js?v=20261001-appidfix45";
-import { getErrorMessage } from "./helpers.js?v=20261001-appidfix45";
-import { getOwnerId, isGroupMode } from "./group-context.js?v=20261001-appidfix45";
-import { cacheSet, cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261001-appidfix45";
-import { renderAlbums } from "./albums.js?v=20261001-appidfix45";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-appidfix45";
+import { state } from "./state.js?v=20261001-scrollfix46";
+import { dom } from "./dom.js?v=20261001-scrollfix46";
+import { vkApi } from "./vk-api.js?v=20261001-scrollfix46";
+import { getErrorMessage } from "./helpers.js?v=20261001-scrollfix46";
+import { getOwnerId, isGroupMode } from "./group-context.js?v=20261001-scrollfix46";
+import { cacheSet, cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261001-scrollfix46";
+import { renderAlbums } from "./albums.js?v=20261001-scrollfix46";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-scrollfix46";
 
 let activeAlbum = null;
 let opening = false;
@@ -39,6 +39,15 @@ function fillForm(album) {
     dom.editAlbumAllowComments.checked = !asFlag(album?.comments_disabled);
     dom.editAlbumAllowUploads.checked = !asFlag(album?.upload_by_admins_only);
     syncGroupOnlyFields();
+}
+
+function readFormSnapshot() {
+    return JSON.stringify({
+        title: dom.editAlbumTitle.value,
+        description: dom.editAlbumDescription.value,
+        allowComments: Boolean(dom.editAlbumAllowComments.checked),
+        allowUploads: Boolean(dom.editAlbumAllowUploads.checked)
+    });
 }
 
 async function fetchFreshAlbum(album) {
@@ -81,14 +90,29 @@ async function openModal(album) {
     openSwipeOverlay("edit-album", hideModalDirect);
     fillForm(album);
 
+    // Фокус ставим сразу, в том же пользовательском действии. Раньше поле
+    // получало focus только после photos.getAlbums, поэтому клавиатура могла
+    // появляться с заметной задержкой.
+    try {
+        dom.editAlbumTitle.focus({ preventScroll: true });
+    } catch {
+        dom.editAlbumTitle.focus();
+    }
+
+    const initialForm = readFormSnapshot();
+
     try {
         const fresh = await fetchFreshAlbum(album);
         activeAlbum = fresh;
-        fillForm(fresh);
+
+        // Не перезаписываем уже введённый пользователем текст, если ответ VK
+        // пришёл после того, как редактирование началось.
+        if (readFormSnapshot() === initialForm) {
+            fillForm(fresh);
+        }
     } finally {
         opening = false;
         dom.saveEditAlbum.disabled = false;
-        requestAnimationFrame(() => dom.editAlbumTitle.focus());
     }
 }
 
