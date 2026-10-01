@@ -1,18 +1,18 @@
-import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261001-scrollfix46";
-import { state } from "./state.js?v=20261001-scrollfix46";
-import { dom } from "./dom.js?v=20261001-scrollfix46";
-import { vkApi } from "./vk-api.js?v=20261001-scrollfix46";
-import { getBestPhotoUrl, getPhotoPreviewUrl, escapeHtml } from "./helpers.js?v=20261001-scrollfix46";
-import { getOwnerId } from "./group-context.js?v=20261001-scrollfix46";
+import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261001-comments-light47";
+import { state } from "./state.js?v=20261001-comments-light47";
+import { dom } from "./dom.js?v=20261001-comments-light47";
+import { vkApi } from "./vk-api.js?v=20261001-comments-light47";
+import { getBestPhotoUrl, getPhotoPreviewUrl, escapeHtml } from "./helpers.js?v=20261001-comments-light47";
+import { getOwnerId } from "./group-context.js?v=20261001-comments-light47";
 import {
     showPhotoViewerScreen,
     pushPhotoHistory,
     replacePhotoHistory
-} from "./navigation.js?v=20261001-scrollfix46";
-import { photoCommentOwnerId } from "./photo-comment-api.js?v=20261001-scrollfix46";
-import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261001-scrollfix46";
-import { invalidatePhotoActivityCaches } from "./cache.js?v=20261001-scrollfix46";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-scrollfix46";
+} from "./navigation.js?v=20261001-comments-light47";
+import { photoCommentOwnerId } from "./photo-comment-api.js?v=20261001-comments-light47";
+import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261001-comments-light47";
+import { invalidatePhotoActivityCaches } from "./cache.js?v=20261001-comments-light47";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-comments-light47";
 
 const COMMENT_PAGE_SIZE = 100;
 const LONG_PRESS_MS = 900;
@@ -506,6 +506,54 @@ function renderPhotoHeader(photo) {
     dom.photoViewerReposts.textContent = String(Number(photo?.reposts?.count || 0));
 }
 
+
+function orderViewerCommentsByThread(items) {
+    const list = Array.isArray(items) ? items : [];
+    const byId = new Map();
+    for (const comment of list) {
+        const id = commentId(comment);
+        if (id) byId.set(String(id), comment);
+    }
+
+    const children = new Map();
+    const roots = [];
+    for (const comment of list) {
+        const parentId = Number(comment?._parent_comment_id || 0);
+        const parent = parentId > 0 ? byId.get(String(parentId)) : null;
+        if (parent) {
+            const key = String(parentId);
+            if (!children.has(key)) children.set(key, []);
+            children.get(key).push(comment);
+        } else {
+            roots.push(comment);
+        }
+    }
+
+    roots.sort((a, b) => Number(a?.date || 0) - Number(b?.date || 0));
+    for (const group of children.values()) {
+        group.sort((a, b) => Number(a?.date || 0) - Number(b?.date || 0));
+    }
+
+    const ordered = [];
+    const visited = new Set();
+    function appendThread(comment) {
+        const id = commentId(comment);
+        const key = id ? String(id) : null;
+        if (key && visited.has(key)) return;
+        if (key) visited.add(key);
+        ordered.push(comment);
+        if (!key) return;
+        for (const child of children.get(key) || []) appendThread(child);
+    }
+
+    for (const root of roots) appendThread(root);
+    for (const comment of list) {
+        const id = commentId(comment);
+        if (!id || !visited.has(String(id))) appendThread(comment);
+    }
+    return ordered;
+}
+
 function unansweredPhotoCommentIds(items) {
     const answered = new Set();
 
@@ -569,15 +617,23 @@ function renderPhotoComments() {
         return;
     }
 
-    const unansweredIds = unansweredPhotoCommentIds(comments);
+    const orderedComments = orderViewerCommentsByThread(comments);
+    const unansweredIds = unansweredPhotoCommentIds(orderedComments);
 
-    for (const comment of comments) {
+    for (const comment of orderedComments) {
         const card = document.createElement("div");
         card.className = "photo-viewer-comment";
         if (comment?._is_reply) {
             card.classList.add("photo-viewer-comment-reply");
         } else if (unansweredIds.has(String(commentId(comment)))) {
             card.classList.add("photo-viewer-comment-unanswered");
+        }
+
+        if (card.classList.contains("photo-viewer-comment-unanswered")) {
+            const unanswered = document.createElement("span");
+            unanswered.className = "comment-unanswered-badge photo-viewer-unanswered-badge";
+            unanswered.innerHTML = '<span class="comment-unanswered-badge-icon">!</span><span>Без ответа</span>';
+            card.appendChild(unanswered);
         }
 
         const top = document.createElement("div");
@@ -772,7 +828,7 @@ function openViewerPhotoContext() {
         if (!album?.id) return;
 
         try {
-            const { openAlbum } = await import("./photos.js?v=20261001-scrollfix46");
+            const { openAlbum } = await import("./photos.js?v=20261001-comments-light47");
             await openAlbum(album);
         } catch (error) {
             console.warn("Не удалось перейти в альбом фотографии:", error);

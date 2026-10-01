@@ -1,21 +1,21 @@
-import { dom } from "./dom.js?v=20261001-scrollfix46";
-import { state } from "./state.js?v=20261001-scrollfix46";
-import { vkApi } from "./vk-api.js?v=20261001-scrollfix46";
+import { dom } from "./dom.js?v=20261001-comments-light47";
+import { state } from "./state.js?v=20261001-comments-light47";
+import { vkApi } from "./vk-api.js?v=20261001-comments-light47";
 import {
     escapeHtml,
     getPhotoPreviewUrl
-} from "./helpers.js?v=20261001-scrollfix46";
+} from "./helpers.js?v=20261001-comments-light47";
 import {
     showCommentsScreen,
     pushCommentsHistory
-} from "./navigation.js?v=20261001-scrollfix46";
-import { getOwnerId } from "./group-context.js?v=20261001-scrollfix46";
-import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261001-scrollfix46";
-import { CACHE_TTL } from "./config.js?v=20261001-scrollfix46";
-import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20261001-scrollfix46";
-import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261001-scrollfix46";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261001-scrollfix46";
-import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261001-scrollfix46";
+} from "./navigation.js?v=20261001-comments-light47";
+import { getOwnerId } from "./group-context.js?v=20261001-comments-light47";
+import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261001-comments-light47";
+import { CACHE_TTL } from "./config.js?v=20261001-comments-light47";
+import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20261001-comments-light47";
+import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261001-comments-light47";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261001-comments-light47";
+import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261001-comments-light47";
 
 const ALBUM_COMMENTS_DAYS = 3;
 const PAGE_SIZE = 100;
@@ -94,6 +94,88 @@ function mentionedAuthorId(text) {
     return match[1].toLowerCase() === "id" ? id : -Math.abs(id);
 }
 
+
+function orderDecoratedCommentThreads(items) {
+    const list = Array.isArray(items) ? items : [];
+    const byId = new Map();
+    const nodeKey = (comment, id = commentId(comment)) =>
+        id ? `${String(commentPhotoId(comment) || 0)}:${String(id)}` : null;
+
+    for (const comment of list) {
+        const key = nodeKey(comment);
+        if (key) byId.set(key, comment);
+    }
+
+    const children = new Map();
+    const roots = [];
+
+    for (const comment of list) {
+        const parentId = Number(comment?._parent_comment_id || 0);
+        const parentKey = parentId > 0 ? nodeKey(comment, parentId) : null;
+        const parent = parentKey ? byId.get(parentKey) : null;
+
+        if (parent) {
+            if (!children.has(parentKey)) children.set(parentKey, []);
+            children.get(parentKey).push(comment);
+        } else {
+            // Если родитель не попал в текущую выборку, показываем запись как
+            // самостоятельный комментарий. Иначе на экране появился бы
+            // "висящий" ответ без исходного сообщения.
+            if (comment?._is_reply) {
+                comment._is_reply = false;
+                comment._parent_comment_id = null;
+            }
+            roots.push(comment);
+        }
+    }
+
+    for (const group of children.values()) {
+        group.sort((a, b) => Number(a?.date || 0) - Number(b?.date || 0));
+    }
+
+    const activityMemo = new Map();
+    function latestActivity(comment) {
+        const key = nodeKey(comment);
+        if (key && activityMemo.has(key)) return activityMemo.get(key);
+
+        let latest = Number(comment?.date || 0);
+        if (key) {
+            for (const child of children.get(key) || []) {
+                latest = Math.max(latest, latestActivity(child));
+            }
+            activityMemo.set(key, latest);
+        }
+        return latest;
+    }
+
+    // Сверху остаются самые свежие ветки, но внутри каждой ветки порядок
+    // естественный: сначала вопрос/комментарий покупателя, затем ответы.
+    roots.sort((a, b) => latestActivity(b) - latestActivity(a));
+
+    const ordered = [];
+    const visited = new Set();
+
+    function appendThread(comment) {
+        const key = nodeKey(comment);
+        if (key && visited.has(key)) return;
+        if (key) visited.add(key);
+        ordered.push(comment);
+
+        if (!key) return;
+        for (const child of children.get(key) || []) appendThread(child);
+    }
+
+    for (const root of roots) appendThread(root);
+
+    // Защита от необычных/циклических данных API.
+    for (const comment of list) {
+        const key = nodeKey(comment);
+        if (!key || !visited.has(key)) appendThread(comment);
+    }
+
+    return ordered;
+}
+
 function decorateCommentThreads(items) {
     const result = (Array.isArray(items) ? items : []).map(comment => ({ ...comment }));
     const byPhoto = new Map();
@@ -160,7 +242,7 @@ function decorateCommentThreads(items) {
         }
     }
 
-    return result.sort((a, b) => Number(b?.date || 0) - Number(a?.date || 0));
+    return orderDecoratedCommentThreads(result);
 }
 
 function normalizeGroupsResponse(response) {
@@ -1024,6 +1106,17 @@ function createCommentCard(comment, data) {
 
     header.appendChild(authorBtn);
 
+    if (comment?._unanswered) {
+        const unanswered = document.createElement("span");
+        unanswered.className = "comment-unanswered-badge";
+        unanswered.innerHTML = '<span class="comment-unanswered-badge-icon">!</span><span>Без ответа</span>';
+        header.appendChild(unanswered);
+    }
+
+    const albumName = document.createElement("div");
+    albumName.className = "comment-album";
+    albumName.textContent = activeAlbum?.title || "Альбом";
+
     const text = document.createElement("div");
     text.className = "comment-text";
     appendRichCommentText(text, comment.text || "");
@@ -1060,7 +1153,7 @@ function createCommentCard(comment, data) {
     });
 
     meta.append(date, reply);
-    body.append(header, text, meta);
+    body.append(header, albumName, text, meta);
 
     const wasLongPress = installLongPress(card, () => {
         openCommentMenu({ card, body, comment });

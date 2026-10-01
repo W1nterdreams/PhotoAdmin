@@ -1,21 +1,21 @@
-import { state } from "./state.js?v=20261001-scrollfix46";
-import { dom } from "./dom.js?v=20261001-scrollfix46";
-import { vkApi } from "./vk-api.js?v=20261001-scrollfix46";
-import { getPhotoPreviewUrl, escapeHtml, getErrorMessage } from "./helpers.js?v=20261001-scrollfix46";
-import { showPhotosScreen, pushAlbumHistory } from "./navigation.js?v=20261001-scrollfix46";
-import { CACHE_TTL } from "./config.js?v=20261001-scrollfix46";
-import { cacheGet, cacheGetStale, cacheSet, albumPhotosKey } from "./cache.js?v=20261001-scrollfix46";
-import { getOwnerId } from "./group-context.js?v=20261001-scrollfix46";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261001-scrollfix46";
-import { bindPhotoContextLongPress } from "./photo-context-menu.js?v=20261001-scrollfix46";
-import { syncPhotoIndexAlbumIfDirty } from "./photo-index-sync.js?v=20261001-scrollfix46";
-import { getDirtyPhotoIndexAlbums } from "./photo-index-db.js?v=20261001-scrollfix46";
+import { state } from "./state.js?v=20261001-comments-light47";
+import { dom } from "./dom.js?v=20261001-comments-light47";
+import { vkApi } from "./vk-api.js?v=20261001-comments-light47";
+import { getPhotoPreviewUrl, escapeHtml, getErrorMessage } from "./helpers.js?v=20261001-comments-light47";
+import { showPhotosScreen, pushAlbumHistory } from "./navigation.js?v=20261001-comments-light47";
+import { CACHE_TTL } from "./config.js?v=20261001-comments-light47";
+import { cacheGet, cacheGetStale, cacheSet, albumPhotosKey } from "./cache.js?v=20261001-comments-light47";
+import { getOwnerId } from "./group-context.js?v=20261001-comments-light47";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261001-comments-light47";
+import { bindPhotoContextLongPress } from "./photo-context-menu.js?v=20261001-comments-light47";
+import { syncPhotoIndexAlbumIfDirty } from "./photo-index-sync.js?v=20261001-comments-light47";
+import { getDirtyPhotoIndexAlbums } from "./photo-index-db.js?v=20261001-comments-light47";
 import {
     isPhotoMultiSelectActive,
     isPhotoSelected,
     togglePhotoSelection,
     cancelPhotoMultiSelect
-} from "./photo-multiselect.js?v=20261001-scrollfix46";
+} from "./photo-multiselect.js?v=20261001-comments-light47";
 
 const PAGE_SIZE = 240;
 const SORT_FETCH_SIZE = 1000;

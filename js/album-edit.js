@@ -1,11 +1,11 @@
-import { state } from "./state.js?v=20261001-scrollfix46";
-import { dom } from "./dom.js?v=20261001-scrollfix46";
-import { vkApi } from "./vk-api.js?v=20261001-scrollfix46";
-import { getErrorMessage } from "./helpers.js?v=20261001-scrollfix46";
-import { getOwnerId, isGroupMode } from "./group-context.js?v=20261001-scrollfix46";
-import { cacheSet, cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261001-scrollfix46";
-import { renderAlbums } from "./albums.js?v=20261001-scrollfix46";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-scrollfix46";
+import { state } from "./state.js?v=20261001-comments-light47";
+import { dom } from "./dom.js?v=20261001-comments-light47";
+import { vkApi } from "./vk-api.js?v=20261001-comments-light47";
+import { getErrorMessage } from "./helpers.js?v=20261001-comments-light47";
+import { getOwnerId, isGroupMode } from "./group-context.js?v=20261001-comments-light47";
+import { cacheSet, cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261001-comments-light47";
+import { renderAlbums } from "./albums.js?v=20261001-comments-light47";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-comments-light47";
 
 let activeAlbum = null;
 let opening = false;

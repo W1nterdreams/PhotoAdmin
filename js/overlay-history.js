@@ -1,4 +1,4 @@
-import { state } from "./state.js?v=20261001-scrollfix46";
+import { state } from "./state.js?v=20261001-comments-light47";
 
 let activeOverlay = null;
 let closingPromise = null;

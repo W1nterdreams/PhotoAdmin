@@ -1,5 +1,5 @@
-import { state } from "./state.js?v=20261001-scrollfix46";
-import { ALLOW_USERS, ALLOWED_GROUP_IDS } from "./config.js?v=20261001-scrollfix46";
+import { state } from "./state.js?v=20261001-comments-light47";
+import { ALLOW_USERS, ALLOWED_GROUP_IDS } from "./config.js?v=20261001-comments-light47";
 
 let lastAccessDiagnostic = null;
 
