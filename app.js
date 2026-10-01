@@ -259,12 +259,21 @@ async function loadUser() {
 
 async function getAccessToken() {
 
+    const launchAppId = Number(
+        new URLSearchParams(window.location.search).get("vk_app_id")
+    );
+
+    const authAppId =
+        Number.isInteger(launchAppId) && launchAppId > 0
+            ? launchAppId
+            : VK_APP_ID;
+
     const result =
         await vkBridge.send(
             "VKWebAppGetAuthToken",
             {
                 app_id:
-                    VK_APP_ID,
+                    authAppId,
 
                 scope:
                     "photos"
