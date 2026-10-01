@@ -1,10 +1,10 @@
-import { state } from "./state.js?v=20260927-captiontop43";
-import { vkApi } from "./vk-api.js?v=20260927-captiontop43";
-import { getErrorMessage } from "./helpers.js?v=20260927-captiontop43";
-import { getOwnerId } from "./group-context.js?v=20260927-captiontop43";
-import { cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20260927-captiontop43";
-import { loadAlbums } from "./albums.js?v=20260927-captiontop43";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20260927-captiontop43";
+import { state } from "./state.js?v=20261001-owner-red44";
+import { vkApi } from "./vk-api.js?v=20261001-owner-red44";
+import { getErrorMessage } from "./helpers.js?v=20261001-owner-red44";
+import { getOwnerId } from "./group-context.js?v=20261001-owner-red44";
+import { cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261001-owner-red44";
+import { loadAlbums } from "./albums.js?v=20261001-owner-red44";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-owner-red44";
 
 let overlay = null;
 let activeAlbum = null;
@@ -96,7 +96,7 @@ function installStyles() {
 
         .album-reorder-hint {
             margin: -4px 0 12px;
-            color: #aeb4b9;
+            color: var(--app-muted);
             font-size: 13px;
             line-height: 1.4;
         }
@@ -104,10 +104,10 @@ function installStyles() {
         .album-reorder-current {
             margin-bottom: 14px;
             padding: 10px 12px;
-            border: 1px solid #3d444a;
+            border: 1px solid var(--app-border);
             border-radius: 10px;
-            background: #171a1d;
-            color: #ffffff;
+            background: #fff5f6;
+            color: var(--app-text);
             font-weight: 600;
             word-break: break-word;
         }
@@ -122,10 +122,10 @@ function installStyles() {
         .album-reorder-row {
             min-height: 46px;
             padding: 10px 12px;
-            border: 1px solid #353b40;
+            border: 1px solid var(--app-border);
             border-radius: 10px;
-            background: #202428;
-            color: #e8eaed;
+            background: #ffffff;
+            color: var(--app-text);
             font-size: 14px;
             line-height: 1.35;
             word-break: break-word;
@@ -142,7 +142,7 @@ function installStyles() {
             padding: 0 8px;
             border: 0;
             background: transparent;
-            color: #8f979e;
+            color: var(--app-muted);
             cursor: pointer;
         }
 
@@ -151,7 +151,7 @@ function installStyles() {
             content: "";
             flex: 1;
             height: 1px;
-            background: #42484d;
+            background: #e7b8bd;
         }
 
         .album-reorder-gap span {
@@ -162,25 +162,25 @@ function installStyles() {
 
         .album-reorder-gap:hover,
         .album-reorder-gap:active {
-            color: #c8dff0;
+            color: var(--app-red-700);
         }
 
         .album-reorder-gap.selected {
             min-height: 40px;
-            border: 1px solid #4f92bd;
+            border: 1px solid var(--app-red-500);
             border-radius: 9px;
-            background: #233846;
-            color: #ffffff;
+            background: #ffe6e8;
+            color: var(--app-text);
         }
 
         .album-reorder-gap.selected::before,
         .album-reorder-gap.selected::after {
-            background: #6ca7cb;
+            background: var(--app-red-500);
         }
 
         .album-reorder-loading {
             padding: 24px 10px;
-            color: #aeb4b9;
+            color: var(--app-muted);
             text-align: center;
         }
     `;

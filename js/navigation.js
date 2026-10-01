@@ -1,7 +1,7 @@
-import { state } from "./state.js?v=20260927-captiontop43";
-import { dom } from "./dom.js?v=20260927-captiontop43";
-import { cancelPhotoMultiSelect } from "./photo-multiselect.js?v=20260927-captiontop43";
-import { handleOverlayPopState } from "./overlay-history.js?v=20260927-captiontop43";
+import { state } from "./state.js?v=20261001-owner-red44";
+import { dom } from "./dom.js?v=20261001-owner-red44";
+import { cancelPhotoMultiSelect } from "./photo-multiselect.js?v=20261001-owner-red44";
+import { handleOverlayPopState } from "./overlay-history.js?v=20261001-owner-red44";
 
 let openAlbumFromHistory = null;
 let openPhotoFromHistory = null;
@@ -31,7 +31,9 @@ export function showAlbumsScreen({ restoreScroll = 0 } = {}) {
     state.currentAlbum = null;
     state.currentPhoto = null;
 
-    dom.pageTitle.textContent = "Фотоальбомы";
+    dom.pageTitle.textContent = state.owner?.mode === "user"
+        ? "Мои фотоальбомы"
+        : "Фотоальбомы сообщества";
     dom.pageTitle.classList.remove("hidden");
     dom.albumSortControls?.classList.add("hidden");
     dom.backButton.classList.add("hidden");

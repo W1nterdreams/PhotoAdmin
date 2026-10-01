@@ -1,6 +1,6 @@
-import { vkApi } from "./vk-api.js?v=20260927-captiontop43";
-import { getOwnerId } from "./group-context.js?v=20260927-captiontop43";
-import { state } from "./state.js?v=20260927-captiontop43";
+import { vkApi } from "./vk-api.js?v=20261001-owner-red44";
+import { getOwnerId } from "./group-context.js?v=20261001-owner-red44";
+import { state } from "./state.js?v=20261001-owner-red44";
 
 function errorCode(error) {
     return Number(

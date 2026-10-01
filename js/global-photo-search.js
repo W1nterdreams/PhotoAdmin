@@ -1,12 +1,12 @@
-import { state } from "./state.js?v=20260927-captiontop43";
-import { vkApi } from "./vk-api.js?v=20260927-captiontop43";
-import { getOwnerId } from "./group-context.js?v=20260927-captiontop43";
-import { getPhotoPreviewUrl, getErrorMessage } from "./helpers.js?v=20260927-captiontop43";
-import { ensureAlbumIndex } from "./albums.js?v=20260927-captiontop43";
-import { openPhotoViewer } from "./photo-viewer.js?v=20260927-captiontop43";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20260927-captiontop43";
-import { getPhotoIndexSnapshot } from "./photo-index-db.js?v=20260927-captiontop43";
-import { synchronizePhotoIndex } from "./photo-index-sync.js?v=20260927-captiontop43";
+import { state } from "./state.js?v=20261001-owner-red44";
+import { vkApi } from "./vk-api.js?v=20261001-owner-red44";
+import { getOwnerId } from "./group-context.js?v=20261001-owner-red44";
+import { getPhotoPreviewUrl, getErrorMessage } from "./helpers.js?v=20261001-owner-red44";
+import { ensureAlbumIndex } from "./albums.js?v=20261001-owner-red44";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261001-owner-red44";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-owner-red44";
+import { getPhotoIndexSnapshot } from "./photo-index-db.js?v=20261001-owner-red44";
+import { synchronizePhotoIndex } from "./photo-index-sync.js?v=20261001-owner-red44";
 
 const SEARCH_RESULTS_PAGE_SIZE = 100;
 const FALLBACK_PAGE_SIZE = 200;
@@ -58,7 +58,7 @@ function installStyles() {
             padding: 0;
             align-items: stretch;
             justify-content: stretch;
-            background: #111315;
+            background: var(--app-blush-2);
         }
 
         .global-photo-search-screen {
@@ -71,7 +71,7 @@ function installStyles() {
             border: 0;
             border-radius: 0;
             overflow: hidden;
-            background: #111315;
+            background: var(--app-blush-2);
             box-shadow: none;
         }
 
@@ -79,9 +79,9 @@ function installStyles() {
             flex: 0 0 auto;
             display: flex;
             align-items: center;
-            min-height: 58px;
+            min-height: 64px;
             padding: 0 7px;
-            background: #39779b;
+            background: linear-gradient(145deg, var(--app-red-500), var(--app-red-800) 62%, var(--app-red-950));
             box-shadow: 0 2px 8px rgba(0,0,0,.30);
         }
 
@@ -116,8 +116,8 @@ function installStyles() {
         .global-photo-search-controls {
             flex: 0 0 auto;
             padding: 10px;
-            border-bottom: 1px solid #34383b;
-            background: #1b1e20;
+            border-bottom: 1px solid var(--app-border);
+            background: #ffffff;
         }
 
         .global-photo-search-box {
@@ -126,9 +126,9 @@ function installStyles() {
             gap: 7px;
             min-height: 42px;
             padding: 0 10px;
-            border: 1px solid #3c4145;
-            border-radius: 10px;
-            background: #151719;
+            border: 1px solid var(--app-border);
+            border-radius: 16px;
+            background: #fffafa;
         }
 
         .global-photo-search-box input {
@@ -139,7 +139,7 @@ function installStyles() {
             border: 0;
             outline: 0;
             background: transparent;
-            color: #fff;
+            color: var(--app-text);
             font-size: 15px;
         }
 
@@ -150,7 +150,7 @@ function installStyles() {
             border: 0;
             border-radius: 50%;
             background: transparent;
-            color: #9ea4a9;
+            color: var(--app-red-700);
             font-size: 22px;
         }
 
@@ -158,11 +158,11 @@ function installStyles() {
             flex: 0 0 auto;
             min-height: 34px;
             padding: 8px 12px;
-            color: #9fa5aa;
+            color: var(--app-muted);
             font-size: 12px;
             line-height: 1.35;
-            background: #17191b;
-            border-bottom: 1px solid #2f3336;
+            background: #fff5f6;
+            border-bottom: 1px solid var(--app-border);
         }
 
         .global-photo-search-results {
@@ -185,8 +185,10 @@ function installStyles() {
             min-height: 0;
             overflow: hidden;
             padding: 0;
-            border: 0;
-            background: #2b2f32;
+            border: 1px solid rgba(174,0,23,.10);
+            border-radius: 12px;
+            background: #ead8da;
+            box-shadow: 0 3px 10px rgba(112,0,14,.08);
             cursor: pointer;
         }
 
@@ -206,7 +208,7 @@ function installStyles() {
             padding: 4px 6px;
             border-radius: 6px;
             overflow: hidden;
-            background: rgba(0,0,0,.67);
+            background: rgba(88,0,11,.74);
             color: #fff;
             font-size: 10px;
             line-height: 1.25;
@@ -222,7 +224,7 @@ function installStyles() {
             left: 5px;
             padding: 2px 5px;
             border-radius: 5px;
-            background: rgba(0,0,0,.62);
+            background: rgba(88,0,11,.70);
             color: #fff;
             font-size: 10px;
             pointer-events: none;
@@ -231,7 +233,7 @@ function installStyles() {
         .global-photo-search-empty {
             grid-column: 1 / -1;
             padding: 40px 16px;
-            color: #aeb4b9;
+            color: var(--app-muted);
             text-align: center;
             line-height: 1.45;
         }

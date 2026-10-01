@@ -1,12 +1,12 @@
-import { state } from "./state.js?v=20260927-captiontop43";
-import { dom } from "./dom.js?v=20260927-captiontop43";
-import { vkApi } from "./vk-api.js?v=20260927-captiontop43";
-import { getErrorMessage } from "./helpers.js?v=20260927-captiontop43";
-import { loadAlbums } from "./albums.js?v=20260927-captiontop43";
-import { closeMenu } from "./main-menu.js?v=20260927-captiontop43";
-import { getGroupId, getOwnerId } from "./group-context.js?v=20260927-captiontop43";
-import { invalidateAlbumCaches } from "./cache.js?v=20260927-captiontop43";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20260927-captiontop43";
+import { state } from "./state.js?v=20261001-owner-red44";
+import { dom } from "./dom.js?v=20261001-owner-red44";
+import { vkApi } from "./vk-api.js?v=20261001-owner-red44";
+import { getErrorMessage } from "./helpers.js?v=20261001-owner-red44";
+import { loadAlbums } from "./albums.js?v=20261001-owner-red44";
+import { closeMenu } from "./main-menu.js?v=20261001-owner-red44";
+import { getGroupId, getOwnerId, isGroupMode } from "./group-context.js?v=20261001-owner-red44";
+import { invalidateAlbumCaches } from "./cache.js?v=20261001-owner-red44";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-owner-red44";
 
 async function openModal() {
     await closeMenu();
@@ -40,12 +40,19 @@ async function createAlbum() {
     dom.createAlbumError.textContent = "";
 
     try {
-        await vkApi("photos.createAlbum", {
+        const params = {
             title,
             description,
-            group_id: getGroupId(),
             comments_disabled: 0
-        });
+        };
+
+        // group_id нужен только при создании альбома сообщества.
+        // В личном режиме его намеренно не передаём — VK создаёт альбом пользователя.
+        if (isGroupMode()) {
+            params.group_id = getGroupId();
+        }
+
+        await vkApi("photos.createAlbum", params);
 
         invalidateAlbumCaches(getOwnerId());
         state.albumIndex = [];

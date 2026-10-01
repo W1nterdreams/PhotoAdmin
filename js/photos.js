@@ -1,21 +1,21 @@
-import { state } from "./state.js?v=20260927-captiontop43";
-import { dom } from "./dom.js?v=20260927-captiontop43";
-import { vkApi } from "./vk-api.js?v=20260927-captiontop43";
-import { getPhotoPreviewUrl, escapeHtml, getErrorMessage } from "./helpers.js?v=20260927-captiontop43";
-import { showPhotosScreen, pushAlbumHistory } from "./navigation.js?v=20260927-captiontop43";
-import { CACHE_TTL } from "./config.js?v=20260927-captiontop43";
-import { cacheGet, cacheGetStale, cacheSet, albumPhotosKey } from "./cache.js?v=20260927-captiontop43";
-import { getOwnerId } from "./group-context.js?v=20260927-captiontop43";
-import { openPhotoViewer } from "./photo-viewer.js?v=20260927-captiontop43";
-import { bindPhotoContextLongPress } from "./photo-context-menu.js?v=20260927-captiontop43";
-import { syncPhotoIndexAlbumIfDirty } from "./photo-index-sync.js?v=20260927-captiontop43";
-import { getDirtyPhotoIndexAlbums } from "./photo-index-db.js?v=20260927-captiontop43";
+import { state } from "./state.js?v=20261001-owner-red44";
+import { dom } from "./dom.js?v=20261001-owner-red44";
+import { vkApi } from "./vk-api.js?v=20261001-owner-red44";
+import { getPhotoPreviewUrl, escapeHtml, getErrorMessage } from "./helpers.js?v=20261001-owner-red44";
+import { showPhotosScreen, pushAlbumHistory } from "./navigation.js?v=20261001-owner-red44";
+import { CACHE_TTL } from "./config.js?v=20261001-owner-red44";
+import { cacheGet, cacheGetStale, cacheSet, albumPhotosKey } from "./cache.js?v=20261001-owner-red44";
+import { getOwnerId } from "./group-context.js?v=20261001-owner-red44";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261001-owner-red44";
+import { bindPhotoContextLongPress } from "./photo-context-menu.js?v=20261001-owner-red44";
+import { syncPhotoIndexAlbumIfDirty } from "./photo-index-sync.js?v=20261001-owner-red44";
+import { getDirtyPhotoIndexAlbums } from "./photo-index-db.js?v=20261001-owner-red44";
 import {
     isPhotoMultiSelectActive,
     isPhotoSelected,
     togglePhotoSelection,
     cancelPhotoMultiSelect
-} from "./photo-multiselect.js?v=20260927-captiontop43";
+} from "./photo-multiselect.js?v=20261001-owner-red44";
 
 const PAGE_SIZE = 1000;
 const SORT_FETCH_SIZE = 1000;

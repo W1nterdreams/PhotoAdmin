@@ -1,20 +1,20 @@
-import { state } from "./state.js?v=20260927-captiontop43";
-import { dom } from "./dom.js?v=20260927-captiontop43";
-import { vkApi } from "./vk-api.js?v=20260927-captiontop43";
-import { getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20260927-captiontop43";
-import { getOwnerId } from "./group-context.js?v=20260927-captiontop43";
+import { state } from "./state.js?v=20261001-owner-red44";
+import { dom } from "./dom.js?v=20261001-owner-red44";
+import { vkApi } from "./vk-api.js?v=20261001-owner-red44";
+import { getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20261001-owner-red44";
+import { getOwnerId } from "./group-context.js?v=20261001-owner-red44";
 import {
     invalidateAlbumPhotosCache,
     invalidateAlbumCaches,
     invalidatePhotoActivityCaches
-} from "./cache.js?v=20260927-captiontop43";
-import { closeMenu } from "./main-menu.js?v=20260927-captiontop43";
-import { openPhotoTransfer } from "./photo-transfer.js?v=20260927-captiontop43";
-import { openPhotoReorder } from "./photo-reorder.js?v=20260927-captiontop43";
-import { openVkPhoto } from "./vk-links.js?v=20260927-captiontop43";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20260927-captiontop43";
-import { markPhotoIndexAlbumDirty, clearPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20260927-captiontop43";
-import { applyLocalPhotoUpdate, applyLocalPhotoDelete } from "./photo-index-sync.js?v=20260927-captiontop43";
+} from "./cache.js?v=20261001-owner-red44";
+import { closeMenu } from "./main-menu.js?v=20261001-owner-red44";
+import { openPhotoTransfer } from "./photo-transfer.js?v=20261001-owner-red44";
+import { openPhotoReorder } from "./photo-reorder.js?v=20261001-owner-red44";
+import { openVkPhoto } from "./vk-links.js?v=20261001-owner-red44";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-owner-red44";
+import { markPhotoIndexAlbumDirty, clearPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261001-owner-red44";
+import { applyLocalPhotoUpdate, applyLocalPhotoDelete } from "./photo-index-sync.js?v=20261001-owner-red44";
 
 let editOverlay = null;
 let editInput = null;
@@ -318,8 +318,8 @@ function showActionToast(message) {
         toast.style.cssText = [
             "position:fixed", "left:50%", "bottom:24px", "transform:translateX(-50%)",
             "z-index:2147483647", "max-width:calc(100% - 32px)", "padding:10px 14px",
-            "border-radius:10px", "background:rgba(36,39,42,.96)", "color:#fff",
-            "font-size:14px", "box-shadow:0 6px 24px rgba(0,0,0,.45)",
+            "border-radius:14px", "background:linear-gradient(150deg,rgba(125,0,16,.97),rgba(72,0,9,.97))", "color:#fff",
+            "font-size:14px", "box-shadow:0 8px 26px rgba(72,0,9,.36)",
             "text-align:center", "pointer-events:none"
         ].join(";");
         document.body.appendChild(toast);
@@ -434,7 +434,7 @@ async function refreshAfterNativeDelete(detail) {
 
     if (album) {
         try {
-            const { loadPhotos } = await import("./photos.js?v=20260927-captiontop43");
+            const { loadPhotos } = await import("./photos.js?v=20261001-owner-red44");
             await loadPhotos(album, { force: true });
         } catch (error) {
             console.warn("Не удалось обновить альбом после возврата из VK:", error);

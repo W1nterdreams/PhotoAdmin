@@ -1,21 +1,21 @@
-import { dom } from "./dom.js?v=20260927-captiontop43";
-import { state } from "./state.js?v=20260927-captiontop43";
-import { vkApi } from "./vk-api.js?v=20260927-captiontop43";
+import { dom } from "./dom.js?v=20261001-owner-red44";
+import { state } from "./state.js?v=20261001-owner-red44";
+import { vkApi } from "./vk-api.js?v=20261001-owner-red44";
 import {
     escapeHtml,
     getPhotoPreviewUrl
-} from "./helpers.js?v=20260927-captiontop43";
+} from "./helpers.js?v=20261001-owner-red44";
 import {
     showCommentsScreen,
     pushCommentsHistory
-} from "./navigation.js?v=20260927-captiontop43";
-import { getOwnerId } from "./group-context.js?v=20260927-captiontop43";
-import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20260927-captiontop43";
-import { CACHE_TTL } from "./config.js?v=20260927-captiontop43";
-import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20260927-captiontop43";
-import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20260927-captiontop43";
-import { openPhotoViewer } from "./photo-viewer.js?v=20260927-captiontop43";
-import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20260927-captiontop43";
+} from "./navigation.js?v=20261001-owner-red44";
+import { getOwnerId } from "./group-context.js?v=20261001-owner-red44";
+import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261001-owner-red44";
+import { CACHE_TTL } from "./config.js?v=20261001-owner-red44";
+import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20261001-owner-red44";
+import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261001-owner-red44";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261001-owner-red44";
+import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261001-owner-red44";
 
 const ALBUM_COMMENTS_DAYS = 3;
 const PAGE_SIZE = 100;

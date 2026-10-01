@@ -1,8 +1,8 @@
-import { dom } from "./dom.js?v=20260927-captiontop43";
-import { state } from "./state.js?v=20260927-captiontop43";
-import { getOwnerId } from "./group-context.js?v=20260927-captiontop43";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20260927-captiontop43";
-import { openAlbumReorderMode } from "./photo-reorder.js?v=20260927-captiontop43";
+import { dom } from "./dom.js?v=20261001-owner-red44";
+import { state } from "./state.js?v=20261001-owner-red44";
+import { getOwnerId } from "./group-context.js?v=20261001-owner-red44";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-owner-red44";
+import { openAlbumReorderMode } from "./photo-reorder.js?v=20261001-owner-red44";
 
 function visible(element) {
     return Boolean(element && !element.classList.contains("hidden"));
@@ -109,15 +109,13 @@ export function openMenu() {
     Object.assign(dom.mainMenu.style, {
         display: "block",
         position: "fixed",
-        top: "62px",
+        top: "68px",
         left: "8px",
         width: "250px",
         zIndex: "2147483647",
         visibility: "visible",
         opacity: "1",
-        transform: "none",
-        background: "#24272a",
-        color: "#fff"
+        transform: "none"
     });
 
     openSwipeOverlay("main-menu", hideMenuDirect);
@@ -150,7 +148,7 @@ export function initMainMenu() {
 
     dom.globalPhotoSearchMenuButton?.addEventListener("click", async () => {
         await closeMenu();
-        const { openGlobalPhotoSearch } = await import("./global-photo-search.js?v=20260927-captiontop43");
+        const { openGlobalPhotoSearch } = await import("./global-photo-search.js?v=20261001-owner-red44");
         void openGlobalPhotoSearch();
     });
 

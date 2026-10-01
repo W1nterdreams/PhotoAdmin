@@ -1,13 +1,13 @@
-import { state } from "./state.js?v=20260927-captiontop43";
-import { vkApi } from "./vk-api.js?v=20260927-captiontop43";
-import { getPhotoPreviewUrl, getErrorMessage } from "./helpers.js?v=20260927-captiontop43";
-import { getOwnerId } from "./group-context.js?v=20260927-captiontop43";
+import { state } from "./state.js?v=20261001-owner-red44";
+import { vkApi } from "./vk-api.js?v=20261001-owner-red44";
+import { getPhotoPreviewUrl, getErrorMessage } from "./helpers.js?v=20261001-owner-red44";
+import { getOwnerId } from "./group-context.js?v=20261001-owner-red44";
 import {
     cacheSet,
     albumPhotosKey,
     invalidateAlbumPhotosCache
-} from "./cache.js?v=20260927-captiontop43";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20260927-captiontop43";
+} from "./cache.js?v=20261001-owner-red44";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-owner-red44";
 
 const PAGE_SIZE = 1000;
 
@@ -55,7 +55,7 @@ function installStyles() {
             padding: 0;
             align-items: stretch;
             justify-content: stretch;
-            background: #111315;
+            background: var(--app-blush-2);
         }
 
         .photo-reorder-screen {
@@ -68,7 +68,7 @@ function installStyles() {
             border: 0;
             border-radius: 0;
             overflow: hidden;
-            background: #111315;
+            background: var(--app-blush-2);
             box-shadow: none;
         }
 
@@ -76,9 +76,9 @@ function installStyles() {
             flex: 0 0 auto;
             display: flex;
             align-items: center;
-            min-height: 58px;
+            min-height: 64px;
             padding: 0 8px;
-            background: #39779b;
+            background: linear-gradient(145deg, var(--app-red-500), var(--app-red-800) 62%, var(--app-red-950));
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.30);
         }
 
@@ -132,9 +132,9 @@ function installStyles() {
         .photo-reorder-hint {
             flex: 0 0 auto;
             padding: 10px 12px;
-            border-bottom: 1px solid #34383b;
-            background: #1b1e20;
-            color: #c4c8cb;
+            border-bottom: 1px solid var(--app-border);
+            background: #ffffff;
+            color: var(--app-muted);
             font-size: 13px;
             line-height: 1.35;
         }
@@ -162,9 +162,10 @@ function installStyles() {
             aspect-ratio: 1 / 1;
             overflow: hidden;
             padding: 0;
-            border: 0;
+            border: 1px solid rgba(174,0,23,.10);
+            border-radius: 12px;
             outline: 0;
-            background: #2c3033;
+            background: #ead8da;
             color: #fff;
             cursor: pointer;
             user-select: none;
@@ -184,7 +185,7 @@ function installStyles() {
         }
 
         .photo-reorder-card-selected {
-            box-shadow: inset 0 0 0 4px #62a8d5;
+            box-shadow: inset 0 0 0 4px var(--app-red-500);
         }
 
         .photo-reorder-card-selected::after {
@@ -195,7 +196,7 @@ function installStyles() {
             bottom: 6px;
             padding: 3px 6px;
             border-radius: 6px;
-            background: rgba(57,119,155,0.94);
+            background: rgba(198,9,33,.94);
             color: #fff;
             font-size: 11px;
             font-weight: 600;
@@ -209,7 +210,7 @@ function installStyles() {
             left: 5px;
             padding: 2px 5px;
             border-radius: 5px;
-            background: rgba(0,0,0,0.60);
+            background: rgba(88,0,11,.70);
             color: #fff;
             font-size: 10px;
             line-height: 1.2;
@@ -229,7 +230,7 @@ function installStyles() {
         .photo-reorder-stat {
             padding: 2px 4px;
             border-radius: 5px;
-            background: rgba(0,0,0,0.60);
+            background: rgba(88,0,11,.70);
             color: #fff;
             font-size: 10px;
             line-height: 1.2;
@@ -238,7 +239,7 @@ function installStyles() {
         .photo-reorder-status {
             grid-column: 1 / -1;
             padding: 32px 12px;
-            color: #aeb4b9;
+            color: var(--app-muted);
             text-align: center;
             line-height: 1.45;
         }
@@ -255,7 +256,7 @@ function installStyles() {
             align-items: center;
             justify-content: center;
             padding: 24px;
-            background: rgba(0,0,0,0.52);
+            background: rgba(72,0,9,.52);
             color: #fff;
             font-size: 16px;
             font-weight: 600;
@@ -340,7 +341,7 @@ function hideModalDirect() {
         window.setTimeout(async () => {
             try {
                 if (!state.currentAlbum || Number(state.currentAlbum.id) !== Number(albumToRefresh.id)) return;
-                const { loadPhotos } = await import("./photos.js?v=20260927-captiontop43");
+                const { loadPhotos } = await import("./photos.js?v=20261001-owner-red44");
                 await loadPhotos(albumToRefresh, { force: true });
             } catch (error) {
                 console.warn("Не удалось обновить альбом после режима порядка:", error);
@@ -588,7 +589,7 @@ async function redrawCurrentAlbum(albumId) {
     if (!state.currentAlbum || Number(state.currentAlbum.id) !== Number(albumId)) return;
 
     try {
-        const { setPhotoDateSort } = await import("./photos.js?v=20260927-captiontop43");
+        const { setPhotoDateSort } = await import("./photos.js?v=20261001-owner-red44");
         setPhotoDateSort("vk");
     } catch (error) {
         console.warn("Не удалось перерисовать альбом после перестановки:", error);

@@ -1,16 +1,16 @@
-import { state } from "./state.js?v=20260927-captiontop43";
-import { vkApi } from "./vk-api.js?v=20260927-captiontop43";
-import { getAlbumCover, getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20260927-captiontop43";
-import { getOwnerId } from "./group-context.js?v=20260927-captiontop43";
+import { state } from "./state.js?v=20261001-owner-red44";
+import { vkApi } from "./vk-api.js?v=20261001-owner-red44";
+import { getAlbumCover, getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20261001-owner-red44";
+import { getOwnerId } from "./group-context.js?v=20261001-owner-red44";
 import {
     invalidateAlbumCaches,
     invalidateAlbumPhotosCache,
     invalidateCommentCaches
-} from "./cache.js?v=20260927-captiontop43";
-import { openVkTarget, openVkPhoto } from "./vk-links.js?v=20260927-captiontop43";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20260927-captiontop43";
-import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20260927-captiontop43";
-import { applyLocalPhotoMove } from "./photo-index-sync.js?v=20260927-captiontop43";
+} from "./cache.js?v=20261001-owner-red44";
+import { openVkTarget, openVkPhoto } from "./vk-links.js?v=20261001-owner-red44";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-owner-red44";
+import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261001-owner-red44";
+import { applyLocalPhotoMove } from "./photo-index-sync.js?v=20261001-owner-red44";
 
 const ALBUM_PAGE_SIZE = 100;
 const MAX_ALBUM_PAGES = 200;
@@ -51,7 +51,7 @@ function installStyles() {
             padding: 0;
             align-items: stretch;
             justify-content: stretch;
-            background: #111315;
+            background: var(--app-blush-2);
         }
 
         .photo-transfer-screen {
@@ -64,7 +64,7 @@ function installStyles() {
             border: 0;
             border-radius: 0;
             overflow: hidden;
-            background: #111315;
+            background: var(--app-blush-2);
             box-shadow: none;
         }
 
@@ -72,9 +72,9 @@ function installStyles() {
             flex: 0 0 auto;
             display: flex;
             align-items: center;
-            min-height: 58px;
+            min-height: 64px;
             padding: 0 8px;
-            background: #39779b;
+            background: linear-gradient(145deg, var(--app-red-500), var(--app-red-800) 62%, var(--app-red-950));
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.30);
         }
 
@@ -112,7 +112,7 @@ function installStyles() {
         .photo-transfer-search-wrap {
             flex: 0 0 auto;
             padding: 10px;
-            background: #111315;
+            background: var(--app-blush-2);
         }
 
         .photo-transfer-search-box {
@@ -121,14 +121,14 @@ function installStyles() {
             width: 100%;
             height: 44px;
             padding: 0 10px;
-            border: 1px solid #42464a;
-            border-radius: 10px;
-            background: #202326;
+            border: 1px solid var(--app-border);
+            border-radius: 16px;
+            background: #ffffff;
         }
 
         .photo-transfer-search-box:focus-within {
-            border-color: #518fbb;
-            background: #25282b;
+            border-color: var(--app-red-500);
+            background: #fffafa;
         }
 
         .photo-transfer-search-icon {
@@ -146,11 +146,11 @@ function installStyles() {
             border: 0;
             outline: 0;
             background: transparent;
-            color: #fff;
+            color: var(--app-text);
             font-size: 17px;
         }
 
-        .photo-transfer-search::placeholder { color: #96999d; }
+        .photo-transfer-search::placeholder { color: #a9848a; }
         .photo-transfer-search::-webkit-search-cancel-button { display: none; }
 
         .photo-transfer-clear {
@@ -164,8 +164,8 @@ function installStyles() {
             padding: 0;
             border: 0;
             border-radius: 50%;
-            background: #55595d;
-            color: #fff;
+            background: #f6dadd;
+            color: var(--app-red-800);
             font-size: 20px;
             line-height: 1;
             cursor: pointer;
@@ -194,9 +194,10 @@ function installStyles() {
             aspect-ratio: 1.45 / 1;
             overflow: hidden;
             padding: 0;
-            border: 0;
-            border-radius: 4px;
-            background: #303438;
+            border: 1px solid rgba(174,0,23,.10);
+            border-radius: 17px;
+            background: #ead8da;
+            box-shadow: var(--app-shadow);
             color: #fff;
             cursor: pointer;
             user-select: none;
@@ -213,7 +214,7 @@ function installStyles() {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            background: #303438;
+            background: #ead8da;
         }
 
         .photo-transfer-placeholder {
@@ -222,7 +223,7 @@ function installStyles() {
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(145deg, #8998a3, #424a50);
+            background: radial-gradient(circle at 70% 20%, rgba(255,255,255,.35), transparent 35%), linear-gradient(145deg, #ff9299, #d71931 55%, #76000d);
             color: rgba(255,255,255,0.7);
             font-size: 48px;
         }
@@ -235,7 +236,7 @@ function installStyles() {
             right: 0;
             bottom: 0;
             height: 62%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.86));
+            background: linear-gradient(to bottom, rgba(74,0,8,0), rgba(60,0,8,.88));
             pointer-events: none;
         }
 
@@ -275,7 +276,7 @@ function installStyles() {
         .photo-transfer-status {
             grid-column: 1 / -1;
             padding: 30px 12px;
-            color: #aeb4b9;
+            color: var(--app-muted);
             text-align: center;
             line-height: 1.45;
         }

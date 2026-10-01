@@ -1,5 +1,5 @@
-import { state } from "./state.js?v=20260927-captiontop43";
-import { openPhotoTransferMany } from "./photo-transfer.js?v=20260927-captiontop43";
+import { state } from "./state.js?v=20261001-owner-red44";
+import { openPhotoTransferMany } from "./photo-transfer.js?v=20261001-owner-red44";
 
 let active = false;
 let selectedIds = new Set();
@@ -18,7 +18,7 @@ function installStyles() {
         }
 
         .photo-card.photo-multi-selected {
-            outline: 3px solid #5da6d6;
+            outline: 3px solid var(--app-red-500);
             outline-offset: -3px;
         }
 
@@ -44,7 +44,7 @@ function installStyles() {
         }
 
         .photo-card.photo-multi-selected .photo-select-check {
-            background: #39779b;
+            background: linear-gradient(180deg, #f64a5b, #cf0d27);
             color: #fff;
         }
 
@@ -59,8 +59,8 @@ function installStyles() {
             gap: 8px;
             min-height: 64px;
             padding: 9px 10px calc(9px + env(safe-area-inset-bottom, 0px));
-            border-top: 1px solid #3d4246;
-            background: rgba(31,34,37,0.98);
+            border-top: 1px solid rgba(255,255,255,.16);
+            background: linear-gradient(150deg, rgba(125,0,16,.98), rgba(72,0,9,.98));
             box-shadow: 0 -4px 18px rgba(0,0,0,0.34);
         }
 
@@ -88,11 +88,11 @@ function installStyles() {
         }
 
         .photo-multiselect-move {
-            background: #39779b;
+            background: linear-gradient(180deg, #f64a5b, #cf0d27);
         }
 
         .photo-multiselect-cancel {
-            background: #3a3e42;
+            background: rgba(255,255,255,.14);
         }
 
         .photo-multiselect-button:disabled {

@@ -4,6 +4,7 @@ export const state = {
     accessScope: "",
 
     group: null,
+    owner: null,
 
     albums: [],
     albumsTotal: 0,

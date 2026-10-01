@@ -1,11 +1,11 @@
-import { state } from "./state.js?v=20260927-captiontop43";
-import { dom } from "./dom.js?v=20260927-captiontop43";
-import { vkApi } from "./vk-api.js?v=20260927-captiontop43";
-import { getErrorMessage } from "./helpers.js?v=20260927-captiontop43";
-import { getOwnerId } from "./group-context.js?v=20260927-captiontop43";
-import { cacheSet, cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20260927-captiontop43";
-import { renderAlbums } from "./albums.js?v=20260927-captiontop43";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20260927-captiontop43";
+import { state } from "./state.js?v=20261001-owner-red44";
+import { dom } from "./dom.js?v=20261001-owner-red44";
+import { vkApi } from "./vk-api.js?v=20261001-owner-red44";
+import { getErrorMessage } from "./helpers.js?v=20261001-owner-red44";
+import { getOwnerId, isGroupMode } from "./group-context.js?v=20261001-owner-red44";
+import { cacheSet, cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261001-owner-red44";
+import { renderAlbums } from "./albums.js?v=20261001-owner-red44";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-owner-red44";
 
 let activeAlbum = null;
 let opening = false;
@@ -20,6 +20,17 @@ function showError(message = "") {
     dom.editAlbumError.classList.toggle("hidden", !message);
 }
 
+function syncGroupOnlyFields() {
+    const groupMode = isGroupMode();
+    const row = dom.editAlbumAllowUploads?.closest(".form-checkbox-row");
+    const hint = row?.nextElementSibling;
+
+    row?.classList.toggle("hidden", !groupMode);
+    if (hint?.classList.contains("form-checkbox-hint")) {
+        hint.classList.toggle("hidden", !groupMode);
+    }
+}
+
 function fillForm(album) {
     dom.editAlbumTitle.value = album?.title || "";
     dom.editAlbumDescription.value = album?.description || "";
@@ -27,6 +38,7 @@ function fillForm(album) {
     // В VK эти параметры обратные по смыслу нашим галочкам.
     dom.editAlbumAllowComments.checked = !asFlag(album?.comments_disabled);
     dom.editAlbumAllowUploads.checked = !asFlag(album?.upload_by_admins_only);
+    syncGroupOnlyFields();
 }
 
 async function fetchFreshAlbum(album) {
@@ -161,21 +173,30 @@ async function saveAlbum(event) {
     const ownerId = Number(activeAlbum.owner_id) || getOwnerId();
 
     try {
-        await vkApi("photos.editAlbum", {
+        const params = {
             album_id: Number(activeAlbum.id),
             owner_id: ownerId,
             title,
             description,
-            comments_disabled: allowComments ? 0 : 1,
-            upload_by_admins_only: allowUploads ? 0 : 1
-        });
+            comments_disabled: allowComments ? 0 : 1
+        };
+
+        // Настройка upload_by_admins_only относится к альбомам сообщества.
+        // Для личного альбома не отправляем групповой параметр.
+        if (isGroupMode()) {
+            params.upload_by_admins_only = allowUploads ? 0 : 1;
+        }
+
+        await vkApi("photos.editAlbum", params);
 
         const updated = {
             ...activeAlbum,
             title,
             description,
             comments_disabled: allowComments ? 0 : 1,
-            upload_by_admins_only: allowUploads ? 0 : 1
+            ...(isGroupMode()
+                ? { upload_by_admins_only: allowUploads ? 0 : 1 }
+                : {})
         };
 
         replaceAlbumInState(updated);

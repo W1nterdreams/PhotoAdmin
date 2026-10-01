@@ -1,15 +1,15 @@
-import { state } from "./state.js?v=20260927-captiontop43";
-import { dom } from "./dom.js?v=20260927-captiontop43";
-import { getOwnerId } from "./group-context.js?v=20260927-captiontop43";
-import { closeMenu } from "./main-menu.js?v=20260927-captiontop43";
-import { openVkTarget } from "./vk-links.js?v=20260927-captiontop43";
-import { loadPhotos } from "./photos.js?v=20260927-captiontop43";
-import { renderAlbums } from "./albums.js?v=20260927-captiontop43";
+import { state } from "./state.js?v=20261001-owner-red44";
+import { dom } from "./dom.js?v=20261001-owner-red44";
+import { getOwnerId } from "./group-context.js?v=20261001-owner-red44";
+import { closeMenu } from "./main-menu.js?v=20261001-owner-red44";
+import { openVkTarget } from "./vk-links.js?v=20261001-owner-red44";
+import { loadPhotos } from "./photos.js?v=20261001-owner-red44";
+import { renderAlbums } from "./albums.js?v=20261001-owner-red44";
 import {
     invalidateAlbumCaches,
     invalidateAlbumPhotosCache
-} from "./cache.js?v=20260927-captiontop43";
-import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20260927-captiontop43";
+} from "./cache.js?v=20261001-owner-red44";
+import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261001-owner-red44";
 
 function findAlbum(albumId) {
     const id = String(albumId || "");
