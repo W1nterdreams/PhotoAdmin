@@ -1,21 +1,21 @@
-import { dom } from "./dom.js?v=20261001-comments-light47";
-import { state } from "./state.js?v=20261001-comments-light47";
-import { vkApi } from "./vk-api.js?v=20261001-comments-light47";
+import { dom } from "./dom.js?v=20261007-description-links48";
+import { state } from "./state.js?v=20261007-description-links48";
+import { vkApi } from "./vk-api.js?v=20261007-description-links48";
 import {
     escapeHtml,
     getPhotoPreviewUrl
-} from "./helpers.js?v=20261001-comments-light47";
+} from "./helpers.js?v=20261007-description-links48";
 import {
     showCommentsScreen,
     pushCommentsHistory
-} from "./navigation.js?v=20261001-comments-light47";
-import { getOwnerId } from "./group-context.js?v=20261001-comments-light47";
-import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261001-comments-light47";
-import { CACHE_TTL } from "./config.js?v=20261001-comments-light47";
-import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20261001-comments-light47";
-import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261001-comments-light47";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261001-comments-light47";
-import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261001-comments-light47";
+} from "./navigation.js?v=20261007-description-links48";
+import { getOwnerId } from "./group-context.js?v=20261007-description-links48";
+import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261007-description-links48";
+import { CACHE_TTL } from "./config.js?v=20261007-description-links48";
+import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20261007-description-links48";
+import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261007-description-links48";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261007-description-links48";
+import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261007-description-links48";
 
 const ALBUM_COMMENTS_DAYS = 3;
 const PAGE_SIZE = 100;

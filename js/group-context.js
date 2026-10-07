@@ -1,5 +1,5 @@
-import { state } from "./state.js?v=20261001-comments-light47";
-import { ALLOW_USERS, ALLOWED_GROUP_IDS } from "./config.js?v=20261001-comments-light47";
+import { state } from "./state.js?v=20261007-description-links48";
+import { ALLOW_USERS, ALLOWED_GROUP_IDS } from "./config.js?v=20261007-description-links48";
 
 let lastAccessDiagnostic = null;
 

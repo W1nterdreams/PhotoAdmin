@@ -1,13 +1,13 @@
-import { state } from "./state.js?v=20261001-comments-light47";
-import { vkApi } from "./vk-api.js?v=20261001-comments-light47";
-import { getPhotoPreviewUrl, getErrorMessage } from "./helpers.js?v=20261001-comments-light47";
-import { getOwnerId } from "./group-context.js?v=20261001-comments-light47";
+import { state } from "./state.js?v=20261007-description-links48";
+import { vkApi } from "./vk-api.js?v=20261007-description-links48";
+import { getPhotoPreviewUrl, getErrorMessage } from "./helpers.js?v=20261007-description-links48";
+import { getOwnerId } from "./group-context.js?v=20261007-description-links48";
 import {
     cacheSet,
     albumPhotosKey,
     invalidateAlbumPhotosCache
-} from "./cache.js?v=20261001-comments-light47";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-comments-light47";
+} from "./cache.js?v=20261007-description-links48";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261007-description-links48";
 
 const PAGE_SIZE = 1000;
 
@@ -341,7 +341,7 @@ function hideModalDirect() {
         window.setTimeout(async () => {
             try {
                 if (!state.currentAlbum || Number(state.currentAlbum.id) !== Number(albumToRefresh.id)) return;
-                const { loadPhotos } = await import("./photos.js?v=20261001-comments-light47");
+                const { loadPhotos } = await import("./photos.js?v=20261007-description-links48");
                 await loadPhotos(albumToRefresh, { force: true });
             } catch (error) {
                 console.warn("Не удалось обновить альбом после режима порядка:", error);
@@ -589,7 +589,7 @@ async function redrawCurrentAlbum(albumId) {
     if (!state.currentAlbum || Number(state.currentAlbum.id) !== Number(albumId)) return;
 
     try {
-        const { setPhotoDateSort } = await import("./photos.js?v=20261001-comments-light47");
+        const { setPhotoDateSort } = await import("./photos.js?v=20261007-description-links48");
         setPhotoDateSort("vk");
     } catch (error) {
         console.warn("Не удалось перерисовать альбом после перестановки:", error);

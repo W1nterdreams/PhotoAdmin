@@ -1,20 +1,21 @@
-import { state } from "./state.js?v=20261001-comments-light47";
-import { dom } from "./dom.js?v=20261001-comments-light47";
-import { vkApi } from "./vk-api.js?v=20261001-comments-light47";
-import { getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20261001-comments-light47";
-import { getOwnerId } from "./group-context.js?v=20261001-comments-light47";
+import { state } from "./state.js?v=20261007-description-links48";
+import { dom } from "./dom.js?v=20261007-description-links48";
+import { vkApi } from "./vk-api.js?v=20261007-description-links48";
+import { getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20261007-description-links48";
+import { getOwnerId } from "./group-context.js?v=20261007-description-links48";
 import {
     invalidateAlbumPhotosCache,
     invalidateAlbumCaches,
     invalidatePhotoActivityCaches
-} from "./cache.js?v=20261001-comments-light47";
-import { closeMenu } from "./main-menu.js?v=20261001-comments-light47";
-import { openPhotoTransfer } from "./photo-transfer.js?v=20261001-comments-light47";
-import { openPhotoReorder } from "./photo-reorder.js?v=20261001-comments-light47";
-import { openVkPhoto } from "./vk-links.js?v=20261001-comments-light47";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-comments-light47";
-import { markPhotoIndexAlbumDirty, clearPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261001-comments-light47";
-import { applyLocalPhotoUpdate, applyLocalPhotoDelete } from "./photo-index-sync.js?v=20261001-comments-light47";
+} from "./cache.js?v=20261007-description-links48";
+import { closeMenu } from "./main-menu.js?v=20261007-description-links48";
+import { openPhotoTransfer } from "./photo-transfer.js?v=20261007-description-links48";
+import { openPhotoReorder } from "./photo-reorder.js?v=20261007-description-links48";
+import { openVkPhoto } from "./vk-links.js?v=20261007-description-links48";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261007-description-links48";
+import { markPhotoIndexAlbumDirty, clearPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261007-description-links48";
+import { applyLocalPhotoUpdate, applyLocalPhotoDelete } from "./photo-index-sync.js?v=20261007-description-links48";
+import { renderPhotoDescription } from "./photo-description-links.js?v=20261007-description-links48";
 
 let editOverlay = null;
 let editInput = null;
@@ -212,9 +213,7 @@ function updatePhotoEverywhere(updated) {
     if (state.currentPhoto && Number(state.currentPhoto.id) === Number(updated.id)) {
         state.currentPhoto = { ...state.currentPhoto, ...updated };
 
-        const text = String(updated.text || "");
-        dom.photoViewerDescription.textContent = text;
-        dom.photoViewerDescription.classList.toggle("hidden", !text.trim());
+        renderPhotoDescription(dom.photoViewerDescription, updated.text || "");
     }
 
     window.dispatchEvent(new CustomEvent("photo-data-updated", {
@@ -423,7 +422,7 @@ async function refreshAfterNativeDelete(detail) {
 
     if (album) {
         try {
-            const { loadPhotos } = await import("./photos.js?v=20261001-comments-light47");
+            const { loadPhotos } = await import("./photos.js?v=20261007-description-links48");
             await loadPhotos(album, { force: true });
         } catch (error) {
             console.warn("Не удалось обновить альбом после возврата из VK:", error);

@@ -1,18 +1,19 @@
-import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261001-comments-light47";
-import { state } from "./state.js?v=20261001-comments-light47";
-import { dom } from "./dom.js?v=20261001-comments-light47";
-import { vkApi } from "./vk-api.js?v=20261001-comments-light47";
-import { getBestPhotoUrl, getPhotoPreviewUrl, escapeHtml } from "./helpers.js?v=20261001-comments-light47";
-import { getOwnerId } from "./group-context.js?v=20261001-comments-light47";
+import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261007-description-links48";
+import { state } from "./state.js?v=20261007-description-links48";
+import { dom } from "./dom.js?v=20261007-description-links48";
+import { vkApi } from "./vk-api.js?v=20261007-description-links48";
+import { getBestPhotoUrl, getPhotoPreviewUrl, escapeHtml } from "./helpers.js?v=20261007-description-links48";
+import { getOwnerId } from "./group-context.js?v=20261007-description-links48";
 import {
     showPhotoViewerScreen,
     pushPhotoHistory,
     replacePhotoHistory
-} from "./navigation.js?v=20261001-comments-light47";
-import { photoCommentOwnerId } from "./photo-comment-api.js?v=20261001-comments-light47";
-import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261001-comments-light47";
-import { invalidatePhotoActivityCaches } from "./cache.js?v=20261001-comments-light47";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-comments-light47";
+} from "./navigation.js?v=20261007-description-links48";
+import { photoCommentOwnerId } from "./photo-comment-api.js?v=20261007-description-links48";
+import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261007-description-links48";
+import { invalidatePhotoActivityCaches } from "./cache.js?v=20261007-description-links48";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261007-description-links48";
+import { renderPhotoDescription } from "./photo-description-links.js?v=20261007-description-links48";
 
 const COMMENT_PAGE_SIZE = 100;
 const LONG_PRESS_MS = 900;
@@ -499,8 +500,7 @@ function setPhotoViewerImage(photo) {
 
 function renderPhotoHeader(photo) {
     setPhotoViewerImage(photo);
-    dom.photoViewerDescription.textContent = photo.text || "";
-    dom.photoViewerDescription.classList.toggle("hidden", !String(photo.text || "").trim());
+    renderPhotoDescription(dom.photoViewerDescription, photo.text || "");
 
     dom.photoViewerLikes.textContent = String(Number(photo?.likes?.count || 0));
     dom.photoViewerReposts.textContent = String(Number(photo?.reposts?.count || 0));
@@ -828,7 +828,7 @@ function openViewerPhotoContext() {
         if (!album?.id) return;
 
         try {
-            const { openAlbum } = await import("./photos.js?v=20261001-comments-light47");
+            const { openAlbum } = await import("./photos.js?v=20261007-description-links48");
             await openAlbum(album);
         } catch (error) {
             console.warn("Не удалось перейти в альбом фотографии:", error);

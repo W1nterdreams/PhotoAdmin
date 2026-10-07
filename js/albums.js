@@ -1,9 +1,9 @@
-import { state } from "./state.js?v=20261001-comments-light47";
-import { dom } from "./dom.js?v=20261001-comments-light47";
-import { vkApi } from "./vk-api.js?v=20261001-comments-light47";
-import { getAlbumCover, escapeHtml, getErrorMessage } from "./helpers.js?v=20261001-comments-light47";
-import { openAlbum, loadPhotos } from "./photos.js?v=20261001-comments-light47";
-import { CACHE_TTL } from "./config.js?v=20261001-comments-light47";
+import { state } from "./state.js?v=20261007-description-links48";
+import { dom } from "./dom.js?v=20261007-description-links48";
+import { vkApi } from "./vk-api.js?v=20261007-description-links48";
+import { getAlbumCover, escapeHtml, getErrorMessage } from "./helpers.js?v=20261007-description-links48";
+import { openAlbum, loadPhotos } from "./photos.js?v=20261007-description-links48";
+import { CACHE_TTL } from "./config.js?v=20261007-description-links48";
 import {
     cacheGet,
     cacheGetStale,
@@ -11,10 +11,10 @@ import {
     invalidateAlbumCaches,
     albumsKey,
     albumIndexKey
-} from "./cache.js?v=20261001-comments-light47";
-import { getOwnerId } from "./group-context.js?v=20261001-comments-light47";
-import { bindAlbumLongPress } from "./album-menu.js?v=20261001-comments-light47";
-import { observeAlbumFingerprints, reconcileAlbumFingerprints } from "./album-fingerprint.js?v=20261001-comments-light47";
+} from "./cache.js?v=20261007-description-links48";
+import { getOwnerId } from "./group-context.js?v=20261007-description-links48";
+import { bindAlbumLongPress } from "./album-menu.js?v=20261007-description-links48";
+import { observeAlbumFingerprints, reconcileAlbumFingerprints } from "./album-fingerprint.js?v=20261007-description-links48";
 
 const PAGE_SIZE = 1000;
 const INDEX_PAGE_SIZE = 1000;

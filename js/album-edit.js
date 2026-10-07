@@ -1,11 +1,11 @@
-import { state } from "./state.js?v=20261001-comments-light47";
-import { dom } from "./dom.js?v=20261001-comments-light47";
-import { vkApi } from "./vk-api.js?v=20261001-comments-light47";
-import { getErrorMessage } from "./helpers.js?v=20261001-comments-light47";
-import { getOwnerId, isGroupMode } from "./group-context.js?v=20261001-comments-light47";
-import { cacheSet, cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261001-comments-light47";
-import { renderAlbums } from "./albums.js?v=20261001-comments-light47";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261001-comments-light47";
+import { state } from "./state.js?v=20261007-description-links48";
+import { dom } from "./dom.js?v=20261007-description-links48";
+import { vkApi } from "./vk-api.js?v=20261007-description-links48";
+import { getErrorMessage } from "./helpers.js?v=20261007-description-links48";
+import { getOwnerId, isGroupMode } from "./group-context.js?v=20261007-description-links48";
+import { cacheSet, cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261007-description-links48";
+import { renderAlbums } from "./albums.js?v=20261007-description-links48";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261007-description-links48";
 
 let activeAlbum = null;
 let opening = false;
