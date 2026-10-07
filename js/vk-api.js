@@ -1,7 +1,7 @@
-import { VK_APP_ID, VK_API_VERSION } from "./config.js?v=20261007-description-links48";
-import { state } from "./state.js?v=20261007-description-links48";
-import { dom } from "./dom.js?v=20261007-description-links48";
-import { logError } from "./helpers.js?v=20261007-description-links48";
+import { VK_APP_ID, VK_API_VERSION } from "./config.js?v=20261007-description-links49";
+import { state } from "./state.js?v=20261007-description-links49";
+import { dom } from "./dom.js?v=20261007-description-links49";
+import { logError } from "./helpers.js?v=20261007-description-links49";
 
 let apiStats = createEmptyStats();
 

@@ -1,11 +1,11 @@
-import { state } from "./state.js?v=20261007-description-links48";
-import { vkApi } from "./vk-api.js?v=20261007-description-links48";
-import { getOwnerId } from "./group-context.js?v=20261007-description-links48";
-import { openVkTarget } from "./vk-links.js?v=20261007-description-links48";
+import { state } from "./state.js?v=20261007-description-links49";
+import { vkApi } from "./vk-api.js?v=20261007-description-links49";
+import { getOwnerId } from "./group-context.js?v=20261007-description-links49";
+import { openVkTarget } from "./vk-links.js?v=20261007-description-links49";
 import {
     armLongPressReleaseGuard,
     consumeLongPressSyntheticClick
-} from "./long-press-guard.js?v=20261007-description-links48";
+} from "./long-press-guard.js?v=20261007-description-links49";
 
 const LINK_LONG_PRESS_MS = 900;
 const MOVE_CANCEL_PX = 14;
@@ -112,7 +112,7 @@ async function openVkResourceInsidePhotoAdmin(resource) {
 
     if (resource.kind === "album") {
         const album = findAlbum(resource.albumId, resource.ownerId);
-        const { openAlbum } = await import("./photos.js?v=20261007-description-links48");
+        const { openAlbum } = await import("./photos.js?v=20261007-description-links49");
         await openAlbum(album);
         return true;
     }
@@ -126,7 +126,7 @@ async function openVkResourceInsidePhotoAdmin(resource) {
     if (!photo?.id) return false;
 
     const album = findAlbum(photo.album_id, resource.ownerId);
-    const { openPhotoViewer } = await import("./photo-viewer.js?v=20261007-description-links48");
+    const { openPhotoViewer } = await import("./photo-viewer.js?v=20261007-description-links49");
     await openPhotoViewer(photo, album, {
         photoDataFresh: true,
         viewerSource: "description-link",
@@ -203,22 +203,64 @@ function showOpenInVkConfirmation(url) {
 
     const close = () => overlay.remove();
 
-    cancel.addEventListener("click", event => {
-        if (consumeLongPressSyntheticClick(event)) return;
-        event.stopPropagation();
-        close();
-    }, true);
+    // После long press WebView иногда генерирует синтетический click уже по
+    // появившейся модалке. Глобальный guard нужен, чтобы такой click не
+    // нажал кнопку сам. Но реальный новый tap по кнопке должен срабатывать
+    // мгновенно, даже если guard ещё активен. Отличаем его по новому
+    // pointerdown, который произошёл уже на самой кнопке/overlay.
+    const bindImmediateAction = (element, action) => {
+        let freshPointerDown = false;
 
-    open.addEventListener("click", event => {
-        if (consumeLongPressSyntheticClick(event)) return;
-        event.stopPropagation();
+        element.addEventListener("pointerdown", event => {
+            if (event.pointerType === "mouse" && event.button !== 0) return;
+            freshPointerDown = true;
+            event.stopPropagation();
+        }, true);
+
+        element.addEventListener("pointercancel", () => {
+            freshPointerDown = false;
+        }, true);
+
+        element.addEventListener("click", event => {
+            const intentionalClick = freshPointerDown || event.detail === 0;
+            freshPointerDown = false;
+
+            if (!intentionalClick && consumeLongPressSyntheticClick(event)) return;
+
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+            action();
+        }, true);
+    };
+
+    bindImmediateAction(cancel, close);
+    bindImmediateAction(open, () => {
         close();
         openLinkInVk(url);
+    });
+
+    let overlayFreshPointerDown = false;
+    overlay.addEventListener("pointerdown", event => {
+        if (event.target !== overlay) return;
+        if (event.pointerType === "mouse" && event.button !== 0) return;
+        overlayFreshPointerDown = true;
+    }, true);
+
+    overlay.addEventListener("pointercancel", () => {
+        overlayFreshPointerDown = false;
     }, true);
 
     overlay.addEventListener("click", event => {
-        if (consumeLongPressSyntheticClick(event)) return;
-        if (event.target === overlay) close();
+        if (event.target !== overlay) return;
+
+        const intentionalClick = overlayFreshPointerDown || event.detail === 0;
+        overlayFreshPointerDown = false;
+        if (!intentionalClick && consumeLongPressSyntheticClick(event)) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+        close();
     }, true);
 
     modal.addEventListener("click", event => event.stopPropagation());

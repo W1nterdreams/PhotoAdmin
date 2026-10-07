@@ -1,7 +1,7 @@
-import { state } from "./state.js?v=20261007-description-links48";
-import { dom } from "./dom.js?v=20261007-description-links48";
-import { cancelPhotoMultiSelect } from "./photo-multiselect.js?v=20261007-description-links48";
-import { handleOverlayPopState } from "./overlay-history.js?v=20261007-description-links48";
+import { state } from "./state.js?v=20261007-description-links49";
+import { dom } from "./dom.js?v=20261007-description-links49";
+import { cancelPhotoMultiSelect } from "./photo-multiselect.js?v=20261007-description-links49";
+import { handleOverlayPopState } from "./overlay-history.js?v=20261007-description-links49";
 
 let openAlbumFromHistory = null;
 let openPhotoFromHistory = null;

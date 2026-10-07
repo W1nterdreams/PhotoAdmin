@@ -1,21 +1,21 @@
-import { dom } from "./dom.js?v=20261007-description-links48";
-import { state } from "./state.js?v=20261007-description-links48";
-import { vkApi } from "./vk-api.js?v=20261007-description-links48";
+import { dom } from "./dom.js?v=20261007-description-links49";
+import { state } from "./state.js?v=20261007-description-links49";
+import { vkApi } from "./vk-api.js?v=20261007-description-links49";
 import {
     escapeHtml,
     getPhotoPreviewUrl
-} from "./helpers.js?v=20261007-description-links48";
+} from "./helpers.js?v=20261007-description-links49";
 import {
     showCommentsScreen,
     pushCommentsHistory
-} from "./navigation.js?v=20261007-description-links48";
-import { getOwnerId } from "./group-context.js?v=20261007-description-links48";
-import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261007-description-links48";
-import { CACHE_TTL } from "./config.js?v=20261007-description-links48";
-import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20261007-description-links48";
-import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261007-description-links48";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261007-description-links48";
-import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261007-description-links48";
+} from "./navigation.js?v=20261007-description-links49";
+import { getOwnerId } from "./group-context.js?v=20261007-description-links49";
+import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261007-description-links49";
+import { CACHE_TTL } from "./config.js?v=20261007-description-links49";
+import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20261007-description-links49";
+import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261007-description-links49";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261007-description-links49";
+import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261007-description-links49";
 
 const ALBUM_COMMENTS_DAYS = 3;
 const PAGE_SIZE = 100;
