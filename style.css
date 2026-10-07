@@ -3700,3 +3700,44 @@ body {
         font-size: 11px;
     }
 }
+
+
+/* =========================================================
+   LINKS INSIDE PHOTO DESCRIPTION
+   ========================================================= */
+
+.photo-description-link {
+    color: #315ec7;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    cursor: pointer;
+    -webkit-touch-callout: none;
+}
+
+.photo-description-link:hover {
+    color: #24479a;
+}
+
+.photo-description-link:active {
+    opacity: 0.68;
+}
+
+.description-link-confirm-modal {
+    width: min(430px, 100%);
+}
+
+.description-link-confirm-url {
+    margin-top: 14px;
+    padding: 11px 12px;
+    border: 1px solid var(--app-border, #e2e5e9);
+    border-radius: 10px;
+    background: #fffafa;
+    color: var(--app-muted, #666a70);
+    font-size: 13px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
