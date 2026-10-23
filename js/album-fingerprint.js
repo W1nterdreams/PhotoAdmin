@@ -1,4 +1,4 @@
-import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261007-description-links49";
+import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261023-search-keyboard50";
 
 const FINGERPRINT_PREFIX = "vk-photo-manager:album-fingerprints:v1:";
 const SCHEMA = 1;

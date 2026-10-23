@@ -1,16 +1,16 @@
-import { state } from "./state.js?v=20261007-description-links49";
-import { vkApi } from "./vk-api.js?v=20261007-description-links49";
-import { getAlbumCover, getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20261007-description-links49";
-import { getOwnerId } from "./group-context.js?v=20261007-description-links49";
+import { state } from "./state.js?v=20261023-search-keyboard50";
+import { vkApi } from "./vk-api.js?v=20261023-search-keyboard50";
+import { getAlbumCover, getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20261023-search-keyboard50";
+import { getOwnerId } from "./group-context.js?v=20261023-search-keyboard50";
 import {
     invalidateAlbumCaches,
     invalidateAlbumPhotosCache,
     invalidateCommentCaches
-} from "./cache.js?v=20261007-description-links49";
-import { openVkTarget, openVkPhoto } from "./vk-links.js?v=20261007-description-links49";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261007-description-links49";
-import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261007-description-links49";
-import { applyLocalPhotoMove } from "./photo-index-sync.js?v=20261007-description-links49";
+} from "./cache.js?v=20261023-search-keyboard50";
+import { openVkTarget, openVkPhoto } from "./vk-links.js?v=20261023-search-keyboard50";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261023-search-keyboard50";
+import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261023-search-keyboard50";
+import { applyLocalPhotoMove } from "./photo-index-sync.js?v=20261023-search-keyboard50";
 
 const ALBUM_PAGE_SIZE = 100;
 const MAX_ALBUM_PAGES = 200;
@@ -136,6 +136,9 @@ function installStyles() {
             margin-right: 8px;
             font-size: 17px;
             opacity: 0.7;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .photo-transfer-search {

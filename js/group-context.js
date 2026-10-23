@@ -1,5 +1,5 @@
-import { state } from "./state.js?v=20261007-description-links49";
-import { ALLOW_USERS, ALLOWED_GROUP_IDS } from "./config.js?v=20261007-description-links49";
+import { state } from "./state.js?v=20261023-search-keyboard50";
+import { ALLOW_USERS, ALLOWED_GROUP_IDS } from "./config.js?v=20261023-search-keyboard50";
 
 let lastAccessDiagnostic = null;
 

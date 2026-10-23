@@ -1,12 +1,12 @@
-import { state } from "./state.js?v=20261007-description-links49";
-import { vkApi } from "./vk-api.js?v=20261007-description-links49";
-import { getOwnerId } from "./group-context.js?v=20261007-description-links49";
-import { getPhotoPreviewUrl, getErrorMessage } from "./helpers.js?v=20261007-description-links49";
-import { ensureAlbumIndex } from "./albums.js?v=20261007-description-links49";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261007-description-links49";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261007-description-links49";
-import { getPhotoIndexSnapshot } from "./photo-index-db.js?v=20261007-description-links49";
-import { synchronizePhotoIndex } from "./photo-index-sync.js?v=20261007-description-links49";
+import { state } from "./state.js?v=20261023-search-keyboard50";
+import { vkApi } from "./vk-api.js?v=20261023-search-keyboard50";
+import { getOwnerId } from "./group-context.js?v=20261023-search-keyboard50";
+import { getPhotoPreviewUrl, getErrorMessage } from "./helpers.js?v=20261023-search-keyboard50";
+import { ensureAlbumIndex } from "./albums.js?v=20261023-search-keyboard50";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261023-search-keyboard50";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261023-search-keyboard50";
+import { getPhotoIndexSnapshot } from "./photo-index-db.js?v=20261023-search-keyboard50";
+import { synchronizePhotoIndex } from "./photo-index-sync.js?v=20261023-search-keyboard50";
 
 const SEARCH_RESULTS_PAGE_SIZE = 100;
 const FALLBACK_PAGE_SIZE = 200;
@@ -129,6 +129,13 @@ function installStyles() {
             border: 1px solid var(--app-border);
             border-radius: 16px;
             background: #fffafa;
+        }
+
+        .global-photo-search-search-icon {
+            flex: 0 0 auto;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .global-photo-search-box input {
@@ -616,7 +623,7 @@ function ensureUi() {
 
     const controls = create("div", "global-photo-search-controls");
     const box = create("div", "global-photo-search-box");
-    box.appendChild(create("span", "", "🔎"));
+    box.appendChild(create("span", "global-photo-search-search-icon", "🔎"));
     input = create("input");
     input.type = "search";
     input.placeholder = "Поиск по описанию во всех альбомах…";

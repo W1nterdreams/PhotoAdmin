@@ -1,21 +1,21 @@
-import { dom } from "./dom.js?v=20261007-description-links49";
-import { state } from "./state.js?v=20261007-description-links49";
-import { vkApi } from "./vk-api.js?v=20261007-description-links49";
+import { dom } from "./dom.js?v=20261023-search-keyboard50";
+import { state } from "./state.js?v=20261023-search-keyboard50";
+import { vkApi } from "./vk-api.js?v=20261023-search-keyboard50";
 import {
     escapeHtml,
     getPhotoPreviewUrl
-} from "./helpers.js?v=20261007-description-links49";
+} from "./helpers.js?v=20261023-search-keyboard50";
 import {
     showCommentsScreen,
     pushCommentsHistory
-} from "./navigation.js?v=20261007-description-links49";
-import { getOwnerId } from "./group-context.js?v=20261007-description-links49";
-import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261007-description-links49";
-import { CACHE_TTL } from "./config.js?v=20261007-description-links49";
-import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20261007-description-links49";
-import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261007-description-links49";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261007-description-links49";
-import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261007-description-links49";
+} from "./navigation.js?v=20261023-search-keyboard50";
+import { getOwnerId } from "./group-context.js?v=20261023-search-keyboard50";
+import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261023-search-keyboard50";
+import { CACHE_TTL } from "./config.js?v=20261023-search-keyboard50";
+import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20261023-search-keyboard50";
+import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261023-search-keyboard50";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261023-search-keyboard50";
+import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261023-search-keyboard50";
 
 const ALBUM_COMMENTS_DAYS = 3;
 const PAGE_SIZE = 100;

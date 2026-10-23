@@ -1,11 +1,11 @@
-import { state } from "./state.js?v=20261007-description-links49";
-import { vkApi } from "./vk-api.js?v=20261007-description-links49";
-import { getOwnerId } from "./group-context.js?v=20261007-description-links49";
-import { openVkTarget } from "./vk-links.js?v=20261007-description-links49";
+import { state } from "./state.js?v=20261023-search-keyboard50";
+import { vkApi } from "./vk-api.js?v=20261023-search-keyboard50";
+import { getOwnerId } from "./group-context.js?v=20261023-search-keyboard50";
+import { openVkTarget } from "./vk-links.js?v=20261023-search-keyboard50";
 import {
     armLongPressReleaseGuard,
     consumeLongPressSyntheticClick
-} from "./long-press-guard.js?v=20261007-description-links49";
+} from "./long-press-guard.js?v=20261023-search-keyboard50";
 
 const LINK_LONG_PRESS_MS = 900;
 const MOVE_CANCEL_PX = 14;
@@ -112,7 +112,7 @@ async function openVkResourceInsidePhotoAdmin(resource) {
 
     if (resource.kind === "album") {
         const album = findAlbum(resource.albumId, resource.ownerId);
-        const { openAlbum } = await import("./photos.js?v=20261007-description-links49");
+        const { openAlbum } = await import("./photos.js?v=20261023-search-keyboard50");
         await openAlbum(album);
         return true;
     }
@@ -126,7 +126,7 @@ async function openVkResourceInsidePhotoAdmin(resource) {
     if (!photo?.id) return false;
 
     const album = findAlbum(photo.album_id, resource.ownerId);
-    const { openPhotoViewer } = await import("./photo-viewer.js?v=20261007-description-links49");
+    const { openPhotoViewer } = await import("./photo-viewer.js?v=20261023-search-keyboard50");
     await openPhotoViewer(photo, album, {
         photoDataFresh: true,
         viewerSource: "description-link",
