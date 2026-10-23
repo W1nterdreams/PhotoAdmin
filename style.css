@@ -465,6 +465,9 @@ img {
     flex: 0 0 auto;
 
     margin-right: 8px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 
     font-size: 17px;
 
