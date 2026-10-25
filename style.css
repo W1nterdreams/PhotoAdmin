@@ -3760,3 +3760,43 @@ body {
     box-shadow: inset 3px 0 0 rgba(226, 168, 74, 0.78), 0 2px 8px rgba(24, 27, 31, 0.035);
 }
 
+
+
+/* Действия над комментарием: ответ и локальная отметка «Прочитано». */
+.comment-action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+
+.comment-mark-read-link {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #737b85;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.comment-mark-read-link:active {
+    opacity: 0.7;
+}
+
+.comment-mark-read-link:disabled {
+    opacity: 0.45;
+    cursor: wait;
+}
+
+#photoViewerScreen .comment-mark-read-link {
+    color: #737b85;
+}
+
+#photoViewerScreen .photo-viewer-comment-actions.comment-action-buttons {
+    justify-content: flex-start;
+}
