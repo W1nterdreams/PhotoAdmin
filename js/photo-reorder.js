@@ -1,13 +1,13 @@
-import { state } from "./state.js?v=20261023-search-keyboard50";
-import { vkApi } from "./vk-api.js?v=20261023-search-keyboard50";
-import { getPhotoPreviewUrl, getErrorMessage } from "./helpers.js?v=20261023-search-keyboard50";
-import { getOwnerId } from "./group-context.js?v=20261023-search-keyboard50";
+import { state } from "./state.js?v=20261025-unanswered-priority52";
+import { vkApi } from "./vk-api.js?v=20261025-unanswered-priority52";
+import { getPhotoPreviewUrl, getErrorMessage } from "./helpers.js?v=20261025-unanswered-priority52";
+import { getOwnerId } from "./group-context.js?v=20261025-unanswered-priority52";
 import {
     cacheSet,
     albumPhotosKey,
     invalidateAlbumPhotosCache
-} from "./cache.js?v=20261023-search-keyboard50";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261023-search-keyboard50";
+} from "./cache.js?v=20261025-unanswered-priority52";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261025-unanswered-priority52";
 
 const PAGE_SIZE = 1000;
 
@@ -341,7 +341,7 @@ function hideModalDirect() {
         window.setTimeout(async () => {
             try {
                 if (!state.currentAlbum || Number(state.currentAlbum.id) !== Number(albumToRefresh.id)) return;
-                const { loadPhotos } = await import("./photos.js?v=20261023-search-keyboard50");
+                const { loadPhotos } = await import("./photos.js?v=20261025-unanswered-priority52");
                 await loadPhotos(albumToRefresh, { force: true });
             } catch (error) {
                 console.warn("Не удалось обновить альбом после режима порядка:", error);
@@ -589,7 +589,7 @@ async function redrawCurrentAlbum(albumId) {
     if (!state.currentAlbum || Number(state.currentAlbum.id) !== Number(albumId)) return;
 
     try {
-        const { setPhotoDateSort } = await import("./photos.js?v=20261023-search-keyboard50");
+        const { setPhotoDateSort } = await import("./photos.js?v=20261025-unanswered-priority52");
         setPhotoDateSort("vk");
     } catch (error) {
         console.warn("Не удалось перерисовать альбом после перестановки:", error);

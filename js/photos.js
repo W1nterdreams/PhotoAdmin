@@ -1,21 +1,21 @@
-import { state } from "./state.js?v=20261023-search-keyboard50";
-import { dom } from "./dom.js?v=20261023-search-keyboard50";
-import { vkApi } from "./vk-api.js?v=20261023-search-keyboard50";
-import { getPhotoPreviewUrl, escapeHtml, getErrorMessage } from "./helpers.js?v=20261023-search-keyboard50";
-import { showPhotosScreen, pushAlbumHistory } from "./navigation.js?v=20261023-search-keyboard50";
-import { CACHE_TTL } from "./config.js?v=20261023-search-keyboard50";
-import { cacheGet, cacheGetStale, cacheSet, albumPhotosKey } from "./cache.js?v=20261023-search-keyboard50";
-import { getOwnerId } from "./group-context.js?v=20261023-search-keyboard50";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261023-search-keyboard50";
-import { bindPhotoContextLongPress } from "./photo-context-menu.js?v=20261023-search-keyboard50";
-import { syncPhotoIndexAlbumIfDirty } from "./photo-index-sync.js?v=20261023-search-keyboard50";
-import { getDirtyPhotoIndexAlbums } from "./photo-index-db.js?v=20261023-search-keyboard50";
+import { state } from "./state.js?v=20261025-unanswered-priority52";
+import { dom } from "./dom.js?v=20261025-unanswered-priority52";
+import { vkApi } from "./vk-api.js?v=20261025-unanswered-priority52";
+import { getPhotoPreviewUrl, escapeHtml, getErrorMessage } from "./helpers.js?v=20261025-unanswered-priority52";
+import { showPhotosScreen, pushAlbumHistory } from "./navigation.js?v=20261025-unanswered-priority52";
+import { CACHE_TTL } from "./config.js?v=20261025-unanswered-priority52";
+import { cacheGet, cacheGetStale, cacheSet, albumPhotosKey } from "./cache.js?v=20261025-unanswered-priority52";
+import { getOwnerId } from "./group-context.js?v=20261025-unanswered-priority52";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261025-unanswered-priority52";
+import { bindPhotoContextLongPress } from "./photo-context-menu.js?v=20261025-unanswered-priority52";
+import { syncPhotoIndexAlbumIfDirty } from "./photo-index-sync.js?v=20261025-unanswered-priority52";
+import { getDirtyPhotoIndexAlbums } from "./photo-index-db.js?v=20261025-unanswered-priority52";
 import {
     isPhotoMultiSelectActive,
     isPhotoSelected,
     togglePhotoSelection,
     cancelPhotoMultiSelect
-} from "./photo-multiselect.js?v=20261023-search-keyboard50";
+} from "./photo-multiselect.js?v=20261025-unanswered-priority52";
 
 const PAGE_SIZE = 240;
 const SORT_FETCH_SIZE = 1000;

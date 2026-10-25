@@ -1,8 +1,8 @@
-import { getOwnerId } from "./group-context.js?v=20261023-search-keyboard50";
-import { openVkTarget } from "./vk-links.js?v=20261023-search-keyboard50";
-import { loadAlbums } from "./albums.js?v=20261023-search-keyboard50";
-import { invalidateAlbumCaches, invalidateCommentCaches } from "./cache.js?v=20261023-search-keyboard50";
-import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261023-search-keyboard50";
+import { getOwnerId } from "./group-context.js?v=20261025-unanswered-priority52";
+import { openVkTarget } from "./vk-links.js?v=20261025-unanswered-priority52";
+import { loadAlbums } from "./albums.js?v=20261025-unanswered-priority52";
+import { invalidateAlbumCaches, invalidateCommentCaches } from "./cache.js?v=20261025-unanswered-priority52";
+import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261025-unanswered-priority52";
 
 let waitingForVkReturn = false;
 let refreshingAfterReturn = false;

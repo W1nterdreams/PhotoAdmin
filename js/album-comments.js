@@ -1,21 +1,21 @@
-import { dom } from "./dom.js?v=20261023-search-keyboard50";
-import { state } from "./state.js?v=20261023-search-keyboard50";
-import { vkApi } from "./vk-api.js?v=20261023-search-keyboard50";
+import { dom } from "./dom.js?v=20261025-unanswered-priority52";
+import { state } from "./state.js?v=20261025-unanswered-priority52";
+import { vkApi } from "./vk-api.js?v=20261025-unanswered-priority52";
 import {
     escapeHtml,
     getPhotoPreviewUrl
-} from "./helpers.js?v=20261023-search-keyboard50";
+} from "./helpers.js?v=20261025-unanswered-priority52";
 import {
     showCommentsScreen,
     pushCommentsHistory
-} from "./navigation.js?v=20261023-search-keyboard50";
-import { getOwnerId } from "./group-context.js?v=20261023-search-keyboard50";
-import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261023-search-keyboard50";
-import { CACHE_TTL } from "./config.js?v=20261023-search-keyboard50";
-import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20261023-search-keyboard50";
-import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261023-search-keyboard50";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261023-search-keyboard50";
-import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261023-search-keyboard50";
+} from "./navigation.js?v=20261025-unanswered-priority52";
+import { getOwnerId } from "./group-context.js?v=20261025-unanswered-priority52";
+import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261025-unanswered-priority52";
+import { CACHE_TTL } from "./config.js?v=20261025-unanswered-priority52";
+import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20261025-unanswered-priority52";
+import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261025-unanswered-priority52";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261025-unanswered-priority52";
+import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261025-unanswered-priority52";
 
 const ALBUM_COMMENTS_DAYS = 3;
 const PAGE_SIZE = 100;
@@ -79,8 +79,24 @@ function threadParentIds(comment) {
 }
 
 function firstThreadParentId(comment) {
-    const ids = threadParentIds(comment);
-    return ids.length ? ids[ids.length - 1] : null;
+    // parents_stack с несколькими элементами содержит вложенную цепочку;
+    // последний элемент в таком случае — ближайший родитель. Если VK вернул
+    // только корень в parents_stack, но отдельно указал reply_to_comment,
+    // предпочитаем прямую ссылку на комментарий.
+    const stack = Array.isArray(comment?.parents_stack) ? comment.parents_stack : [];
+    if (stack.length > 1) {
+        const id = Number(stack[stack.length - 1] || 0);
+        if (id > 0) return id;
+    }
+
+    const direct = Number(comment?.reply_to_comment || comment?.reply_to_comment_id || 0);
+    if (direct > 0) return direct;
+
+    const stored = Number(comment?._parent_comment_id || 0);
+    if (stored > 0) return stored;
+
+    const fromStack = Number(stack[stack.length - 1] || 0);
+    return fromStack > 0 ? fromStack : null;
 }
 
 function mentionedAuthorId(text) {
@@ -134,23 +150,54 @@ function orderDecoratedCommentThreads(items) {
     }
 
     const activityMemo = new Map();
-    function latestActivity(comment) {
+    function latestActivity(comment, visiting = new Set()) {
         const key = nodeKey(comment);
         if (key && activityMemo.has(key)) return activityMemo.get(key);
+        // Защита от некорректной циклической связи в данных API.
+        if (key && visiting.has(key)) return Number(comment?.date || 0);
 
+        const nextVisiting = new Set(visiting);
+        if (key) nextVisiting.add(key);
         let latest = Number(comment?.date || 0);
         if (key) {
             for (const child of children.get(key) || []) {
-                latest = Math.max(latest, latestActivity(child));
+                latest = Math.max(latest, latestActivity(child, nextVisiting));
             }
             activityMemo.set(key, latest);
         }
         return latest;
     }
 
-    // Сверху остаются самые свежие ветки, но внутри каждой ветки порядок
-    // естественный: сначала вопрос/комментарий покупателя, затем ответы.
-    roots.sort((a, b) => latestActivity(b) - latestActivity(a));
+    const unansweredMemo = new Map();
+    function threadHasUnanswered(comment, visiting = new Set()) {
+        const key = nodeKey(comment);
+        if (key && unansweredMemo.has(key)) return unansweredMemo.get(key);
+        // Не даём циклическим parent-ссылкам зациклить обход ветки.
+        if (key && visiting.has(key)) return Boolean(comment?._unanswered);
+
+        const nextVisiting = new Set(visiting);
+        if (key) nextVisiting.add(key);
+        let hasUnanswered = Boolean(comment?._unanswered);
+        if (key && !hasUnanswered) {
+            for (const child of children.get(key) || []) {
+                if (threadHasUnanswered(child, nextVisiting)) {
+                    hasUnanswered = true;
+                    break;
+                }
+            }
+        }
+        if (key) unansweredMemo.set(key, hasUnanswered);
+        return hasUnanswered;
+    }
+
+    // Сначала идут ветки с сообщениями покупателей без ответа. Внутри обеих
+    // групп порядок определяется временем последней активности: новые выше.
+    // Порядок сообщений внутри каждой ветки остаётся хронологическим.
+    roots.sort((a, b) => {
+        const unansweredOrder = Number(threadHasUnanswered(b)) - Number(threadHasUnanswered(a));
+        if (unansweredOrder) return unansweredOrder;
+        return latestActivity(b) - latestActivity(a);
+    });
 
     const ordered = [];
     const visited = new Set();
@@ -196,17 +243,20 @@ function decorateCommentThreads(items) {
             const comment = group[i];
             let parentId = firstThreadParentId(comment);
 
-            if (!parentId) {
-                const targetAuthorId = mentionedAuthorId(comment?.text);
-                if (targetAuthorId) {
-                    for (let j = i + 1; j < group.length; j += 1) {
-                        const candidate = group[j];
-                        if (Number(candidate?.from_id || 0) !== targetAuthorId) continue;
-                        const candidateId = commentId(candidate);
-                        if (!candidateId) continue;
-                        parentId = candidateId;
-                        break;
-                    }
+            // В VK reply_to_comment иногда указывает на корень ветки, даже
+            // когда текст явно отвечает на более позднее сообщение. Если
+            // parents_stack не содержит полной вложенной цепочки, используем
+            // начальное VK-упоминание, чтобы найти ближайшее сообщение автора.
+            const stack = Array.isArray(comment?.parents_stack) ? comment.parents_stack : [];
+            const targetAuthorId = mentionedAuthorId(comment?.text);
+            if (targetAuthorId && stack.length <= 1) {
+                for (let j = i + 1; j < group.length; j += 1) {
+                    const candidate = group[j];
+                    if (Number(candidate?.from_id || 0) !== targetAuthorId) continue;
+                    const candidateId = commentId(candidate);
+                    if (!candidateId) continue;
+                    parentId = candidateId;
+                    break;
                 }
             }
 
@@ -214,17 +264,14 @@ function decorateCommentThreads(items) {
             comment._is_reply = Boolean(parentId);
         }
 
-        // Собираем все comment_id, на которые уже есть ответ. parents_stack
-        // учитываем полностью, чтобы корень ветки тоже считался отвеченным.
-        const answered = new Set();
-        for (const comment of group) {
-            for (const id of threadParentIds(comment)) answered.add(String(id));
-            if (comment._parent_comment_id) answered.add(String(comment._parent_comment_id));
-        }
-
         const currentUserId = Number(state.currentUser?.id || 0);
         const communityOwnerId = Number(getOwnerId() || 0);
+        const adminAnswered = new Set();
+        const ownById = new Map();
 
+        // Ответ считается закрывающим конкретное сообщение только тогда,
+        // когда ответил текущий администратор/сообщество. Ответ покупателя
+        // не должен скрывать плашку у его нового сообщения.
         for (const comment of group) {
             const id = commentId(comment);
             const authorId = Number(comment?.from_id || 0);
@@ -232,12 +279,22 @@ function decorateCommentThreads(items) {
                 (currentUserId && authorId === currentUserId) ||
                 (communityOwnerId && authorId === communityOwnerId)
             );
+            if (id) ownById.set(String(id), ownComment);
+            if (!ownComment) continue;
 
+            for (const parentId of threadParentIds(comment)) adminAnswered.add(String(parentId));
+            if (comment._parent_comment_id) adminAnswered.add(String(comment._parent_comment_id));
+        }
+
+        for (const comment of group) {
+            const id = commentId(comment);
+            if (!id) {
+                comment._unanswered = false;
+                continue;
+            }
+            const ownComment = ownById.get(String(id)) || false;
             comment._unanswered = Boolean(
-                !comment._is_reply &&
-                id &&
-                !ownComment &&
-                !answered.has(String(id))
+                !ownComment && !adminAnswered.has(String(id))
             );
         }
     }

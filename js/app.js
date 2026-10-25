@@ -1,30 +1,30 @@
-import { dom } from "./dom.js?v=20261023-search-keyboard50";
-import { vkInit, loadUser, getAccessToken } from "./vk-api.js?v=20261023-search-keyboard50";
+import { dom } from "./dom.js?v=20261025-unanswered-priority52";
+import { vkInit, loadUser, getAccessToken } from "./vk-api.js?v=20261025-unanswered-priority52";
 import {
     AppAccessDeniedError,
     precheckLaunchAccess,
     initOwnerContext
-} from "./group-context.js?v=20261023-search-keyboard50";
-import { initAlbums, loadAlbums } from "./albums.js?v=20261023-search-keyboard50";
-import { openAlbum } from "./photos.js?v=20261023-search-keyboard50";
-import { initMainMenu } from "./main-menu.js?v=20261023-search-keyboard50";
-import { initAlbumCreate } from "./album-create.js?v=20261023-search-keyboard50";
-import { initAlbumEdit } from "./album-edit.js?v=20261023-search-keyboard50";
-import { initAlbumDelete } from "./album-delete.js?v=20261023-search-keyboard50";
-import { initAlbumReorder } from "./album-reorder.js?v=20261023-search-keyboard50";
-import { initComments } from "./comments.js?v=20261023-search-keyboard50";
-import { initAlbumComments } from "./album-comments.js?v=20261023-search-keyboard50";
-import { initPhotoViewer, openPhotoViewer } from "./photo-viewer.js?v=20261023-search-keyboard50";
-import { initPhotoUpload } from "./photo-upload.js?v=20261023-search-keyboard50";
-import { initPhotoMenu } from "./photo-menu.js?v=20261023-search-keyboard50";
-import { initPhotoTransfer } from "./photo-transfer.js?v=20261023-search-keyboard50";
-import { initPhotoReorder } from "./photo-reorder.js?v=20261023-search-keyboard50";
-import { initNavigation, showAlbumsScreen } from "./navigation.js?v=20261023-search-keyboard50";
-import { escapeHtml, getErrorMessage, logError } from "./helpers.js?v=20261023-search-keyboard50";
-import { cleanupLegacyCache } from "./cache.js?v=20261023-search-keyboard50";
-import { initGlobalPhotoSearch } from "./global-photo-search.js?v=20261023-search-keyboard50";
-import { initPhotoIndexSync } from "./photo-index-sync.js?v=20261023-search-keyboard50";
-import { initSearchKeyboardDismiss } from "./search-keyboard.js?v=20261023-search-keyboard50";
+} from "./group-context.js?v=20261025-unanswered-priority52";
+import { initAlbums, loadAlbums } from "./albums.js?v=20261025-unanswered-priority52";
+import { openAlbum } from "./photos.js?v=20261025-unanswered-priority52";
+import { initMainMenu } from "./main-menu.js?v=20261025-unanswered-priority52";
+import { initAlbumCreate } from "./album-create.js?v=20261025-unanswered-priority52";
+import { initAlbumEdit } from "./album-edit.js?v=20261025-unanswered-priority52";
+import { initAlbumDelete } from "./album-delete.js?v=20261025-unanswered-priority52";
+import { initAlbumReorder } from "./album-reorder.js?v=20261025-unanswered-priority52";
+import { initComments } from "./comments.js?v=20261025-unanswered-priority52";
+import { initAlbumComments } from "./album-comments.js?v=20261025-unanswered-priority52";
+import { initPhotoViewer, openPhotoViewer } from "./photo-viewer.js?v=20261025-unanswered-priority52";
+import { initPhotoUpload } from "./photo-upload.js?v=20261025-unanswered-priority52";
+import { initPhotoMenu } from "./photo-menu.js?v=20261025-unanswered-priority52";
+import { initPhotoTransfer } from "./photo-transfer.js?v=20261025-unanswered-priority52";
+import { initPhotoReorder } from "./photo-reorder.js?v=20261025-unanswered-priority52";
+import { initNavigation, showAlbumsScreen } from "./navigation.js?v=20261025-unanswered-priority52";
+import { escapeHtml, getErrorMessage, logError } from "./helpers.js?v=20261025-unanswered-priority52";
+import { cleanupLegacyCache } from "./cache.js?v=20261025-unanswered-priority52";
+import { initGlobalPhotoSearch } from "./global-photo-search.js?v=20261025-unanswered-priority52";
+import { initPhotoIndexSync } from "./photo-index-sync.js?v=20261025-unanswered-priority52";
+import { initSearchKeyboardDismiss } from "./search-keyboard.js?v=20261025-unanswered-priority52";
 
 function setAppInteractive(enabled) {
     const app = document.getElementById("app");

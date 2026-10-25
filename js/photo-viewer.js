@@ -1,19 +1,19 @@
-import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261023-search-keyboard50";
-import { state } from "./state.js?v=20261023-search-keyboard50";
-import { dom } from "./dom.js?v=20261023-search-keyboard50";
-import { vkApi } from "./vk-api.js?v=20261023-search-keyboard50";
-import { getBestPhotoUrl, getPhotoPreviewUrl, escapeHtml } from "./helpers.js?v=20261023-search-keyboard50";
-import { getOwnerId } from "./group-context.js?v=20261023-search-keyboard50";
+import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261025-unanswered-priority52";
+import { state } from "./state.js?v=20261025-unanswered-priority52";
+import { dom } from "./dom.js?v=20261025-unanswered-priority52";
+import { vkApi } from "./vk-api.js?v=20261025-unanswered-priority52";
+import { getBestPhotoUrl, getPhotoPreviewUrl, escapeHtml } from "./helpers.js?v=20261025-unanswered-priority52";
+import { getOwnerId } from "./group-context.js?v=20261025-unanswered-priority52";
 import {
     showPhotoViewerScreen,
     pushPhotoHistory,
     replacePhotoHistory
-} from "./navigation.js?v=20261023-search-keyboard50";
-import { photoCommentOwnerId } from "./photo-comment-api.js?v=20261023-search-keyboard50";
-import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261023-search-keyboard50";
-import { invalidatePhotoActivityCaches } from "./cache.js?v=20261023-search-keyboard50";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261023-search-keyboard50";
-import { renderPhotoDescription } from "./photo-description-links.js?v=20261023-search-keyboard50";
+} from "./navigation.js?v=20261025-unanswered-priority52";
+import { photoCommentOwnerId } from "./photo-comment-api.js?v=20261025-unanswered-priority52";
+import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261025-unanswered-priority52";
+import { invalidatePhotoActivityCaches } from "./cache.js?v=20261025-unanswered-priority52";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261025-unanswered-priority52";
+import { renderPhotoDescription } from "./photo-description-links.js?v=20261025-unanswered-priority52";
 
 const COMMENT_PAGE_SIZE = 100;
 const LONG_PRESS_MS = 900;
@@ -68,11 +68,53 @@ function commentKey(comment) {
 
 function parentCommentId(comment) {
     const stack = Array.isArray(comment?.parents_stack) ? comment.parents_stack : [];
-    const fromStack = Number(stack[stack.length - 1] || 0);
-    if (fromStack > 0) return fromStack;
+    if (stack.length > 1) {
+        const fromStack = Number(stack[stack.length - 1] || 0);
+        if (fromStack > 0) return fromStack;
+    }
 
     const direct = Number(comment?.reply_to_comment || comment?.reply_to_comment_id || 0);
-    return direct > 0 ? direct : null;
+    if (direct > 0) return direct;
+
+    const fromStack = Number(stack[stack.length - 1] || 0);
+    return fromStack > 0 ? fromStack : null;
+}
+
+function mentionedAuthorId(text) {
+    const match = String(text || "").match(/^\s*\[((?:id|club|public))(\d+)\|[^\]]+\]/i);
+    if (!match) return null;
+
+    const id = Number(match[2] || 0);
+    if (!id) return null;
+    return match[1].toLowerCase() === "id" ? id : -Math.abs(id);
+}
+
+function inferViewerCommentParents(items) {
+    const list = Array.isArray(items) ? items : [];
+    const newestFirst = [...list].sort((a, b) => Number(b?.date || 0) - Number(a?.date || 0));
+
+    for (let i = 0; i < newestFirst.length; i += 1) {
+        const comment = newestFirst[i];
+        const stack = Array.isArray(comment?.parents_stack) ? comment.parents_stack : [];
+        if (stack.length > 1) continue; // Полную цепочку VK считаем достоверной.
+
+        const targetAuthorId = mentionedAuthorId(comment?.text);
+        if (!targetAuthorId) continue;
+
+        // В некоторых ответах VK сообщает только ID корня ветки. Начальное
+        // упоминание позволяет связать ответ с конкретным сообщением внутри неё.
+        for (let j = i + 1; j < newestFirst.length; j += 1) {
+            const candidate = newestFirst[j];
+            if (Number(candidate?.from_id || 0) !== targetAuthorId) continue;
+            const candidateId = commentId(candidate);
+            if (!candidateId) continue;
+            comment._parent_comment_id = candidateId;
+            comment._is_reply = true;
+            break;
+        }
+    }
+
+    return list;
 }
 
 function normalizeCommentForThread(comment, forcedParentId = null) {
@@ -200,7 +242,7 @@ async function fetchAllComments(photo) {
         offset += items.length;
     }
 
-    comments = flattenComments(collected);
+    comments = inferViewerCommentParents(flattenComments(collected));
     await loadMissingAuthors(comments);
 
     if (activePhoto && Number(activePhoto.id) === photoId) {
@@ -507,7 +549,7 @@ function renderPhotoHeader(photo) {
 }
 
 
-function orderViewerCommentsByThread(items) {
+function orderViewerCommentsByThread(items, unansweredIds = new Set()) {
     const list = Array.isArray(items) ? items : [];
     const byId = new Map();
     for (const comment of list) {
@@ -529,10 +571,58 @@ function orderViewerCommentsByThread(items) {
         }
     }
 
-    roots.sort((a, b) => Number(a?.date || 0) - Number(b?.date || 0));
     for (const group of children.values()) {
         group.sort((a, b) => Number(a?.date || 0) - Number(b?.date || 0));
     }
+
+    const activityMemo = new Map();
+    function latestActivity(comment, visiting = new Set()) {
+        const id = commentId(comment);
+        const key = id ? String(id) : null;
+        if (key && activityMemo.has(key)) return activityMemo.get(key);
+        if (key && visiting.has(key)) return Number(comment?.date || 0);
+
+        const nextVisiting = new Set(visiting);
+        if (key) nextVisiting.add(key);
+        let latest = Number(comment?.date || 0);
+        if (key) {
+            for (const child of children.get(key) || []) {
+                latest = Math.max(latest, latestActivity(child, nextVisiting));
+            }
+            activityMemo.set(key, latest);
+        }
+        return latest;
+    }
+
+    const unansweredMemo = new Map();
+    function threadHasUnanswered(comment, visiting = new Set()) {
+        const id = commentId(comment);
+        const key = id ? String(id) : null;
+        if (key && unansweredMemo.has(key)) return unansweredMemo.get(key);
+        if (key && visiting.has(key)) return unansweredIds.has(key);
+
+        const nextVisiting = new Set(visiting);
+        if (key) nextVisiting.add(key);
+        let hasUnanswered = Boolean(key && unansweredIds.has(key));
+        if (key && !hasUnanswered) {
+            for (const child of children.get(key) || []) {
+                if (threadHasUnanswered(child, nextVisiting)) {
+                    hasUnanswered = true;
+                    break;
+                }
+            }
+        }
+        if (key) unansweredMemo.set(key, hasUnanswered);
+        return hasUnanswered;
+    }
+
+    // Нерешённые ветки поднимаются выше; внутри каждой группы новые ветки
+    // идут первыми. Ответы внутри ветки по-прежнему отображаются по времени.
+    roots.sort((a, b) => {
+        const unansweredOrder = Number(threadHasUnanswered(b)) - Number(threadHasUnanswered(a));
+        if (unansweredOrder) return unansweredOrder;
+        return latestActivity(b) - latestActivity(a);
+    });
 
     const ordered = [];
     const visited = new Set();
@@ -555,13 +645,27 @@ function orderViewerCommentsByThread(items) {
 }
 
 function unansweredPhotoCommentIds(items) {
-    const answered = new Set();
+    const list = Array.isArray(items) ? items : [];
+    const currentUserId = Number(state.currentUser?.id || 0);
+    const communityOwnerId = Number(getOwnerId() || 0);
+    const isOwnComment = comment => {
+        const authorId = Number(comment?.from_id || 0);
+        return Boolean(
+            (currentUserId && authorId === currentUserId) ||
+            (communityOwnerId && authorId === communityOwnerId)
+        );
+    };
+    const adminAnswered = new Set();
 
-    for (const comment of Array.isArray(items) ? items : []) {
+    // Не любой ответ закрывает вопрос: покупатель тоже может писать в ветку.
+    // Снимаем отметку только с тех сообщений, на которые ответил администратор.
+    for (const comment of list) {
+        if (!isOwnComment(comment)) continue;
+
         const stack = Array.isArray(comment?.parents_stack) ? comment.parents_stack : [];
         for (const raw of stack) {
             const id = Number(raw || 0);
-            if (id > 0) answered.add(String(id));
+            if (id > 0) adminAnswered.add(String(id));
         }
 
         const parent = Number(
@@ -570,21 +674,13 @@ function unansweredPhotoCommentIds(items) {
             comment?.reply_to_comment_id ||
             0
         );
-        if (parent > 0) answered.add(String(parent));
+        if (parent > 0) adminAnswered.add(String(parent));
     }
 
-    const currentUserId = Number(state.currentUser?.id || 0);
-    const communityOwnerId = Number(getOwnerId() || 0);
     const result = new Set();
-
-    for (const comment of Array.isArray(items) ? items : []) {
-        if (comment?._is_reply) continue;
+    for (const comment of list) {
         const id = commentId(comment);
-        if (!id || answered.has(String(id))) continue;
-
-        const authorId = Number(comment?.from_id || 0);
-        if (currentUserId && authorId === currentUserId) continue;
-        if (communityOwnerId && authorId === communityOwnerId) continue;
+        if (!id || isOwnComment(comment) || adminAnswered.has(String(id))) continue;
         result.add(String(id));
     }
 
@@ -617,15 +713,16 @@ function renderPhotoComments() {
         return;
     }
 
-    const orderedComments = orderViewerCommentsByThread(comments);
-    const unansweredIds = unansweredPhotoCommentIds(orderedComments);
+    const unansweredIds = unansweredPhotoCommentIds(comments);
+    const orderedComments = orderViewerCommentsByThread(comments, unansweredIds);
 
     for (const comment of orderedComments) {
         const card = document.createElement("div");
         card.className = "photo-viewer-comment";
         if (comment?._is_reply) {
             card.classList.add("photo-viewer-comment-reply");
-        } else if (unansweredIds.has(String(commentId(comment)))) {
+        }
+        if (unansweredIds.has(String(commentId(comment)))) {
             card.classList.add("photo-viewer-comment-unanswered");
         }
 
@@ -828,7 +925,7 @@ function openViewerPhotoContext() {
         if (!album?.id) return;
 
         try {
-            const { openAlbum } = await import("./photos.js?v=20261023-search-keyboard50");
+            const { openAlbum } = await import("./photos.js?v=20261025-unanswered-priority52");
             await openAlbum(album);
         } catch (error) {
             console.warn("Не удалось перейти в альбом фотографии:", error);

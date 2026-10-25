@@ -1,11 +1,11 @@
-import { state } from "./state.js?v=20261023-search-keyboard50";
-import { dom } from "./dom.js?v=20261023-search-keyboard50";
-import { vkApi } from "./vk-api.js?v=20261023-search-keyboard50";
-import { getErrorMessage } from "./helpers.js?v=20261023-search-keyboard50";
-import { getOwnerId, isGroupMode } from "./group-context.js?v=20261023-search-keyboard50";
-import { cacheSet, cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261023-search-keyboard50";
-import { renderAlbums } from "./albums.js?v=20261023-search-keyboard50";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261023-search-keyboard50";
+import { state } from "./state.js?v=20261025-unanswered-priority52";
+import { dom } from "./dom.js?v=20261025-unanswered-priority52";
+import { vkApi } from "./vk-api.js?v=20261025-unanswered-priority52";
+import { getErrorMessage } from "./helpers.js?v=20261025-unanswered-priority52";
+import { getOwnerId, isGroupMode } from "./group-context.js?v=20261025-unanswered-priority52";
+import { cacheSet, cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261025-unanswered-priority52";
+import { renderAlbums } from "./albums.js?v=20261025-unanswered-priority52";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261025-unanswered-priority52";
 
 let activeAlbum = null;
 let opening = false;

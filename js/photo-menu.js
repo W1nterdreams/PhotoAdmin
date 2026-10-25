@@ -1,21 +1,21 @@
-import { state } from "./state.js?v=20261023-search-keyboard50";
-import { dom } from "./dom.js?v=20261023-search-keyboard50";
-import { vkApi } from "./vk-api.js?v=20261023-search-keyboard50";
-import { getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20261023-search-keyboard50";
-import { getOwnerId } from "./group-context.js?v=20261023-search-keyboard50";
+import { state } from "./state.js?v=20261025-unanswered-priority52";
+import { dom } from "./dom.js?v=20261025-unanswered-priority52";
+import { vkApi } from "./vk-api.js?v=20261025-unanswered-priority52";
+import { getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20261025-unanswered-priority52";
+import { getOwnerId } from "./group-context.js?v=20261025-unanswered-priority52";
 import {
     invalidateAlbumPhotosCache,
     invalidateAlbumCaches,
     invalidatePhotoActivityCaches
-} from "./cache.js?v=20261023-search-keyboard50";
-import { closeMenu } from "./main-menu.js?v=20261023-search-keyboard50";
-import { openPhotoTransfer } from "./photo-transfer.js?v=20261023-search-keyboard50";
-import { openPhotoReorder } from "./photo-reorder.js?v=20261023-search-keyboard50";
-import { openVkPhoto } from "./vk-links.js?v=20261023-search-keyboard50";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261023-search-keyboard50";
-import { markPhotoIndexAlbumDirty, clearPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261023-search-keyboard50";
-import { applyLocalPhotoUpdate, applyLocalPhotoDelete } from "./photo-index-sync.js?v=20261023-search-keyboard50";
-import { renderPhotoDescription } from "./photo-description-links.js?v=20261023-search-keyboard50";
+} from "./cache.js?v=20261025-unanswered-priority52";
+import { closeMenu } from "./main-menu.js?v=20261025-unanswered-priority52";
+import { openPhotoTransfer } from "./photo-transfer.js?v=20261025-unanswered-priority52";
+import { openPhotoReorder } from "./photo-reorder.js?v=20261025-unanswered-priority52";
+import { openVkPhoto } from "./vk-links.js?v=20261025-unanswered-priority52";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261025-unanswered-priority52";
+import { markPhotoIndexAlbumDirty, clearPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261025-unanswered-priority52";
+import { applyLocalPhotoUpdate, applyLocalPhotoDelete } from "./photo-index-sync.js?v=20261025-unanswered-priority52";
+import { renderPhotoDescription } from "./photo-description-links.js?v=20261025-unanswered-priority52";
 
 let editOverlay = null;
 let editInput = null;
@@ -422,7 +422,7 @@ async function refreshAfterNativeDelete(detail) {
 
     if (album) {
         try {
-            const { loadPhotos } = await import("./photos.js?v=20261023-search-keyboard50");
+            const { loadPhotos } = await import("./photos.js?v=20261025-unanswered-priority52");
             await loadPhotos(album, { force: true });
         } catch (error) {
             console.warn("Не удалось обновить альбом после возврата из VK:", error);

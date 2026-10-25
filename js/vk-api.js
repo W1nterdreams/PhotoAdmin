@@ -1,7 +1,7 @@
-import { VK_APP_ID, VK_API_VERSION } from "./config.js?v=20261023-search-keyboard50";
-import { state } from "./state.js?v=20261023-search-keyboard50";
-import { dom } from "./dom.js?v=20261023-search-keyboard50";
-import { logError } from "./helpers.js?v=20261023-search-keyboard50";
+import { VK_APP_ID, VK_API_VERSION } from "./config.js?v=20261025-unanswered-priority52";
+import { state } from "./state.js?v=20261025-unanswered-priority52";
+import { dom } from "./dom.js?v=20261025-unanswered-priority52";
+import { logError } from "./helpers.js?v=20261025-unanswered-priority52";
 
 let apiStats = createEmptyStats();
 

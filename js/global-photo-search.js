@@ -1,12 +1,12 @@
-import { state } from "./state.js?v=20261023-search-keyboard50";
-import { vkApi } from "./vk-api.js?v=20261023-search-keyboard50";
-import { getOwnerId } from "./group-context.js?v=20261023-search-keyboard50";
-import { getPhotoPreviewUrl, getErrorMessage } from "./helpers.js?v=20261023-search-keyboard50";
-import { ensureAlbumIndex } from "./albums.js?v=20261023-search-keyboard50";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261023-search-keyboard50";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261023-search-keyboard50";
-import { getPhotoIndexSnapshot } from "./photo-index-db.js?v=20261023-search-keyboard50";
-import { synchronizePhotoIndex } from "./photo-index-sync.js?v=20261023-search-keyboard50";
+import { state } from "./state.js?v=20261025-unanswered-priority52";
+import { vkApi } from "./vk-api.js?v=20261025-unanswered-priority52";
+import { getOwnerId } from "./group-context.js?v=20261025-unanswered-priority52";
+import { getPhotoPreviewUrl, getErrorMessage } from "./helpers.js?v=20261025-unanswered-priority52";
+import { ensureAlbumIndex } from "./albums.js?v=20261025-unanswered-priority52";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261025-unanswered-priority52";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261025-unanswered-priority52";
+import { getPhotoIndexSnapshot } from "./photo-index-db.js?v=20261025-unanswered-priority52";
+import { synchronizePhotoIndex } from "./photo-index-sync.js?v=20261025-unanswered-priority52";
 
 const SEARCH_RESULTS_PAGE_SIZE = 100;
 const FALLBACK_PAGE_SIZE = 200;
