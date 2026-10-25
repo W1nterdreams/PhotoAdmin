@@ -1,7 +1,7 @@
 import { dom } from "./dom.js?v=20261025-unanswered-fix53";
-import { markUnansweredComments } from "./comment-status.js?v=20261025-unanswered-fix53";
+import { markUnansweredComments, prepareCommentStatus, markCommentRead } from "./comment-status.js?v=20261025-comment-read54";
 import { state } from "./state.js?v=20261025-unanswered-fix53";
-import { vkApi } from "./vk-api.js?v=20261025-unanswered-fix53";
+import { vkApi } from "./vk-api.js?v=20261025-comment-read54";
 import {
     escapeHtml,
     getPhotoPreviewUrl
@@ -15,7 +15,7 @@ import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=202610
 import { CACHE_TTL } from "./config.js?v=20261025-unanswered-fix53";
 import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20261025-unanswered-fix53";
 import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261025-unanswered-fix53";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261025-unanswered-fix53";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261025-comment-read54";
 import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261025-unanswered-fix53";
 
 const ALBUM_COMMENTS_DAYS = 3;
@@ -232,7 +232,7 @@ function decorateCommentThreads(items) {
             // начальное VK-упоминание, чтобы найти ближайшее сообщение автора.
             const stack = Array.isArray(comment?.parents_stack) ? comment.parents_stack : [];
             const targetAuthorId = mentionedAuthorId(comment?.text);
-            if (targetAuthorId && stack.length <= 1) {
+            if (targetAuthorId && stack.length <= 1 && !Number(comment?.reply_to_comment || comment?.reply_to_comment_id || 0)) {
                 for (let j = i + 1; j < group.length; j += 1) {
                     const candidate = group[j];
                     if (Number(candidate?.from_id || 0) !== targetAuthorId) continue;
@@ -248,8 +248,8 @@ function decorateCommentThreads(items) {
         }
 
         markUnansweredComments(group, {
-            currentUserId: Number(state.currentUser?.id || 0),
-            communityOwnerId: Number(getOwnerId() || 0)
+            ownerId: getOwnerId(),
+            photoId: Number(commentPhotoId(group[0]) || 0)
         });
     }
 
@@ -1139,6 +1139,9 @@ function createCommentCard(comment, data) {
     date.className = "comment-date";
     date.textContent = formatDate(comment.date);
 
+    const actions = document.createElement("div");
+    actions.className = "comment-action-buttons";
+
     const reply = document.createElement("button");
     reply.type = "button";
     reply.className = "comment-reply-link";
@@ -1162,8 +1165,30 @@ function createCommentCard(comment, data) {
         // нативном VK, где ответ можно отправить штатным интерфейсом VK.
         openVkPhoto(targetPhoto, getOwnerId());
     });
+    actions.appendChild(reply);
 
-    meta.append(date, reply);
+    if (comment?._unanswered && photoId && commentId(comment)) {
+        const read = document.createElement("button");
+        read.type = "button";
+        read.className = "comment-mark-read-link";
+        read.textContent = "Прочитано";
+        read.title = "Снять отметку «Без ответа» на 10 дней";
+        read.addEventListener("click", async event => {
+            event.stopPropagation();
+            read.disabled = true;
+            try {
+                await markCommentRead(getOwnerId(), photoId, commentId(comment));
+            } catch (error) {
+                console.warn("Не удалось сохранить отметку «Прочитано»:", error);
+            }
+            const scrollTop = dom.comments.scrollTop;
+            renderComments(activeAlbum, data);
+            dom.comments.scrollTop = scrollTop;
+        });
+        actions.appendChild(read);
+    }
+
+    meta.append(date, actions);
     body.append(header, albumName, text, meta);
 
     const wasLongPress = installLongPress(card, () => {
@@ -1230,19 +1255,27 @@ export async function loadAlbumComments(album, { force = false, silent = false }
 
     const seq = ++loadSequence;
     const key = cacheKey(album);
+    const cached = !force ? cacheGet(key, CACHE_TTL.comments) : null;
 
-    if (!force) {
-        const cached = cacheGet(key, CACHE_TTL.comments);
-        if (cached) {
-            try {
-                const restored = restoreFromCache(cached);
-                renderComments(album, restored);
-                if (restored.complete) return;
-            } catch (error) {
-                // Повреждённый/устаревший кэш не должен оставлять экран
-                // в состоянии «Загрузка…». Просто идём за свежими данными.
-                console.warn("Не удалось восстановить кэш комментариев альбома:", error);
-            }
+    if (!silent) {
+        dom.comments.innerHTML = `
+            <div class="status-message">
+                Проверяем статусы комментариев...
+            </div>
+        `;
+    }
+    await prepareCommentStatus();
+    if (!currentRequestIsValid(seq, album)) return;
+
+    if (cached) {
+        try {
+            const restored = restoreFromCache(cached);
+            renderComments(album, restored);
+            if (restored.complete) return;
+        } catch (error) {
+            // Повреждённый/устаревший кэш не должен оставлять экран
+            // в состоянии «Загрузка…». Просто идём за свежими данными.
+            console.warn("Не удалось восстановить кэш комментариев альбома:", error);
         }
     }
 

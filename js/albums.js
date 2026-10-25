@@ -1,6 +1,6 @@
 import { state } from "./state.js?v=20261025-unanswered-fix53";
 import { dom } from "./dom.js?v=20261025-unanswered-fix53";
-import { vkApi } from "./vk-api.js?v=20261025-unanswered-fix53";
+import { vkApi } from "./vk-api.js?v=20261025-comment-read54";
 import { getAlbumCover, escapeHtml, getErrorMessage } from "./helpers.js?v=20261025-unanswered-fix53";
 import { openAlbum, loadPhotos } from "./photos.js?v=20261025-unanswered-fix53";
 import { CACHE_TTL } from "./config.js?v=20261025-unanswered-fix53";

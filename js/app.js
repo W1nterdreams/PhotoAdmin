@@ -1,5 +1,5 @@
 import { dom } from "./dom.js?v=20261025-unanswered-fix53";
-import { vkInit, loadUser, getAccessToken } from "./vk-api.js?v=20261025-unanswered-fix53";
+import { vkInit, loadUser, getAccessToken } from "./vk-api.js?v=20261025-comment-read54";
 import {
     AppAccessDeniedError,
     precheckLaunchAccess,
@@ -12,9 +12,9 @@ import { initAlbumCreate } from "./album-create.js?v=20261025-unanswered-fix53";
 import { initAlbumEdit } from "./album-edit.js?v=20261025-unanswered-fix53";
 import { initAlbumDelete } from "./album-delete.js?v=20261025-unanswered-fix53";
 import { initAlbumReorder } from "./album-reorder.js?v=20261025-unanswered-fix53";
-import { initComments } from "./comments.js?v=20261025-unanswered-fix53";
-import { initAlbumComments } from "./album-comments.js?v=20261025-unanswered-fix53";
-import { initPhotoViewer, openPhotoViewer } from "./photo-viewer.js?v=20261025-unanswered-fix53";
+import { initComments } from "./comments.js?v=20261025-comment-read54";
+import { initAlbumComments } from "./album-comments.js?v=20261025-comment-read54";
+import { initPhotoViewer, openPhotoViewer } from "./photo-viewer.js?v=20261025-comment-read54";
 import { initPhotoUpload } from "./photo-upload.js?v=20261025-unanswered-fix53";
 import { initPhotoMenu } from "./photo-menu.js?v=20261025-unanswered-fix53";
 import { initPhotoTransfer } from "./photo-transfer.js?v=20261025-unanswered-fix53";
@@ -25,6 +25,7 @@ import { cleanupLegacyCache } from "./cache.js?v=20261025-unanswered-fix53";
 import { initGlobalPhotoSearch } from "./global-photo-search.js?v=20261025-unanswered-fix53";
 import { initPhotoIndexSync } from "./photo-index-sync.js?v=20261025-unanswered-fix53";
 import { initSearchKeyboardDismiss } from "./search-keyboard.js?v=20261025-unanswered-fix53";
+import { initializeCommentReadState } from "./comment-status.js?v=20261025-comment-read54";
 
 function setAppInteractive(enabled) {
     const app = document.getElementById("app");
@@ -130,11 +131,17 @@ async function startApp() {
 
         await loadUser();
 
-        // Для рабочей части приложения нужен только доступ к фотографиям.
-        await getAccessToken();
+        // В групповом режиме дополнительно запрашиваем groups, чтобы определить
+        // всех руководителей сообщества для корректной обработки комментариев.
+        await getAccessToken({ includeGroups: launchContext.mode === "group" });
 
         // Формируем единый owner_id: отрицательный для группы, положительный для пользователя.
         const ownerContext = initOwnerContext(launchContext);
+
+        // Очищаем просроченные отметки «Прочитано» без задержки запуска UI.
+        void initializeCommentReadState().catch(error => {
+            console.warn("Не удалось подготовить локальные отметки комментариев:", error);
+        });
 
         if (dom.pageTitle) {
             dom.pageTitle.textContent = ownerContext.mode === "user"

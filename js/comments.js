@@ -1,7 +1,7 @@
 import { state } from "./state.js?v=20261025-unanswered-fix53";
-import { markUnansweredComments } from "./comment-status.js?v=20261025-unanswered-fix53";
+import { markUnansweredComments, prepareCommentStatus, markCommentRead } from "./comment-status.js?v=20261025-comment-read54";
 import { dom } from "./dom.js?v=20261025-unanswered-fix53";
-import { vkApi } from "./vk-api.js?v=20261025-unanswered-fix53";
+import { vkApi } from "./vk-api.js?v=20261025-comment-read54";
 import { escapeHtml, getErrorMessage, getPhotoPreviewUrl } from "./helpers.js?v=20261025-unanswered-fix53";
 import { showCommentsScreen, pushCommentsHistory } from "./navigation.js?v=20261025-unanswered-fix53";
 import { closeMenu } from "./main-menu.js?v=20261025-unanswered-fix53";
@@ -9,7 +9,7 @@ import { CACHE_TTL } from "./config.js?v=20261025-unanswered-fix53";
 import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261025-unanswered-fix53";
 import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
 import { openVkProfile, openVkPhoto, openVkTarget } from "./vk-links.js?v=20261025-unanswered-fix53";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261025-unanswered-fix53";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261025-comment-read54";
 
 const GLOBAL_COMMENTS_DAYS = 5;
 const PAGE_SIZE = 100;
@@ -209,7 +209,7 @@ function decorateCommentThreads(items) {
             // начальное VK-упоминание, чтобы найти ближайшее сообщение автора.
             const stack = Array.isArray(comment?.parents_stack) ? comment.parents_stack : [];
             const targetAuthorId = mentionedAuthorId(comment?.text);
-            if (targetAuthorId && stack.length <= 1) {
+            if (targetAuthorId && stack.length <= 1 && !Number(comment?.reply_to_comment || comment?.reply_to_comment_id || 0)) {
                 for (let j = i + 1; j < group.length; j += 1) {
                     const candidate = group[j];
                     if (Number(candidate?.from_id || 0) !== targetAuthorId) continue;
@@ -225,8 +225,8 @@ function decorateCommentThreads(items) {
         }
 
         markUnansweredComments(group, {
-            currentUserId: Number(state.currentUser?.id || 0),
-            communityOwnerId: Number(getOwnerId() || 0)
+            ownerId: getOwnerId(),
+            photoId: Number(commentPhotoId(group[0]) || 0)
         });
     }
 
@@ -557,6 +557,9 @@ function renderComments(data) {
             ? new Date(Number(comment.date) * 1000).toLocaleString("ru-RU")
             : "";
 
+        const actions = document.createElement("div");
+        actions.className = "comment-action-buttons";
+
         const reply = document.createElement("button");
         reply.type = "button";
         reply.className = "comment-reply-link";
@@ -567,8 +570,30 @@ function renderComments(data) {
             invalidateCommentCaches(getOwnerId(), { photoId });
             openVkPhoto(photo || { id: photoId, owner_id: getOwnerId() }, getOwnerId());
         });
+        actions.appendChild(reply);
 
-        meta.append(date, reply);
+        if (comment?._unanswered && photoId && commentId(comment)) {
+            const read = document.createElement("button");
+            read.type = "button";
+            read.className = "comment-mark-read-link";
+            read.textContent = "Прочитано";
+            read.title = "Снять отметку «Без ответа» на 10 дней";
+            read.addEventListener("click", async event => {
+                event.stopPropagation();
+                read.disabled = true;
+                try {
+                    await markCommentRead(getOwnerId(), photoId, commentId(comment));
+                } catch (error) {
+                    console.warn("Не удалось сохранить отметку «Прочитано»:", error);
+                }
+                const scrollTop = dom.comments.scrollTop;
+                renderComments(data);
+                dom.comments.scrollTop = scrollTop;
+            });
+            actions.appendChild(read);
+        }
+
+        meta.append(date, actions);
         body.append(header, albumName, text, meta);
         card.append(thumb, body);
         dom.comments.appendChild(card);
@@ -591,22 +616,26 @@ async function buildCommentsFeed() {
 
 export async function loadAllComments({ force = false, silent = false } = {}) {
     const key = cacheKey();
+    const cached = !force ? cacheGet(key, CACHE_TTL.comments) : null;
 
-    if (!force) {
-        const cached = cacheGet(key, CACHE_TTL.comments);
-        if (cached) {
-            renderComments(restoreData(cached));
-            return;
-        }
-    }
-
-    if (!silent) {
+    if (!silent && !cached) {
         dom.comments.innerHTML = `
             <div class="status-message">
                 Загружаем комментарии всех альбомов за ${GLOBAL_COMMENTS_DAYS} дней...
             </div>
         `;
         dom.refreshComments.disabled = true;
+    }
+
+    await prepareCommentStatus();
+    if (!globalFeedActive || state.currentScreen !== "comments") {
+        dom.refreshComments.disabled = false;
+        return;
+    }
+
+    if (cached) {
+        renderComments(restoreData(cached));
+        return;
     }
 
     try {

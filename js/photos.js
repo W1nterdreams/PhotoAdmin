@@ -1,12 +1,12 @@
 import { state } from "./state.js?v=20261025-unanswered-fix53";
 import { dom } from "./dom.js?v=20261025-unanswered-fix53";
-import { vkApi } from "./vk-api.js?v=20261025-unanswered-fix53";
+import { vkApi } from "./vk-api.js?v=20261025-comment-read54";
 import { getPhotoPreviewUrl, escapeHtml, getErrorMessage } from "./helpers.js?v=20261025-unanswered-fix53";
 import { showPhotosScreen, pushAlbumHistory } from "./navigation.js?v=20261025-unanswered-fix53";
 import { CACHE_TTL } from "./config.js?v=20261025-unanswered-fix53";
 import { cacheGet, cacheGetStale, cacheSet, albumPhotosKey } from "./cache.js?v=20261025-unanswered-fix53";
 import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261025-unanswered-fix53";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261025-comment-read54";
 import { bindPhotoContextLongPress } from "./photo-context-menu.js?v=20261025-unanswered-fix53";
 import { syncPhotoIndexAlbumIfDirty } from "./photo-index-sync.js?v=20261025-unanswered-fix53";
 import { getDirtyPhotoIndexAlbums } from "./photo-index-db.js?v=20261025-unanswered-fix53";

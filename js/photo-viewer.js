@@ -1,8 +1,8 @@
 import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261025-unanswered-fix53";
-import { markUnansweredComments } from "./comment-status.js?v=20261025-unanswered-fix53";
+import { markUnansweredComments, prepareCommentStatus, markCommentRead } from "./comment-status.js?v=20261025-comment-read54";
 import { state } from "./state.js?v=20261025-unanswered-fix53";
 import { dom } from "./dom.js?v=20261025-unanswered-fix53";
-import { vkApi } from "./vk-api.js?v=20261025-unanswered-fix53";
+import { vkApi } from "./vk-api.js?v=20261025-comment-read54";
 import { getBestPhotoUrl, getPhotoPreviewUrl, escapeHtml } from "./helpers.js?v=20261025-unanswered-fix53";
 import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
 import {
@@ -100,7 +100,8 @@ function inferViewerCommentParents(items) {
         if (stack.length > 1) continue; // Полную цепочку VK считаем достоверной.
 
         const targetAuthorId = mentionedAuthorId(comment?.text);
-        if (!targetAuthorId) continue;
+        const explicitParentId = Number(comment?.reply_to_comment || comment?.reply_to_comment_id || 0);
+        if (!targetAuthorId || explicitParentId > 0) continue;
 
         // В некоторых ответах VK сообщает только ID корня ветки. Начальное
         // упоминание позволяет связать ответ с конкретным сообщением внутри неё.
@@ -647,8 +648,8 @@ function orderViewerCommentsByThread(items, unansweredIds = new Set()) {
 
 function unansweredPhotoCommentIds(items) {
     return markUnansweredComments(items, {
-        currentUserId: Number(state.currentUser?.id || 0),
-        communityOwnerId: Number(getOwnerId() || 0)
+        ownerId: photoCommentOwnerId(activePhoto),
+        photoId: Number(activePhoto?.id || 0)
     });
 }
 
@@ -721,7 +722,7 @@ function renderPhotoComments() {
         appendRichText(text, comment.text || "");
 
         const actions = document.createElement("div");
-        actions.className = "photo-viewer-comment-actions";
+        actions.className = "photo-viewer-comment-actions comment-action-buttons";
         const reply = document.createElement("button");
         reply.type = "button";
         reply.className = "comment-reply-link";
@@ -739,6 +740,31 @@ function renderPhotoComments() {
         });
         actions.appendChild(reply);
 
+        if (unansweredIds.has(String(commentId(comment))) && commentId(comment)) {
+            const read = document.createElement("button");
+            read.type = "button";
+            read.className = "comment-mark-read-link";
+            read.textContent = "Прочитано";
+            read.title = "Снять отметку «Без ответа» на 10 дней";
+            read.addEventListener("click", async event => {
+                event.stopPropagation();
+                read.disabled = true;
+                try {
+                    await markCommentRead(
+                        photoCommentOwnerId(activePhoto),
+                        Number(activePhoto?.id || 0),
+                        commentId(comment)
+                    );
+                } catch (error) {
+                    console.warn("Не удалось сохранить отметку «Прочитано»:", error);
+                }
+                const scrollTop = dom.photoViewerComments.scrollTop;
+                renderPhotoComments();
+                dom.photoViewerComments.scrollTop = scrollTop;
+            });
+            actions.appendChild(read);
+        }
+
         card.append(top, text, actions);
         installLongPress(card, () => openCommentContext(comment));
         dom.photoViewerComments.appendChild(card);
@@ -746,10 +772,14 @@ function renderPhotoComments() {
 }
 
 async function refreshPhotoComments() {
+    const photoAtStart = activePhoto;
     dom.photoViewerComments.innerHTML = '<div class="status-message">Загружаем комментарии...</div>';
 
     try {
-        await fetchAllComments(activePhoto);
+        await prepareCommentStatus();
+        if (!photoAtStart || !activePhoto || Number(activePhoto.id) !== Number(photoAtStart.id)) return;
+        await fetchAllComments(photoAtStart);
+        if (!activePhoto || Number(activePhoto.id) !== Number(photoAtStart.id)) return;
         renderPhotoHeader(activePhoto);
         renderPhotoComments();
     } catch (error) {

@@ -1,5 +1,5 @@
 import { state } from "./state.js?v=20261025-unanswered-fix53";
-import { vkApi } from "./vk-api.js?v=20261025-unanswered-fix53";
+import { vkApi } from "./vk-api.js?v=20261025-comment-read54";
 import { getErrorMessage } from "./helpers.js?v=20261025-unanswered-fix53";
 import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
 import { cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261025-unanswered-fix53";

@@ -1,5 +1,5 @@
 import { state } from "./state.js?v=20261025-unanswered-fix53";
-import { vkApi } from "./vk-api.js?v=20261025-unanswered-fix53";
+import { vkApi } from "./vk-api.js?v=20261025-comment-read54";
 import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
 import { openVkTarget } from "./vk-links.js?v=20261025-unanswered-fix53";
 import {
@@ -126,7 +126,7 @@ async function openVkResourceInsidePhotoAdmin(resource) {
     if (!photo?.id) return false;
 
     const album = findAlbum(photo.album_id, resource.ownerId);
-    const { openPhotoViewer } = await import("./photo-viewer.js?v=20261025-unanswered-fix53");
+    const { openPhotoViewer } = await import("./photo-viewer.js?v=20261025-comment-read54");
     await openPhotoViewer(photo, album, {
         photoDataFresh: true,
         viewerSource: "description-link",

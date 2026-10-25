@@ -61,21 +61,35 @@ function getAuthAppId() {
     return launchAppId || Number(VK_APP_ID);
 }
 
-export async function getAccessToken() {
+export async function getAccessToken({ includeGroups = false } = {}) {
     const appId = getAuthAppId();
 
     console.log("VK AUTH APP ID:", appId);
 
     try {
-        const result = await vkBridge.send("VKWebAppGetAuthToken", {
-            app_id: appId,
-            scope: "photos"
-        });
+        let result;
+        let requestedScope = includeGroups ? "photos,groups" : "photos";
+        try {
+            result = await vkBridge.send("VKWebAppGetAuthToken", {
+                app_id: appId,
+                scope: requestedScope
+            });
+        } catch (scopeError) {
+            if (!includeGroups) throw scopeError;
+            // Если VK не разрешил дополнительный доступ к списку руководителей,
+            // не блокируем весь ФотоАдмин: пробуем прежний доступ к фотографиям.
+            console.warn("VK не выдал право groups; повторяем авторизацию только с photos:", scopeError);
+            requestedScope = "photos";
+            result = await vkBridge.send("VKWebAppGetAuthToken", {
+                app_id: appId,
+                scope: requestedScope
+            });
+        }
 
         state.accessToken = result.access_token;
         state.accessScope = Array.isArray(result.scope)
             ? result.scope.join(",")
-            : String(result.scope || "photos");
+            : String(result.scope || requestedScope);
 
         if (!state.accessToken) throw new Error("VK не вернул access token.");
     } catch (error) {
