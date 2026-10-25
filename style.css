@@ -2170,8 +2170,8 @@ img {
     line-height: 1;
 }
 
-/* Тёплая подсветка означает: это корневой комментарий пользователя,
-   и среди загруженной ветки на него пока нет ответа. */
+/* Тёплая подсветка означает: сообщение покупателя (в том числе ответ внутри
+   ветки) ещё не получило ответа от администратора. */
 .comment-card-rich.comment-unanswered {
     border-color: rgba(226, 168, 74, 0.72);
     background: rgba(226, 168, 74, 0.085);
@@ -3744,3 +3744,19 @@ body {
     overflow-wrap: anywhere;
     word-break: break-word;
 }
+
+/* Непросмотренный ответ покупателя должен выделяться отдельно от обычного
+   сообщения в ветке, даже если выше уже есть ответ администратора. */
+.comment-card-rich.comment-thread-reply.comment-unanswered {
+    border-color: rgba(226, 168, 74, 0.78);
+    border-left-color: #c58a18;
+    background: #fff8e7;
+    box-shadow: inset 3px 0 0 rgba(226, 168, 74, 0.78), 0 2px 8px rgba(24, 27, 31, 0.035);
+}
+
+.photo-viewer-comment-reply.photo-viewer-comment-unanswered {
+    border-left-color: #c58a18;
+    background: #fff8e7;
+    box-shadow: inset 3px 0 0 rgba(226, 168, 74, 0.78), 0 2px 8px rgba(24, 27, 31, 0.035);
+}
+
