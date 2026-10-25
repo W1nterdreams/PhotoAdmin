@@ -1,21 +1,22 @@
-import { dom } from "./dom.js?v=20261025-unanswered-priority52";
-import { state } from "./state.js?v=20261025-unanswered-priority52";
-import { vkApi } from "./vk-api.js?v=20261025-unanswered-priority52";
+import { dom } from "./dom.js?v=20261025-unanswered-fix53";
+import { markUnansweredComments } from "./comment-status.js?v=20261025-unanswered-fix53";
+import { state } from "./state.js?v=20261025-unanswered-fix53";
+import { vkApi } from "./vk-api.js?v=20261025-unanswered-fix53";
 import {
     escapeHtml,
     getPhotoPreviewUrl
-} from "./helpers.js?v=20261025-unanswered-priority52";
+} from "./helpers.js?v=20261025-unanswered-fix53";
 import {
     showCommentsScreen,
     pushCommentsHistory
-} from "./navigation.js?v=20261025-unanswered-priority52";
-import { getOwnerId } from "./group-context.js?v=20261025-unanswered-priority52";
-import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261025-unanswered-priority52";
-import { CACHE_TTL } from "./config.js?v=20261025-unanswered-priority52";
-import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20261025-unanswered-priority52";
-import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261025-unanswered-priority52";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261025-unanswered-priority52";
-import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261025-unanswered-priority52";
+} from "./navigation.js?v=20261025-unanswered-fix53";
+import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
+import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261025-unanswered-fix53";
+import { CACHE_TTL } from "./config.js?v=20261025-unanswered-fix53";
+import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20261025-unanswered-fix53";
+import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261025-unanswered-fix53";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261025-unanswered-fix53";
+import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261025-unanswered-fix53";
 
 const ALBUM_COMMENTS_DAYS = 3;
 const PAGE_SIZE = 100;
@@ -58,24 +59,6 @@ function commentPhotoId(comment) {
 function commentId(comment) {
     const id = Number(comment?.id || comment?.cid || 0);
     return Number.isFinite(id) && id > 0 ? id : null;
-}
-
-function threadParentIds(comment) {
-    const ids = new Set();
-
-    const stored = Number(comment?._parent_comment_id || 0);
-    if (stored > 0) ids.add(stored);
-
-    const direct = Number(comment?.reply_to_comment || comment?.reply_to_comment_id || 0);
-    if (direct > 0) ids.add(direct);
-
-    const stack = Array.isArray(comment?.parents_stack) ? comment.parents_stack : [];
-    for (const raw of stack) {
-        const id = Number(raw || 0);
-        if (id > 0) ids.add(id);
-    }
-
-    return [...ids];
 }
 
 function firstThreadParentId(comment) {
@@ -264,39 +247,10 @@ function decorateCommentThreads(items) {
             comment._is_reply = Boolean(parentId);
         }
 
-        const currentUserId = Number(state.currentUser?.id || 0);
-        const communityOwnerId = Number(getOwnerId() || 0);
-        const adminAnswered = new Set();
-        const ownById = new Map();
-
-        // Ответ считается закрывающим конкретное сообщение только тогда,
-        // когда ответил текущий администратор/сообщество. Ответ покупателя
-        // не должен скрывать плашку у его нового сообщения.
-        for (const comment of group) {
-            const id = commentId(comment);
-            const authorId = Number(comment?.from_id || 0);
-            const ownComment = Boolean(
-                (currentUserId && authorId === currentUserId) ||
-                (communityOwnerId && authorId === communityOwnerId)
-            );
-            if (id) ownById.set(String(id), ownComment);
-            if (!ownComment) continue;
-
-            for (const parentId of threadParentIds(comment)) adminAnswered.add(String(parentId));
-            if (comment._parent_comment_id) adminAnswered.add(String(comment._parent_comment_id));
-        }
-
-        for (const comment of group) {
-            const id = commentId(comment);
-            if (!id) {
-                comment._unanswered = false;
-                continue;
-            }
-            const ownComment = ownById.get(String(id)) || false;
-            comment._unanswered = Boolean(
-                !ownComment && !adminAnswered.has(String(id))
-            );
-        }
+        markUnansweredComments(group, {
+            currentUserId: Number(state.currentUser?.id || 0),
+            communityOwnerId: Number(getOwnerId() || 0)
+        });
     }
 
     return orderDecoratedCommentThreads(result);

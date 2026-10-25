@@ -1,5 +1,5 @@
-import { vkApi } from "./vk-api.js?v=20261025-unanswered-priority52";
-import { getOwnerId } from "./group-context.js?v=20261025-unanswered-priority52";
+import { vkApi } from "./vk-api.js?v=20261025-unanswered-fix53";
+import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
 import {
     compactPhotoForIndex,
     getPhotoIndexMeta,
@@ -13,9 +13,9 @@ import {
     clearPhotoIndexAlbumDirty,
     clearPhotoIndexDirtyThrough,
     getPhotoIndexDiagnostics
-} from "./photo-index-db.js?v=20261025-unanswered-priority52";
-import { getPhotoIndexSyncPlan } from "./photo-index-policy.js?v=20261025-unanswered-priority52";
-import { getAlbumFingerprintDiagnostics } from "./album-fingerprint.js?v=20261025-unanswered-priority52";
+} from "./photo-index-db.js?v=20261025-unanswered-fix53";
+import { getPhotoIndexSyncPlan } from "./photo-index-policy.js?v=20261025-unanswered-fix53";
+import { getAlbumFingerprintDiagnostics } from "./album-fingerprint.js?v=20261025-unanswered-fix53";
 
 const GLOBAL_PAGE_SIZE = 200;
 const ALBUM_PAGE_SIZE = 1000;

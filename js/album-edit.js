@@ -1,11 +1,11 @@
-import { state } from "./state.js?v=20261025-unanswered-priority52";
-import { dom } from "./dom.js?v=20261025-unanswered-priority52";
-import { vkApi } from "./vk-api.js?v=20261025-unanswered-priority52";
-import { getErrorMessage } from "./helpers.js?v=20261025-unanswered-priority52";
-import { getOwnerId, isGroupMode } from "./group-context.js?v=20261025-unanswered-priority52";
-import { cacheSet, cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261025-unanswered-priority52";
-import { renderAlbums } from "./albums.js?v=20261025-unanswered-priority52";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261025-unanswered-priority52";
+import { state } from "./state.js?v=20261025-unanswered-fix53";
+import { dom } from "./dom.js?v=20261025-unanswered-fix53";
+import { vkApi } from "./vk-api.js?v=20261025-unanswered-fix53";
+import { getErrorMessage } from "./helpers.js?v=20261025-unanswered-fix53";
+import { getOwnerId, isGroupMode } from "./group-context.js?v=20261025-unanswered-fix53";
+import { cacheSet, cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261025-unanswered-fix53";
+import { renderAlbums } from "./albums.js?v=20261025-unanswered-fix53";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261025-unanswered-fix53";
 
 let activeAlbum = null;
 let opening = false;

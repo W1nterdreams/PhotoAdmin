@@ -1,10 +1,10 @@
-import { state } from "./state.js?v=20261025-unanswered-priority52";
-import { vkApi } from "./vk-api.js?v=20261025-unanswered-priority52";
-import { getErrorMessage } from "./helpers.js?v=20261025-unanswered-priority52";
-import { getOwnerId } from "./group-context.js?v=20261025-unanswered-priority52";
-import { cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261025-unanswered-priority52";
-import { loadAlbums } from "./albums.js?v=20261025-unanswered-priority52";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261025-unanswered-priority52";
+import { state } from "./state.js?v=20261025-unanswered-fix53";
+import { vkApi } from "./vk-api.js?v=20261025-unanswered-fix53";
+import { getErrorMessage } from "./helpers.js?v=20261025-unanswered-fix53";
+import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
+import { cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261025-unanswered-fix53";
+import { loadAlbums } from "./albums.js?v=20261025-unanswered-fix53";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261025-unanswered-fix53";
 
 let overlay = null;
 let activeAlbum = null;

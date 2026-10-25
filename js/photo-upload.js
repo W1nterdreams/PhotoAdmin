@@ -1,15 +1,15 @@
-import { state } from "./state.js?v=20261025-unanswered-priority52";
-import { dom } from "./dom.js?v=20261025-unanswered-priority52";
-import { getOwnerId } from "./group-context.js?v=20261025-unanswered-priority52";
-import { closeMenu } from "./main-menu.js?v=20261025-unanswered-priority52";
-import { openVkTarget } from "./vk-links.js?v=20261025-unanswered-priority52";
-import { loadPhotos } from "./photos.js?v=20261025-unanswered-priority52";
-import { renderAlbums } from "./albums.js?v=20261025-unanswered-priority52";
+import { state } from "./state.js?v=20261025-unanswered-fix53";
+import { dom } from "./dom.js?v=20261025-unanswered-fix53";
+import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
+import { closeMenu } from "./main-menu.js?v=20261025-unanswered-fix53";
+import { openVkTarget } from "./vk-links.js?v=20261025-unanswered-fix53";
+import { loadPhotos } from "./photos.js?v=20261025-unanswered-fix53";
+import { renderAlbums } from "./albums.js?v=20261025-unanswered-fix53";
 import {
     invalidateAlbumCaches,
     invalidateAlbumPhotosCache
-} from "./cache.js?v=20261025-unanswered-priority52";
-import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261025-unanswered-priority52";
+} from "./cache.js?v=20261025-unanswered-fix53";
+import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261025-unanswered-fix53";
 
 function findAlbum(albumId) {
     const id = String(albumId || "");

@@ -1,19 +1,20 @@
-import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261025-unanswered-priority52";
-import { state } from "./state.js?v=20261025-unanswered-priority52";
-import { dom } from "./dom.js?v=20261025-unanswered-priority52";
-import { vkApi } from "./vk-api.js?v=20261025-unanswered-priority52";
-import { getBestPhotoUrl, getPhotoPreviewUrl, escapeHtml } from "./helpers.js?v=20261025-unanswered-priority52";
-import { getOwnerId } from "./group-context.js?v=20261025-unanswered-priority52";
+import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261025-unanswered-fix53";
+import { markUnansweredComments } from "./comment-status.js?v=20261025-unanswered-fix53";
+import { state } from "./state.js?v=20261025-unanswered-fix53";
+import { dom } from "./dom.js?v=20261025-unanswered-fix53";
+import { vkApi } from "./vk-api.js?v=20261025-unanswered-fix53";
+import { getBestPhotoUrl, getPhotoPreviewUrl, escapeHtml } from "./helpers.js?v=20261025-unanswered-fix53";
+import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
 import {
     showPhotoViewerScreen,
     pushPhotoHistory,
     replacePhotoHistory
-} from "./navigation.js?v=20261025-unanswered-priority52";
-import { photoCommentOwnerId } from "./photo-comment-api.js?v=20261025-unanswered-priority52";
-import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261025-unanswered-priority52";
-import { invalidatePhotoActivityCaches } from "./cache.js?v=20261025-unanswered-priority52";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261025-unanswered-priority52";
-import { renderPhotoDescription } from "./photo-description-links.js?v=20261025-unanswered-priority52";
+} from "./navigation.js?v=20261025-unanswered-fix53";
+import { photoCommentOwnerId } from "./photo-comment-api.js?v=20261025-unanswered-fix53";
+import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261025-unanswered-fix53";
+import { invalidatePhotoActivityCaches } from "./cache.js?v=20261025-unanswered-fix53";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261025-unanswered-fix53";
+import { renderPhotoDescription } from "./photo-description-links.js?v=20261025-unanswered-fix53";
 
 const COMMENT_PAGE_SIZE = 100;
 const LONG_PRESS_MS = 900;
@@ -645,46 +646,10 @@ function orderViewerCommentsByThread(items, unansweredIds = new Set()) {
 }
 
 function unansweredPhotoCommentIds(items) {
-    const list = Array.isArray(items) ? items : [];
-    const currentUserId = Number(state.currentUser?.id || 0);
-    const communityOwnerId = Number(getOwnerId() || 0);
-    const isOwnComment = comment => {
-        const authorId = Number(comment?.from_id || 0);
-        return Boolean(
-            (currentUserId && authorId === currentUserId) ||
-            (communityOwnerId && authorId === communityOwnerId)
-        );
-    };
-    const adminAnswered = new Set();
-
-    // Не любой ответ закрывает вопрос: покупатель тоже может писать в ветку.
-    // Снимаем отметку только с тех сообщений, на которые ответил администратор.
-    for (const comment of list) {
-        if (!isOwnComment(comment)) continue;
-
-        const stack = Array.isArray(comment?.parents_stack) ? comment.parents_stack : [];
-        for (const raw of stack) {
-            const id = Number(raw || 0);
-            if (id > 0) adminAnswered.add(String(id));
-        }
-
-        const parent = Number(
-            comment?._parent_comment_id ||
-            comment?.reply_to_comment ||
-            comment?.reply_to_comment_id ||
-            0
-        );
-        if (parent > 0) adminAnswered.add(String(parent));
-    }
-
-    const result = new Set();
-    for (const comment of list) {
-        const id = commentId(comment);
-        if (!id || isOwnComment(comment) || adminAnswered.has(String(id))) continue;
-        result.add(String(id));
-    }
-
-    return result;
+    return markUnansweredComments(items, {
+        currentUserId: Number(state.currentUser?.id || 0),
+        communityOwnerId: Number(getOwnerId() || 0)
+    });
 }
 
 function renderPhotoComments() {
@@ -925,7 +890,7 @@ function openViewerPhotoContext() {
         if (!album?.id) return;
 
         try {
-            const { openAlbum } = await import("./photos.js?v=20261025-unanswered-priority52");
+            const { openAlbum } = await import("./photos.js?v=20261025-unanswered-fix53");
             await openAlbum(album);
         } catch (error) {
             console.warn("Не удалось перейти в альбом фотографии:", error);

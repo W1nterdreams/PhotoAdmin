@@ -1,16 +1,16 @@
-import { state } from "./state.js?v=20261025-unanswered-priority52";
-import { vkApi } from "./vk-api.js?v=20261025-unanswered-priority52";
-import { getAlbumCover, getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20261025-unanswered-priority52";
-import { getOwnerId } from "./group-context.js?v=20261025-unanswered-priority52";
+import { state } from "./state.js?v=20261025-unanswered-fix53";
+import { vkApi } from "./vk-api.js?v=20261025-unanswered-fix53";
+import { getAlbumCover, getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20261025-unanswered-fix53";
+import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
 import {
     invalidateAlbumCaches,
     invalidateAlbumPhotosCache,
     invalidateCommentCaches
-} from "./cache.js?v=20261025-unanswered-priority52";
-import { openVkTarget, openVkPhoto } from "./vk-links.js?v=20261025-unanswered-priority52";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261025-unanswered-priority52";
-import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261025-unanswered-priority52";
-import { applyLocalPhotoMove } from "./photo-index-sync.js?v=20261025-unanswered-priority52";
+} from "./cache.js?v=20261025-unanswered-fix53";
+import { openVkTarget, openVkPhoto } from "./vk-links.js?v=20261025-unanswered-fix53";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261025-unanswered-fix53";
+import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261025-unanswered-fix53";
+import { applyLocalPhotoMove } from "./photo-index-sync.js?v=20261025-unanswered-fix53";
 
 const ALBUM_PAGE_SIZE = 100;
 const MAX_ALBUM_PAGES = 200;
