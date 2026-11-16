@@ -1,20 +1,20 @@
-import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261025-unanswered-fix53";
-import { markUnansweredComments, prepareCommentStatus, markCommentRead } from "./comment-status.js?v=20261025-comment-read54";
-import { state } from "./state.js?v=20261025-unanswered-fix53";
-import { dom } from "./dom.js?v=20261025-unanswered-fix53";
-import { vkApi } from "./vk-api.js?v=20261025-comment-read54";
-import { getBestPhotoUrl, getPhotoPreviewUrl, escapeHtml } from "./helpers.js?v=20261025-unanswered-fix53";
-import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
+import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261115-move-race56";
+import { markUnansweredComments, prepareCommentStatus, markCommentRead } from "./comment-status.js?v=20261115-move-race56";
+import { state } from "./state.js?v=20261115-move-race56";
+import { dom } from "./dom.js?v=20261115-move-race56";
+import { vkApi } from "./vk-api.js?v=20261115-move-race56";
+import { getBestPhotoUrl, getPhotoPreviewUrl, escapeHtml } from "./helpers.js?v=20261115-move-race56";
+import { getOwnerId } from "./group-context.js?v=20261115-move-race56";
 import {
     showPhotoViewerScreen,
     pushPhotoHistory,
     replacePhotoHistory
-} from "./navigation.js?v=20261025-unanswered-fix53";
-import { photoCommentOwnerId } from "./photo-comment-api.js?v=20261025-unanswered-fix53";
-import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261025-unanswered-fix53";
-import { invalidatePhotoActivityCaches } from "./cache.js?v=20261025-unanswered-fix53";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261025-unanswered-fix53";
-import { renderPhotoDescription } from "./photo-description-links.js?v=20261025-unanswered-fix53";
+} from "./navigation.js?v=20261115-move-race56";
+import { photoCommentOwnerId } from "./photo-comment-api.js?v=20261115-move-race56";
+import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261115-move-race56";
+import { invalidatePhotoActivityCaches } from "./cache.js?v=20261115-move-race56";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261115-move-race56";
+import { renderPhotoDescription } from "./photo-description-links.js?v=20261115-move-race56";
 
 const COMMENT_PAGE_SIZE = 100;
 const LONG_PRESS_MS = 900;
@@ -920,7 +920,7 @@ function openViewerPhotoContext() {
         if (!album?.id) return;
 
         try {
-            const { openAlbum } = await import("./photos.js?v=20261025-unanswered-fix53");
+            const { openAlbum } = await import("./photos.js?v=20261115-move-race56");
             await openAlbum(album);
         } catch (error) {
             console.warn("Не удалось перейти в альбом фотографии:", error);

@@ -1,21 +1,21 @@
-import { state } from "./state.js?v=20261025-unanswered-fix53";
-import { dom } from "./dom.js?v=20261025-unanswered-fix53";
-import { vkApi } from "./vk-api.js?v=20261025-comment-read54";
-import { getPhotoPreviewUrl, escapeHtml, getErrorMessage } from "./helpers.js?v=20261025-unanswered-fix53";
-import { showPhotosScreen, pushAlbumHistory } from "./navigation.js?v=20261025-unanswered-fix53";
-import { CACHE_TTL } from "./config.js?v=20261025-unanswered-fix53";
-import { cacheGet, cacheGetStale, cacheSet, albumPhotosKey } from "./cache.js?v=20261025-unanswered-fix53";
-import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261025-comment-read54";
-import { bindPhotoContextLongPress } from "./photo-context-menu.js?v=20261025-unanswered-fix53";
-import { syncPhotoIndexAlbumIfDirty } from "./photo-index-sync.js?v=20261025-unanswered-fix53";
-import { getDirtyPhotoIndexAlbums } from "./photo-index-db.js?v=20261025-unanswered-fix53";
+import { state } from "./state.js?v=20261115-move-race56";
+import { dom } from "./dom.js?v=20261115-move-race56";
+import { vkApi } from "./vk-api.js?v=20261115-move-race56";
+import { getPhotoPreviewUrl, escapeHtml, getErrorMessage } from "./helpers.js?v=20261115-move-race56";
+import { showPhotosScreen, pushAlbumHistory } from "./navigation.js?v=20261115-move-race56";
+import { CACHE_TTL } from "./config.js?v=20261115-move-race56";
+import { cacheGet, cacheGetStale, cacheSet, albumPhotosKey } from "./cache.js?v=20261115-move-race56";
+import { getOwnerId } from "./group-context.js?v=20261115-move-race56";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261115-move-race56";
+import { bindPhotoContextLongPress } from "./photo-context-menu.js?v=20261115-move-race56";
+import { syncPhotoIndexAlbumIfDirty } from "./photo-index-sync.js?v=20261115-move-race56";
+import { getDirtyPhotoIndexAlbums } from "./photo-index-db.js?v=20261115-move-race56";
 import {
     isPhotoMultiSelectActive,
     isPhotoSelected,
     togglePhotoSelection,
     cancelPhotoMultiSelect
-} from "./photo-multiselect.js?v=20261025-unanswered-fix53";
+} from "./photo-multiselect.js?v=20261115-move-race56";
 
 const PAGE_SIZE = 240;
 const SORT_FETCH_SIZE = 1000;
@@ -386,8 +386,17 @@ function applyFirstPage(album, result, { preserveLoadedTail = false } = {}) {
     return true;
 }
 
+// Отменяет применение результатов старых запросов фотографий после локальных
+// операций (перемещение/удаление). Сам VK-запрос остановить нельзя, но его
+// ответ больше не сможет вернуть карточку в уже изменённый альбом.
+export function invalidatePendingPhotoPageRequests() {
+    firstPageRefreshToken += 1;
+}
+
 async function fetchFirstPhotoPage(album) {
+    const token = firstPageRefreshToken;
     const result = await fetchPhotoPage(album, 0, PAGE_SIZE);
+    if (token !== firstPageRefreshToken || !currentAlbumIs(album) || state.currentScreen !== "photos") return;
     applyFirstPage(album, result, { preserveLoadedTail: false });
 }
 
@@ -396,7 +405,7 @@ async function revalidateFirstPhotoPage(album) {
 
     try {
         const result = await fetchPhotoPage(album, 0, PAGE_SIZE);
-        if (token !== firstPageRefreshToken || !currentAlbumIs(album)) return;
+        if (token !== firstPageRefreshToken || !currentAlbumIs(album) || state.currentScreen !== "photos") return;
         applyFirstPage(album, result, { preserveLoadedTail: true });
     } catch (error) {
         console.warn("Фоновое обновление фотографий:", error);
@@ -542,13 +551,15 @@ export async function loadMorePhotos() {
 
     let shouldFullRender = false;
 
+    const requestToken = firstPageRefreshToken;
+
     try {
         const existingIds = new Set(state.photos.map(photo => String(photo.id)));
         const result = await fetchPhotoPage(album, state.photosOffset, PAGE_SIZE);
 
-        // Пользователь мог успеть уйти в другой альбом, пока VK отвечал.
-        // В таком случае старый ответ вообще не должен менять текущую сетку.
-        if (!currentAlbumIs(album) || state.currentScreen !== "photos") return;
+        // Пользователь мог уйти в другой альбом или выполнить перенос,
+        // пока VK отвечал. Старый ответ не должен возвращать перенесённое фото.
+        if (requestToken !== firstPageRefreshToken || !currentAlbumIs(album) || state.currentScreen !== "photos") return;
 
         const items = Array.isArray(result?.items) ? result.items : [];
         const beforeCount = state.photos.length;

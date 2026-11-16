@@ -1,22 +1,22 @@
-import { dom } from "./dom.js?v=20261025-unanswered-fix53";
-import { markUnansweredComments, prepareCommentStatus, markCommentRead } from "./comment-status.js?v=20261025-comment-read54";
-import { state } from "./state.js?v=20261025-unanswered-fix53";
-import { vkApi } from "./vk-api.js?v=20261025-comment-read54";
+import { dom } from "./dom.js?v=20261115-move-race56";
+import { markUnansweredComments, prepareCommentStatus, markCommentRead } from "./comment-status.js?v=20261115-move-race56";
+import { state } from "./state.js?v=20261115-move-race56";
+import { vkApi } from "./vk-api.js?v=20261115-move-race56";
 import {
     escapeHtml,
     getPhotoPreviewUrl
-} from "./helpers.js?v=20261025-unanswered-fix53";
+} from "./helpers.js?v=20261115-move-race56";
 import {
     showCommentsScreen,
     pushCommentsHistory
-} from "./navigation.js?v=20261025-unanswered-fix53";
-import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
-import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261025-unanswered-fix53";
-import { CACHE_TTL } from "./config.js?v=20261025-unanswered-fix53";
-import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20261025-unanswered-fix53";
-import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261025-unanswered-fix53";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261025-comment-read54";
-import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261025-unanswered-fix53";
+} from "./navigation.js?v=20261115-move-race56";
+import { getOwnerId } from "./group-context.js?v=20261115-move-race56";
+import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261115-move-race56";
+import { CACHE_TTL } from "./config.js?v=20261115-move-race56";
+import { createPhotoComment, getPhotoCommentErrorText } from "./photo-comment-api.js?v=20261115-move-race56";
+import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261115-move-race56";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261115-move-race56";
+import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261115-move-race56";
 
 const ALBUM_COMMENTS_DAYS = 3;
 const PAGE_SIZE = 100;

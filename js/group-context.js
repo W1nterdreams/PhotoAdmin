@@ -1,5 +1,5 @@
-import { state } from "./state.js?v=20261025-unanswered-fix53";
-import { ALLOW_USERS, ALLOWED_GROUP_IDS } from "./config.js?v=20261025-unanswered-fix53";
+import { state } from "./state.js?v=20261115-move-race56";
+import { ALLOW_USERS, ALLOWED_GROUP_IDS } from "./config.js?v=20261115-move-race56";
 
 let lastAccessDiagnostic = null;
 

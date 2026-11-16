@@ -1,16 +1,17 @@
-import { state } from "./state.js?v=20261025-unanswered-fix53";
-import { vkApi } from "./vk-api.js?v=20261025-comment-read54";
-import { getAlbumCover, getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20261025-unanswered-fix53";
-import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
+import { state } from "./state.js?v=20261115-move-race56";
+import { vkApi } from "./vk-api.js?v=20261115-move-race56";
+import { getAlbumCover, getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20261115-move-race56";
+import { getOwnerId } from "./group-context.js?v=20261115-move-race56";
 import {
     invalidateAlbumCaches,
     invalidateAlbumPhotosCache,
     invalidateCommentCaches
-} from "./cache.js?v=20261025-unanswered-fix53";
-import { openVkTarget, openVkPhoto } from "./vk-links.js?v=20261025-unanswered-fix53";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261025-unanswered-fix53";
-import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261025-unanswered-fix53";
-import { applyLocalPhotoMove } from "./photo-index-sync.js?v=20261025-unanswered-fix53";
+} from "./cache.js?v=20261115-move-race56";
+import { openVkTarget, openVkPhoto } from "./vk-links.js?v=20261115-move-race56";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261115-move-race56";
+import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261115-move-race56";
+import { applyLocalPhotoMove } from "./photo-index-sync.js?v=20261115-move-race56";
+import { invalidatePendingPhotoPageRequests } from "./photos.js?v=20261115-move-race56";
 
 const ALBUM_PAGE_SIZE = 100;
 const MAX_ALBUM_PAGES = 200;
@@ -655,6 +656,9 @@ async function movePhoto(album) {
         throw new Error("VK не подтвердил перемещение фотографии.");
     }
 
+    // Не позволяем запросу, начатому до перемещения, вернуть старый снимок
+    // альбома поверх уже подтверждённого изменения.
+    invalidatePendingPhotoPageRequests();
     invalidateAlbumPhotosCache(ownerId, sourceAlbumId);
     invalidateAlbumPhotosCache(ownerId, Number(album.id));
     invalidateAlbumCaches(ownerId);
@@ -725,6 +729,10 @@ async function moveManyPhotos(album, busyLabel, sourceButton) {
     }
 
     if (moved.length) {
+        // Отменяем применение всех запросов страниц, начатых до завершения
+        // группового переноса. Иначе поздний ответ VK может воскресить одну
+        // из уже перенесённых карточек в исходном альбоме.
+        invalidatePendingPhotoPageRequests();
         invalidateAlbumPhotosCache(ownerId, sourceAlbumId);
         invalidateAlbumPhotosCache(ownerId, targetAlbumId);
         invalidateAlbumCaches(ownerId);

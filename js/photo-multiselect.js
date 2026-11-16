@@ -1,5 +1,5 @@
-import { state } from "./state.js?v=20261025-unanswered-fix53";
-import { openPhotoTransferMany } from "./photo-transfer.js?v=20261025-unanswered-fix53";
+import { state } from "./state.js?v=20261115-move-race56";
+import { openPhotoTransferMany } from "./photo-transfer.js?v=20261115-move-race56";
 
 let active = false;
 let selectedIds = new Set();

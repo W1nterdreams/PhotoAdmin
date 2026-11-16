@@ -1,15 +1,15 @@
-import { state } from "./state.js?v=20261025-unanswered-fix53";
-import { dom } from "./dom.js?v=20261025-unanswered-fix53";
-import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
-import { closeMenu } from "./main-menu.js?v=20261025-unanswered-fix53";
-import { openVkTarget } from "./vk-links.js?v=20261025-unanswered-fix53";
-import { loadPhotos } from "./photos.js?v=20261025-unanswered-fix53";
-import { renderAlbums } from "./albums.js?v=20261025-unanswered-fix53";
+import { state } from "./state.js?v=20261115-move-race56";
+import { dom } from "./dom.js?v=20261115-move-race56";
+import { getOwnerId } from "./group-context.js?v=20261115-move-race56";
+import { closeMenu } from "./main-menu.js?v=20261115-move-race56";
+import { openVkTarget } from "./vk-links.js?v=20261115-move-race56";
+import { loadPhotos } from "./photos.js?v=20261115-move-race56";
+import { renderAlbums } from "./albums.js?v=20261115-move-race56";
 import {
     invalidateAlbumCaches,
     invalidateAlbumPhotosCache
-} from "./cache.js?v=20261025-unanswered-fix53";
-import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261025-unanswered-fix53";
+} from "./cache.js?v=20261115-move-race56";
+import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261115-move-race56";
 
 function findAlbum(albumId) {
     const id = String(albumId || "");

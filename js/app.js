@@ -1,31 +1,31 @@
-import { dom } from "./dom.js?v=20261025-unanswered-fix53";
-import { vkInit, loadUser, getAccessToken } from "./vk-api.js?v=20261025-comment-read54";
+import { dom } from "./dom.js?v=20261115-move-race56";
+import { vkInit, loadUser, getAccessToken } from "./vk-api.js?v=20261115-move-race56";
 import {
     AppAccessDeniedError,
     precheckLaunchAccess,
     initOwnerContext
-} from "./group-context.js?v=20261025-unanswered-fix53";
-import { initAlbums, loadAlbums } from "./albums.js?v=20261025-unanswered-fix53";
-import { openAlbum } from "./photos.js?v=20261025-unanswered-fix53";
-import { initMainMenu } from "./main-menu.js?v=20261025-unanswered-fix53";
-import { initAlbumCreate } from "./album-create.js?v=20261025-unanswered-fix53";
-import { initAlbumEdit } from "./album-edit.js?v=20261025-unanswered-fix53";
-import { initAlbumDelete } from "./album-delete.js?v=20261025-unanswered-fix53";
-import { initAlbumReorder } from "./album-reorder.js?v=20261025-unanswered-fix53";
-import { initComments } from "./comments.js?v=20261025-comment-read54";
-import { initAlbumComments } from "./album-comments.js?v=20261025-comment-read54";
-import { initPhotoViewer, openPhotoViewer } from "./photo-viewer.js?v=20261025-comment-read54";
-import { initPhotoUpload } from "./photo-upload.js?v=20261025-unanswered-fix53";
-import { initPhotoMenu } from "./photo-menu.js?v=20261025-unanswered-fix53";
-import { initPhotoTransfer } from "./photo-transfer.js?v=20261025-unanswered-fix53";
-import { initPhotoReorder } from "./photo-reorder.js?v=20261025-unanswered-fix53";
-import { initNavigation, showAlbumsScreen } from "./navigation.js?v=20261025-unanswered-fix53";
-import { escapeHtml, getErrorMessage, logError } from "./helpers.js?v=20261025-unanswered-fix53";
-import { cleanupLegacyCache } from "./cache.js?v=20261025-unanswered-fix53";
-import { initGlobalPhotoSearch } from "./global-photo-search.js?v=20261025-unanswered-fix53";
-import { initPhotoIndexSync } from "./photo-index-sync.js?v=20261025-unanswered-fix53";
-import { initSearchKeyboardDismiss } from "./search-keyboard.js?v=20261025-unanswered-fix53";
-import { initializeCommentReadState } from "./comment-status.js?v=20261025-comment-read54";
+} from "./group-context.js?v=20261115-move-race56";
+import { initAlbums, loadAlbums } from "./albums.js?v=20261115-move-race56";
+import { openAlbum } from "./photos.js?v=20261115-move-race56";
+import { initMainMenu } from "./main-menu.js?v=20261115-move-race56";
+import { initAlbumCreate } from "./album-create.js?v=20261115-move-race56";
+import { initAlbumEdit } from "./album-edit.js?v=20261115-move-race56";
+import { initAlbumDelete } from "./album-delete.js?v=20261115-move-race56";
+import { initAlbumReorder } from "./album-reorder.js?v=20261115-move-race56";
+import { initComments } from "./comments.js?v=20261115-move-race56";
+import { initAlbumComments } from "./album-comments.js?v=20261115-move-race56";
+import { initPhotoViewer, openPhotoViewer } from "./photo-viewer.js?v=20261115-move-race56";
+import { initPhotoUpload } from "./photo-upload.js?v=20261115-move-race56";
+import { initPhotoMenu } from "./photo-menu.js?v=20261115-move-race56";
+import { initPhotoTransfer } from "./photo-transfer.js?v=20261115-move-race56";
+import { initPhotoReorder } from "./photo-reorder.js?v=20261115-move-race56";
+import { initNavigation, showAlbumsScreen } from "./navigation.js?v=20261115-move-race56";
+import { escapeHtml, getErrorMessage, logError } from "./helpers.js?v=20261115-move-race56";
+import { cleanupLegacyCache } from "./cache.js?v=20261115-move-race56";
+import { initGlobalPhotoSearch } from "./global-photo-search.js?v=20261115-move-race56";
+import { initPhotoIndexSync } from "./photo-index-sync.js?v=20261115-move-race56";
+import { initSearchKeyboardDismiss } from "./search-keyboard.js?v=20261115-move-race56";
+import { initializeCommentReadState } from "./comment-status.js?v=20261115-move-race56";
 
 function setAppInteractive(enabled) {
     const app = document.getElementById("app");

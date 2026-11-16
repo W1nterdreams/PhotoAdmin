@@ -1,7 +1,7 @@
-import { VK_APP_ID, VK_API_VERSION } from "./config.js?v=20261025-unanswered-fix53";
-import { state } from "./state.js?v=20261025-unanswered-fix53";
-import { dom } from "./dom.js?v=20261025-unanswered-fix53";
-import { logError } from "./helpers.js?v=20261025-unanswered-fix53";
+import { VK_APP_ID, VK_API_VERSION } from "./config.js?v=20261115-move-race56";
+import { state } from "./state.js?v=20261115-move-race56";
+import { dom } from "./dom.js?v=20261115-move-race56";
+import { logError } from "./helpers.js?v=20261115-move-race56";
 
 let apiStats = createEmptyStats();
 

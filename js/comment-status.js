@@ -1,6 +1,6 @@
-import { state } from "./state.js?v=20261025-unanswered-fix53";
-import { vkApi } from "./vk-api.js?v=20261025-comment-read54";
-import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
+import { state } from "./state.js?v=20261115-move-race56";
+import { vkApi } from "./vk-api.js?v=20261115-move-race56";
+import { getOwnerId } from "./group-context.js?v=20261115-move-race56";
 
 const READ_MARK_TTL_MS = 10 * 24 * 60 * 60 * 1000;
 const READ_MARK_DB_NAME = "vk-photo-manager-comment-read-state";
@@ -403,7 +403,12 @@ export function markUnansweredComments(items, options = {}) {
     function isLeadership(comment) {
         const authorId = Number(comment?.from_id || 0);
         if (!authorId) return false;
-        if (authorId === ownerId || authorId === currentId) return true;
+
+        // VK может вернуть автора-комментария, написанного от имени сообщества,
+        // как с отрицательным ID (-group_id), так и с положительным (group_id).
+        // В групповом режиме оба варианта относятся к самому сообществу.
+        const isCurrentCommunity = ownerId < 0 && Math.abs(authorId) === Math.abs(ownerId);
+        if (authorId === ownerId || isCurrentCommunity || authorId === currentId) return true;
         return authorId > 0 && managers.has(authorId);
     }
 

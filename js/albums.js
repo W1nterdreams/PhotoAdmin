@@ -1,9 +1,9 @@
-import { state } from "./state.js?v=20261025-unanswered-fix53";
-import { dom } from "./dom.js?v=20261025-unanswered-fix53";
-import { vkApi } from "./vk-api.js?v=20261025-comment-read54";
-import { getAlbumCover, escapeHtml, getErrorMessage } from "./helpers.js?v=20261025-unanswered-fix53";
-import { openAlbum, loadPhotos } from "./photos.js?v=20261025-unanswered-fix53";
-import { CACHE_TTL } from "./config.js?v=20261025-unanswered-fix53";
+import { state } from "./state.js?v=20261115-move-race56";
+import { dom } from "./dom.js?v=20261115-move-race56";
+import { vkApi } from "./vk-api.js?v=20261115-move-race56";
+import { getAlbumCover, escapeHtml, getErrorMessage } from "./helpers.js?v=20261115-move-race56";
+import { openAlbum, loadPhotos } from "./photos.js?v=20261115-move-race56";
+import { CACHE_TTL } from "./config.js?v=20261115-move-race56";
 import {
     cacheGet,
     cacheGetStale,
@@ -11,10 +11,10 @@ import {
     invalidateAlbumCaches,
     albumsKey,
     albumIndexKey
-} from "./cache.js?v=20261025-unanswered-fix53";
-import { getOwnerId } from "./group-context.js?v=20261025-unanswered-fix53";
-import { bindAlbumLongPress } from "./album-menu.js?v=20261025-unanswered-fix53";
-import { observeAlbumFingerprints, reconcileAlbumFingerprints } from "./album-fingerprint.js?v=20261025-unanswered-fix53";
+} from "./cache.js?v=20261115-move-race56";
+import { getOwnerId } from "./group-context.js?v=20261115-move-race56";
+import { bindAlbumLongPress } from "./album-menu.js?v=20261115-move-race56";
+import { observeAlbumFingerprints, reconcileAlbumFingerprints } from "./album-fingerprint.js?v=20261115-move-race56";
 
 const PAGE_SIZE = 1000;
 const INDEX_PAGE_SIZE = 1000;
