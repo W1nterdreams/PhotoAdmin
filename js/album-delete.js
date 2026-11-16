@@ -1,8 +1,8 @@
-import { getOwnerId } from "./group-context.js?v=20261115-move-race56";
-import { openVkTarget } from "./vk-links.js?v=20261115-move-race56";
-import { loadAlbums } from "./albums.js?v=20261115-move-race56";
-import { invalidateAlbumCaches, invalidateCommentCaches } from "./cache.js?v=20261115-move-race56";
-import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261115-move-race56";
+import { getOwnerId } from "./group-context.js?v=20261116-move-reconcile57";
+import { openVkTarget } from "./vk-links.js?v=20261116-move-reconcile57";
+import { loadAlbums } from "./albums.js?v=20261116-move-reconcile57";
+import { invalidateAlbumCaches, invalidateCommentCaches } from "./cache.js?v=20261116-move-reconcile57";
+import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261116-move-reconcile57";
 
 let waitingForVkReturn = false;
 let refreshingAfterReturn = false;

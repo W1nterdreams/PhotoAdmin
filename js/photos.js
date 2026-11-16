@@ -1,21 +1,21 @@
-import { state } from "./state.js?v=20261115-move-race56";
-import { dom } from "./dom.js?v=20261115-move-race56";
-import { vkApi } from "./vk-api.js?v=20261115-move-race56";
-import { getPhotoPreviewUrl, escapeHtml, getErrorMessage } from "./helpers.js?v=20261115-move-race56";
-import { showPhotosScreen, pushAlbumHistory } from "./navigation.js?v=20261115-move-race56";
-import { CACHE_TTL } from "./config.js?v=20261115-move-race56";
-import { cacheGet, cacheGetStale, cacheSet, albumPhotosKey } from "./cache.js?v=20261115-move-race56";
-import { getOwnerId } from "./group-context.js?v=20261115-move-race56";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261115-move-race56";
-import { bindPhotoContextLongPress } from "./photo-context-menu.js?v=20261115-move-race56";
-import { syncPhotoIndexAlbumIfDirty } from "./photo-index-sync.js?v=20261115-move-race56";
-import { getDirtyPhotoIndexAlbums } from "./photo-index-db.js?v=20261115-move-race56";
+import { state } from "./state.js?v=20261116-move-reconcile57";
+import { dom } from "./dom.js?v=20261116-move-reconcile57";
+import { vkApi } from "./vk-api.js?v=20261116-move-reconcile57";
+import { getPhotoPreviewUrl, escapeHtml, getErrorMessage } from "./helpers.js?v=20261116-move-reconcile57";
+import { showPhotosScreen, pushAlbumHistory } from "./navigation.js?v=20261116-move-reconcile57";
+import { CACHE_TTL } from "./config.js?v=20261116-move-reconcile57";
+import { cacheGet, cacheGetStale, cacheSet, albumPhotosKey } from "./cache.js?v=20261116-move-reconcile57";
+import { getOwnerId } from "./group-context.js?v=20261116-move-reconcile57";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261116-move-reconcile57";
+import { bindPhotoContextLongPress } from "./photo-context-menu.js?v=20261116-move-reconcile57";
+import { syncPhotoIndexAlbumIfDirty } from "./photo-index-sync.js?v=20261116-move-reconcile57";
+import { getDirtyPhotoIndexAlbums } from "./photo-index-db.js?v=20261116-move-reconcile57";
 import {
     isPhotoMultiSelectActive,
     isPhotoSelected,
     togglePhotoSelection,
     cancelPhotoMultiSelect
-} from "./photo-multiselect.js?v=20261115-move-race56";
+} from "./photo-multiselect.js?v=20261116-move-reconcile57";
 
 const PAGE_SIZE = 240;
 const SORT_FETCH_SIZE = 1000;
@@ -26,6 +26,51 @@ let photoSortControlsInitialized = false;
 let photoSearchControlsInitialized = false;
 let photoSearchRequestToken = 0;
 let allPhotosLoadPromise = null;
+
+// Подтверждённые перемещения удерживаем в памяти сеанса: VK может ещё
+// некоторое время возвращать старую принадлежность фото исходному альбому.
+const recentPhotoMoves = new Map();
+const RECENT_MOVE_TTL_MS = 30 * 60 * 1000;
+
+export function markPhotoMovedLocally(photoId, sourceAlbumId, targetAlbumId) {
+    const id = String(photoId || "");
+    const source = String(sourceAlbumId || "");
+    if (!id || !source) return;
+    recentPhotoMoves.set(id, {
+        sourceAlbumId: source,
+        targetAlbumId: String(targetAlbumId || ""),
+        movedAt: Date.now()
+    });
+}
+
+function filterRecentlyMovedFromAlbum(album, items) {
+    const now = Date.now();
+    const albumId = String(album?.id || "");
+    return (Array.isArray(items) ? items : []).filter(photo => {
+        const id = String(photo?.id || "");
+        const move = recentPhotoMoves.get(id);
+        if (!move) return true;
+        if (now - move.movedAt > RECENT_MOVE_TTL_MS) {
+            recentPhotoMoves.delete(id);
+            return true;
+        }
+        return move.sourceAlbumId !== albumId;
+    });
+}
+
+function countRecentMovesFromAlbum(album) {
+    const now = Date.now();
+    const albumId = String(album?.id || "");
+    let count = 0;
+    for (const [id, move] of recentPhotoMoves) {
+        if (now - move.movedAt > RECENT_MOVE_TTL_MS) {
+            recentPhotoMoves.delete(id);
+        } else if (move.sourceAlbumId === albumId) {
+            count += 1;
+        }
+    }
+    return count;
+}
 
 export function getPhotoDateSort() {
     return state.photoSortMode || "vk";
@@ -86,11 +131,11 @@ async function ensureAllPhotosLoadedForSort() {
                 if (!currentAlbumIs(album)) return;
 
                 const items = Array.isArray(result?.items) ? result.items : [];
-                allPhotos = mergePhotos(allPhotos, items);
+                allPhotos = mergePhotos(allPhotos, items, album);
 
                 const apiTotal = Number(result?.count);
                 if (Number.isFinite(apiTotal) && apiTotal >= 0) {
-                    total = Math.max(apiTotal, allPhotos.length);
+                    total = Math.max(0, apiTotal - countRecentMovesFromAlbum(album), allPhotos.length);
                 } else {
                     total = Math.max(total, allPhotos.length);
                 }
@@ -105,7 +150,7 @@ async function ensureAllPhotosLoadedForSort() {
             if (!currentAlbumIs(album)) return;
 
             state.photos = allPhotos;
-            state.photosTotal = Math.max(total, allPhotos.length);
+            state.photosTotal = Math.max(0, total - countRecentMovesFromAlbum(album), allPhotos.length);
             state.photosOffset = allPhotos.length;
             state.photosHasMore = false;
             state.photosLoadingMore = false;
@@ -260,9 +305,9 @@ let photoScrollTicking = false;
 let photosInitialized = false;
 let firstPageRefreshToken = 0;
 
-function mergePhotos(current, incoming) {
+function mergePhotos(current, incoming, album = null) {
     const map = new Map(current.map(photo => [String(photo.id), photo]));
-    incoming.forEach(photo => map.set(String(photo.id), photo));
+    filterRecentlyMovedFromAlbum(album, incoming).forEach(photo => map.set(String(photo.id), photo));
     return [...map.values()];
 }
 
@@ -318,10 +363,10 @@ function updateAlbumSize(album, total) {
 }
 
 function restorePhotosCache(cached, album) {
-    const items = Array.isArray(cached) ? cached : (cached?.items || []);
+    const items = filterRecentlyMovedFromAlbum(album, Array.isArray(cached) ? cached : (cached?.items || []));
     const cachedTotal = Array.isArray(cached) ? 0 : Number(cached?.total || 0);
-    const albumTotal = Number(album.size || 0);
-    const total = Math.max(cachedTotal, albumTotal, items.length);
+    const albumTotal = Math.max(0, Number(album.size || 0) - countRecentMovesFromAlbum(album));
+    const total = Math.max(0, cachedTotal - countRecentMovesFromAlbum(album), albumTotal, items.length);
 
     state.photos = items;
     state.photosTotal = total;
@@ -340,11 +385,15 @@ function applyFirstPage(album, result, { preserveLoadedTail = false } = {}) {
     const previousFirstIds = state.photos
         .slice(0, PAGE_SIZE)
         .map(photo => String(photo.id));
-    const items = Array.isArray(result?.items) ? result.items : [];
+    const rawItems = Array.isArray(result?.items) ? result.items : [];
+    const items = filterRecentlyMovedFromAlbum(album, rawItems);
     const nextFirstIds = items.map(photo => String(photo.id));
     const apiTotal = Number(result?.count);
-    const total = Number.isFinite(apiTotal) && apiTotal >= 0
-        ? Math.max(apiTotal, items.length)
+    const adjustedApiTotal = Number.isFinite(apiTotal) && apiTotal >= 0
+        ? Math.max(0, apiTotal - countRecentMovesFromAlbum(album))
+        : NaN;
+    const total = Number.isFinite(adjustedApiTotal)
+        ? Math.max(adjustedApiTotal, items.length)
         : Math.max(Number(album.size || 0), items.length);
 
     if (preserveLoadedTail && state.photos.length > PAGE_SIZE) {
@@ -563,12 +612,12 @@ export async function loadMorePhotos() {
 
         const items = Array.isArray(result?.items) ? result.items : [];
         const beforeCount = state.photos.length;
-        state.photos = mergePhotos(state.photos, items);
+        state.photos = mergePhotos(state.photos, items, album);
         const addedCount = state.photos.length - beforeCount;
 
         const apiTotal = Number(result?.count);
         if (Number.isFinite(apiTotal) && apiTotal >= 0) {
-            state.photosTotal = Math.max(apiTotal, state.photos.length);
+            state.photosTotal = Math.max(0, apiTotal - countRecentMovesFromAlbum(album), state.photos.length);
         } else {
             state.photosTotal = Math.max(
                 Number(album.size || 0),

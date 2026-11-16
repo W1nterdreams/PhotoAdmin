@@ -1,17 +1,17 @@
-import { state } from "./state.js?v=20261115-move-race56";
-import { vkApi } from "./vk-api.js?v=20261115-move-race56";
-import { getAlbumCover, getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20261115-move-race56";
-import { getOwnerId } from "./group-context.js?v=20261115-move-race56";
+import { state } from "./state.js?v=20261116-move-reconcile57";
+import { vkApi } from "./vk-api.js?v=20261116-move-reconcile57";
+import { getAlbumCover, getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20261116-move-reconcile57";
+import { getOwnerId } from "./group-context.js?v=20261116-move-reconcile57";
 import {
     invalidateAlbumCaches,
     invalidateAlbumPhotosCache,
     invalidateCommentCaches
-} from "./cache.js?v=20261115-move-race56";
-import { openVkTarget, openVkPhoto } from "./vk-links.js?v=20261115-move-race56";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261115-move-race56";
-import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261115-move-race56";
-import { applyLocalPhotoMove } from "./photo-index-sync.js?v=20261115-move-race56";
-import { invalidatePendingPhotoPageRequests } from "./photos.js?v=20261115-move-race56";
+} from "./cache.js?v=20261116-move-reconcile57";
+import { openVkTarget, openVkPhoto } from "./vk-links.js?v=20261116-move-reconcile57";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261116-move-reconcile57";
+import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261116-move-reconcile57";
+import { applyLocalPhotoMove } from "./photo-index-sync.js?v=20261116-move-reconcile57";
+import { invalidatePendingPhotoPageRequests, markPhotoMovedLocally } from "./photos.js?v=20261116-move-reconcile57";
 
 const ALBUM_PAGE_SIZE = 100;
 const MAX_ALBUM_PAGES = 200;
@@ -635,6 +635,46 @@ function updateAlbumSizes(sourceAlbumId, targetAlbumId, count = 1) {
     }
 }
 
+async function verifyPhotoInAlbum(photo, targetAlbumId, ownerId) {
+    const photoId = Number(photo?.id || 0);
+    if (!photoId || !ownerId) return false;
+
+    // photos.move иногда уже выполнен на стороне VK, хотя ответ приложения
+    // потерян/неоднозначен. Проверяем фактический album_id через photos.getById.
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+        if (attempt) await new Promise(resolve => setTimeout(resolve, 450 * attempt));
+        try {
+            const result = await vkApi("photos.getById", {
+                photos: `${Number(ownerId)}_${photoId}`,
+                extended: 1,
+                photo_sizes: 1
+            });
+            const actual = Array.isArray(result) ? result[0] : null;
+            if (actual && Number(actual.album_id) === Number(targetAlbumId)) return true;
+            if (actual && Number(actual.album_id) !== Number(photo?.album_id)) return false;
+            // Если VK ещё показывает исходный альбом, даём операции время
+            // распространиться и повторяем чтение.
+        } catch (error) {
+            console.warn("Не удалось проверить результат photos.move:", error);
+        }
+    }
+    return false;
+}
+
+async function movePhotoOnVk(photo, targetAlbumId, ownerId) {
+    try {
+        const response = await vkApi("photos.move", {
+            owner_id: Number(ownerId),
+            target_album_id: Number(targetAlbumId),
+            photo_id: Number(photo.id)
+        });
+        if (response === 1 || response === true) return true;
+    } catch (error) {
+        console.warn("Ответ photos.move неоднозначен, проверяем album_id:", error);
+    }
+    return verifyPhotoInAlbum(photo, targetAlbumId, ownerId);
+}
+
 async function movePhoto(album) {
     const photo = activePhoto;
     const ownerId = Number(photo?.owner_id || getOwnerId());
@@ -646,15 +686,13 @@ async function movePhoto(album) {
     );
     const startedFromViewer = originScreen === "photo";
 
-    const response = await vkApi("photos.move", {
-        owner_id: ownerId,
-        target_album_id: Number(album.id),
-        photo_id: Number(photo.id)
-    });
-
-    if (response !== 1 && response !== true) {
-        throw new Error("VK не подтвердил перемещение фотографии.");
+    const targetAlbumId = Number(album.id);
+    const movedOnVk = await movePhotoOnVk(photo, targetAlbumId, ownerId);
+    if (!movedOnVk) {
+        throw new Error("Не удалось подтвердить перемещение фотографии в VK. Проверьте альбом перед повторной попыткой.");
     }
+
+    markPhotoMovedLocally(photo.id, sourceAlbumId, targetAlbumId);
 
     // Не позволяем запросу, начатому до перемещения, вернуть старый снимок
     // альбома поверх уже подтверждённого изменения.
@@ -712,16 +750,13 @@ async function moveManyPhotos(album, busyLabel, sourceButton) {
         busyLabel.textContent = `Перемещаем ${i + 1} из ${photos.length}...`;
 
         try {
-            const response = await vkApi("photos.move", {
-                owner_id: Number(photo?.owner_id || ownerId),
-                target_album_id: targetAlbumId,
-                photo_id: Number(photo.id)
-            });
-
-            if (response !== 1 && response !== true) {
-                throw new Error("VK не подтвердил перемещение фотографии.");
+            const photoOwnerId = Number(photo?.owner_id || ownerId);
+            const movedOnVk = await movePhotoOnVk(photo, targetAlbumId, photoOwnerId);
+            if (!movedOnVk) {
+                throw new Error("Не удалось подтвердить перемещение фотографии в VK.");
             }
 
+            markPhotoMovedLocally(photo.id, sourceAlbumId, targetAlbumId);
             moved.push(photo);
         } catch (error) {
             failed.push({ photo, error });

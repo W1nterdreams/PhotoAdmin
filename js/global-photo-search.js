@@ -1,12 +1,12 @@
-import { state } from "./state.js?v=20261115-move-race56";
-import { vkApi } from "./vk-api.js?v=20261115-move-race56";
-import { getOwnerId } from "./group-context.js?v=20261115-move-race56";
-import { getPhotoPreviewUrl, getErrorMessage } from "./helpers.js?v=20261115-move-race56";
-import { ensureAlbumIndex } from "./albums.js?v=20261115-move-race56";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261115-move-race56";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261115-move-race56";
-import { getPhotoIndexSnapshot } from "./photo-index-db.js?v=20261115-move-race56";
-import { synchronizePhotoIndex } from "./photo-index-sync.js?v=20261115-move-race56";
+import { state } from "./state.js?v=20261116-move-reconcile57";
+import { vkApi } from "./vk-api.js?v=20261116-move-reconcile57";
+import { getOwnerId } from "./group-context.js?v=20261116-move-reconcile57";
+import { getPhotoPreviewUrl, getErrorMessage } from "./helpers.js?v=20261116-move-reconcile57";
+import { ensureAlbumIndex } from "./albums.js?v=20261116-move-reconcile57";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261116-move-reconcile57";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261116-move-reconcile57";
+import { getPhotoIndexSnapshot } from "./photo-index-db.js?v=20261116-move-reconcile57";
+import { synchronizePhotoIndex } from "./photo-index-sync.js?v=20261116-move-reconcile57";
 
 const SEARCH_RESULTS_PAGE_SIZE = 100;
 const FALLBACK_PAGE_SIZE = 200;

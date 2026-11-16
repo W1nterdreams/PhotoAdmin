@@ -1,10 +1,10 @@
-import { state } from "./state.js?v=20261115-move-race56";
-import { vkApi } from "./vk-api.js?v=20261115-move-race56";
-import { getErrorMessage } from "./helpers.js?v=20261115-move-race56";
-import { getOwnerId } from "./group-context.js?v=20261115-move-race56";
-import { cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261115-move-race56";
-import { loadAlbums } from "./albums.js?v=20261115-move-race56";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261115-move-race56";
+import { state } from "./state.js?v=20261116-move-reconcile57";
+import { vkApi } from "./vk-api.js?v=20261116-move-reconcile57";
+import { getErrorMessage } from "./helpers.js?v=20261116-move-reconcile57";
+import { getOwnerId } from "./group-context.js?v=20261116-move-reconcile57";
+import { cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261116-move-reconcile57";
+import { loadAlbums } from "./albums.js?v=20261116-move-reconcile57";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261116-move-reconcile57";
 
 let overlay = null;
 let activeAlbum = null;

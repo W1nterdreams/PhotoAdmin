@@ -1,11 +1,11 @@
-import { state } from "./state.js?v=20261115-move-race56";
-import { dom } from "./dom.js?v=20261115-move-race56";
-import { vkApi } from "./vk-api.js?v=20261115-move-race56";
-import { getErrorMessage } from "./helpers.js?v=20261115-move-race56";
-import { getOwnerId, isGroupMode } from "./group-context.js?v=20261115-move-race56";
-import { cacheSet, cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261115-move-race56";
-import { renderAlbums } from "./albums.js?v=20261115-move-race56";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261115-move-race56";
+import { state } from "./state.js?v=20261116-move-reconcile57";
+import { dom } from "./dom.js?v=20261116-move-reconcile57";
+import { vkApi } from "./vk-api.js?v=20261116-move-reconcile57";
+import { getErrorMessage } from "./helpers.js?v=20261116-move-reconcile57";
+import { getOwnerId, isGroupMode } from "./group-context.js?v=20261116-move-reconcile57";
+import { cacheSet, cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261116-move-reconcile57";
+import { renderAlbums } from "./albums.js?v=20261116-move-reconcile57";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261116-move-reconcile57";
 
 let activeAlbum = null;
 let opening = false;

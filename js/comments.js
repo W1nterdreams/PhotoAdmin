@@ -1,15 +1,15 @@
-import { state } from "./state.js?v=20261115-move-race56";
-import { markUnansweredComments, prepareCommentStatus, markCommentRead } from "./comment-status.js?v=20261115-move-race56";
-import { dom } from "./dom.js?v=20261115-move-race56";
-import { vkApi } from "./vk-api.js?v=20261115-move-race56";
-import { escapeHtml, getErrorMessage, getPhotoPreviewUrl } from "./helpers.js?v=20261115-move-race56";
-import { showCommentsScreen, pushCommentsHistory } from "./navigation.js?v=20261115-move-race56";
-import { closeMenu } from "./main-menu.js?v=20261115-move-race56";
-import { CACHE_TTL } from "./config.js?v=20261115-move-race56";
-import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261115-move-race56";
-import { getOwnerId } from "./group-context.js?v=20261115-move-race56";
-import { openVkProfile, openVkPhoto, openVkTarget } from "./vk-links.js?v=20261115-move-race56";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261115-move-race56";
+import { state } from "./state.js?v=20261116-move-reconcile57";
+import { markUnansweredComments, prepareCommentStatus, markCommentRead } from "./comment-status.js?v=20261116-move-reconcile57";
+import { dom } from "./dom.js?v=20261116-move-reconcile57";
+import { vkApi } from "./vk-api.js?v=20261116-move-reconcile57";
+import { escapeHtml, getErrorMessage, getPhotoPreviewUrl } from "./helpers.js?v=20261116-move-reconcile57";
+import { showCommentsScreen, pushCommentsHistory } from "./navigation.js?v=20261116-move-reconcile57";
+import { closeMenu } from "./main-menu.js?v=20261116-move-reconcile57";
+import { CACHE_TTL } from "./config.js?v=20261116-move-reconcile57";
+import { cacheGet, cacheSet, invalidateCommentCaches } from "./cache.js?v=20261116-move-reconcile57";
+import { getOwnerId } from "./group-context.js?v=20261116-move-reconcile57";
+import { openVkProfile, openVkPhoto, openVkTarget } from "./vk-links.js?v=20261116-move-reconcile57";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261116-move-reconcile57";
 
 const GLOBAL_COMMENTS_DAYS = 5;
 const PAGE_SIZE = 100;
