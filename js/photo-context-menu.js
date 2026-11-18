@@ -6,7 +6,7 @@ import {
     deletePhoto,
     makePhotoAlbumCover
 } from "./photo-menu.js?v=20261116-move-reconcile57";
-import { openPhotoTransfer } from "./photo-transfer.js?v=20261116-move-reconcile57";
+import { openPhotoTransfer } from "./photo-transfer.js?v=20261118-single-move58";
 import { openPhotoReorder } from "./photo-reorder.js?v=20261116-move-reconcile57";
 import { getErrorMessage } from "./helpers.js?v=20261116-move-reconcile57";
 import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261116-move-reconcile57";
