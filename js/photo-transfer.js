@@ -11,7 +11,7 @@ import { openVkTarget, openVkPhoto } from "./vk-links.js?v=20261116-move-reconci
 import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261116-move-reconcile57";
 import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261116-move-reconcile57";
 import { applyLocalPhotoMove } from "./photo-index-sync.js?v=20261116-move-reconcile57";
-import { invalidatePendingPhotoPageRequests, markPhotoMovedLocally } from "./photos.js?v=20261116-move-reconcile57";
+import { invalidatePendingPhotoPageRequests, markPhotoMovedLocally, renderPhotos } from "./photos.js?v=20261116-move-reconcile57";
 
 const ALBUM_PAGE_SIZE = 100;
 const MAX_ALBUM_PAGES = 200;
@@ -706,6 +706,10 @@ async function movePhoto(album) {
 
     state.photos = state.photos.filter(item => Number(item.id) !== Number(photo.id));
     state.photosTotal = Math.max(0, Number(state.photosTotal || 0) - 1);
+
+    // В одиночном сценарии нет события photo-multiselect-change,
+    // которое перерисовывает сетку после группового перемещения.
+    renderPhotos();
 
     const callback = onTransferComplete;
     busy = false;
