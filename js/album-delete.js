@@ -1,8 +1,8 @@
-import { getOwnerId } from "./group-context.js?v=20261118-diagnostic58";
-import { openVkTarget } from "./vk-links.js?v=20261118-diagnostic58";
-import { loadAlbums } from "./albums.js?v=20261118-diagnostic58";
-import { invalidateAlbumCaches, invalidateCommentCaches } from "./cache.js?v=20261118-diagnostic58";
-import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261118-diagnostic58";
+import { getOwnerId } from "./group-context.js?v=20261118-bridge-diagnostic59";
+import { openVkTarget } from "./vk-links.js?v=20261118-bridge-diagnostic59";
+import { loadAlbums } from "./albums.js?v=20261118-bridge-diagnostic59";
+import { invalidateAlbumCaches, invalidateCommentCaches } from "./cache.js?v=20261118-bridge-diagnostic59";
+import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261118-bridge-diagnostic59";
 
 let waitingForVkReturn = false;
 let refreshingAfterReturn = false;

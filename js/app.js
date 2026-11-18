@@ -1,31 +1,31 @@
-import { dom } from "./dom.js?v=20261118-diagnostic58";
-import { vkInit, loadUser, getAccessToken } from "./vk-api.js?v=20261118-diagnostic58";
+import { dom } from "./dom.js?v=20261118-bridge-diagnostic59";
+import { vkInit, loadUser, getAccessToken } from "./vk-api.js?v=20261118-bridge-diagnostic59";
 import {
     AppAccessDeniedError,
     precheckLaunchAccess,
     initOwnerContext
-} from "./group-context.js?v=20261118-diagnostic58";
-import { initAlbums, loadAlbums } from "./albums.js?v=20261118-diagnostic58";
-import { openAlbum } from "./photos.js?v=20261118-diagnostic58";
-import { initMainMenu } from "./main-menu.js?v=20261118-diagnostic58";
-import { initAlbumCreate } from "./album-create.js?v=20261118-diagnostic58";
-import { initAlbumEdit } from "./album-edit.js?v=20261118-diagnostic58";
-import { initAlbumDelete } from "./album-delete.js?v=20261118-diagnostic58";
-import { initAlbumReorder } from "./album-reorder.js?v=20261118-diagnostic58";
-import { initComments } from "./comments.js?v=20261118-diagnostic58";
-import { initAlbumComments } from "./album-comments.js?v=20261118-diagnostic58";
-import { initPhotoViewer, openPhotoViewer } from "./photo-viewer.js?v=20261118-diagnostic58";
-import { initPhotoUpload } from "./photo-upload.js?v=20261118-diagnostic58";
-import { initPhotoMenu } from "./photo-menu.js?v=20261118-diagnostic58";
+} from "./group-context.js?v=20261118-bridge-diagnostic59";
+import { initAlbums, loadAlbums } from "./albums.js?v=20261118-bridge-diagnostic59";
+import { openAlbum } from "./photos.js?v=20261118-bridge-diagnostic59";
+import { initMainMenu } from "./main-menu.js?v=20261118-bridge-diagnostic59";
+import { initAlbumCreate } from "./album-create.js?v=20261118-bridge-diagnostic59";
+import { initAlbumEdit } from "./album-edit.js?v=20261118-bridge-diagnostic59";
+import { initAlbumDelete } from "./album-delete.js?v=20261118-bridge-diagnostic59";
+import { initAlbumReorder } from "./album-reorder.js?v=20261118-bridge-diagnostic59";
+import { initComments } from "./comments.js?v=20261118-bridge-diagnostic59";
+import { initAlbumComments } from "./album-comments.js?v=20261118-bridge-diagnostic59";
+import { initPhotoViewer, openPhotoViewer } from "./photo-viewer.js?v=20261118-bridge-diagnostic59";
+import { initPhotoUpload } from "./photo-upload.js?v=20261118-bridge-diagnostic59";
+import { initPhotoMenu } from "./photo-menu.js?v=20261118-bridge-diagnostic59";
 import { initPhotoTransfer } from "./photo-transfer.js?v=20261118-single-move58";
-import { initPhotoReorder } from "./photo-reorder.js?v=20261118-diagnostic58";
-import { initNavigation, showAlbumsScreen } from "./navigation.js?v=20261118-diagnostic58";
-import { escapeHtml, getErrorMessage, logError } from "./helpers.js?v=20261118-diagnostic58";
-import { cleanupLegacyCache } from "./cache.js?v=20261118-diagnostic58";
-import { initGlobalPhotoSearch } from "./global-photo-search.js?v=20261118-diagnostic58";
-import { initPhotoIndexSync } from "./photo-index-sync.js?v=20261118-diagnostic58";
-import { initSearchKeyboardDismiss } from "./search-keyboard.js?v=20261118-diagnostic58";
-import { initializeCommentReadState } from "./comment-status.js?v=20261118-diagnostic58";
+import { initPhotoReorder } from "./photo-reorder.js?v=20261118-bridge-diagnostic59";
+import { initNavigation, showAlbumsScreen } from "./navigation.js?v=20261118-bridge-diagnostic59";
+import { escapeHtml, getErrorMessage, logError } from "./helpers.js?v=20261118-bridge-diagnostic59";
+import { cleanupLegacyCache } from "./cache.js?v=20261118-bridge-diagnostic59";
+import { initGlobalPhotoSearch } from "./global-photo-search.js?v=20261118-bridge-diagnostic59";
+import { initPhotoIndexSync } from "./photo-index-sync.js?v=20261118-bridge-diagnostic59";
+import { initSearchKeyboardDismiss } from "./search-keyboard.js?v=20261118-bridge-diagnostic59";
+import { initializeCommentReadState } from "./comment-status.js?v=20261118-bridge-diagnostic59";
 
 function setAppInteractive(enabled) {
     const app = document.getElementById("app");
@@ -113,7 +113,8 @@ function initWorkingUi() {
 }
 
 const startupDiagnostic = window.photoAdminDiagnostic;
-function startupStage(message) { startupDiagnostic?.stage(message); }
+function startupStage(label) { startupDiagnostic?.stage(label); }
+
 async function startApp() {
     console.log("Starting VK Photo Manager...");
 

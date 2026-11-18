@@ -1,9 +1,9 @@
-import { state } from "./state.js?v=20261118-diagnostic58";
-import { dom } from "./dom.js?v=20261118-diagnostic58";
-import { vkApi } from "./vk-api.js?v=20261118-diagnostic58";
-import { getAlbumCover, escapeHtml, getErrorMessage } from "./helpers.js?v=20261118-diagnostic58";
-import { openAlbum, loadPhotos } from "./photos.js?v=20261118-diagnostic58";
-import { CACHE_TTL } from "./config.js?v=20261118-diagnostic58";
+import { state } from "./state.js?v=20261118-bridge-diagnostic59";
+import { dom } from "./dom.js?v=20261118-bridge-diagnostic59";
+import { vkApi } from "./vk-api.js?v=20261118-bridge-diagnostic59";
+import { getAlbumCover, escapeHtml, getErrorMessage } from "./helpers.js?v=20261118-bridge-diagnostic59";
+import { openAlbum, loadPhotos } from "./photos.js?v=20261118-bridge-diagnostic59";
+import { CACHE_TTL } from "./config.js?v=20261118-bridge-diagnostic59";
 import {
     cacheGet,
     cacheGetStale,
@@ -11,10 +11,10 @@ import {
     invalidateAlbumCaches,
     albumsKey,
     albumIndexKey
-} from "./cache.js?v=20261118-diagnostic58";
-import { getOwnerId } from "./group-context.js?v=20261118-diagnostic58";
-import { bindAlbumLongPress } from "./album-menu.js?v=20261118-diagnostic58";
-import { observeAlbumFingerprints, reconcileAlbumFingerprints } from "./album-fingerprint.js?v=20261118-diagnostic58";
+} from "./cache.js?v=20261118-bridge-diagnostic59";
+import { getOwnerId } from "./group-context.js?v=20261118-bridge-diagnostic59";
+import { bindAlbumLongPress } from "./album-menu.js?v=20261118-bridge-diagnostic59";
+import { observeAlbumFingerprints, reconcileAlbumFingerprints } from "./album-fingerprint.js?v=20261118-bridge-diagnostic59";
 
 const PAGE_SIZE = 1000;
 const INDEX_PAGE_SIZE = 1000;

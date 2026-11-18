@@ -1,21 +1,21 @@
-import { state } from "./state.js?v=20261118-diagnostic58";
-import { dom } from "./dom.js?v=20261118-diagnostic58";
-import { vkApi } from "./vk-api.js?v=20261118-diagnostic58";
-import { getPhotoPreviewUrl, escapeHtml, getErrorMessage } from "./helpers.js?v=20261118-diagnostic58";
-import { showPhotosScreen, pushAlbumHistory } from "./navigation.js?v=20261118-diagnostic58";
-import { CACHE_TTL } from "./config.js?v=20261118-diagnostic58";
-import { cacheGet, cacheGetStale, cacheSet, albumPhotosKey } from "./cache.js?v=20261118-diagnostic58";
-import { getOwnerId } from "./group-context.js?v=20261118-diagnostic58";
-import { openPhotoViewer } from "./photo-viewer.js?v=20261118-diagnostic58";
-import { bindPhotoContextLongPress } from "./photo-context-menu.js?v=20261118-diagnostic58";
-import { syncPhotoIndexAlbumIfDirty } from "./photo-index-sync.js?v=20261118-diagnostic58";
-import { getDirtyPhotoIndexAlbums } from "./photo-index-db.js?v=20261118-diagnostic58";
+import { state } from "./state.js?v=20261118-bridge-diagnostic59";
+import { dom } from "./dom.js?v=20261118-bridge-diagnostic59";
+import { vkApi } from "./vk-api.js?v=20261118-bridge-diagnostic59";
+import { getPhotoPreviewUrl, escapeHtml, getErrorMessage } from "./helpers.js?v=20261118-bridge-diagnostic59";
+import { showPhotosScreen, pushAlbumHistory } from "./navigation.js?v=20261118-bridge-diagnostic59";
+import { CACHE_TTL } from "./config.js?v=20261118-bridge-diagnostic59";
+import { cacheGet, cacheGetStale, cacheSet, albumPhotosKey } from "./cache.js?v=20261118-bridge-diagnostic59";
+import { getOwnerId } from "./group-context.js?v=20261118-bridge-diagnostic59";
+import { openPhotoViewer } from "./photo-viewer.js?v=20261118-bridge-diagnostic59";
+import { bindPhotoContextLongPress } from "./photo-context-menu.js?v=20261118-bridge-diagnostic59";
+import { syncPhotoIndexAlbumIfDirty } from "./photo-index-sync.js?v=20261118-bridge-diagnostic59";
+import { getDirtyPhotoIndexAlbums } from "./photo-index-db.js?v=20261118-bridge-diagnostic59";
 import {
     isPhotoMultiSelectActive,
     isPhotoSelected,
     togglePhotoSelection,
     cancelPhotoMultiSelect
-} from "./photo-multiselect.js?v=20261118-diagnostic58";
+} from "./photo-multiselect.js?v=20261118-bridge-diagnostic59";
 
 const PAGE_SIZE = 240;
 const SORT_FETCH_SIZE = 1000;

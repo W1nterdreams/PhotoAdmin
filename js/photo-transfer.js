@@ -1,17 +1,17 @@
-import { state } from "./state.js?v=20261118-diagnostic58";
-import { vkApi } from "./vk-api.js?v=20261118-diagnostic58";
-import { getAlbumCover, getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20261118-diagnostic58";
-import { getOwnerId } from "./group-context.js?v=20261118-diagnostic58";
+import { state } from "./state.js?v=20261118-bridge-diagnostic59";
+import { vkApi } from "./vk-api.js?v=20261118-bridge-diagnostic59";
+import { getAlbumCover, getBestPhotoUrl, getErrorMessage } from "./helpers.js?v=20261118-bridge-diagnostic59";
+import { getOwnerId } from "./group-context.js?v=20261118-bridge-diagnostic59";
 import {
     invalidateAlbumCaches,
     invalidateAlbumPhotosCache,
     invalidateCommentCaches
-} from "./cache.js?v=20261118-diagnostic58";
-import { openVkTarget, openVkPhoto } from "./vk-links.js?v=20261118-diagnostic58";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261118-diagnostic58";
-import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261118-diagnostic58";
-import { applyLocalPhotoMove } from "./photo-index-sync.js?v=20261118-diagnostic58";
-import { invalidatePendingPhotoPageRequests, markPhotoMovedLocally, renderPhotos } from "./photos.js?v=20261118-diagnostic58";
+} from "./cache.js?v=20261118-bridge-diagnostic59";
+import { openVkTarget, openVkPhoto } from "./vk-links.js?v=20261118-bridge-diagnostic59";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261118-bridge-diagnostic59";
+import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261118-bridge-diagnostic59";
+import { applyLocalPhotoMove } from "./photo-index-sync.js?v=20261118-bridge-diagnostic59";
+import { invalidatePendingPhotoPageRequests, markPhotoMovedLocally, renderPhotos } from "./photos.js?v=20261118-bridge-diagnostic59";
 
 const ALBUM_PAGE_SIZE = 100;
 const MAX_ALBUM_PAGES = 200;

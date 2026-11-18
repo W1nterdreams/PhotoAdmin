@@ -1,7 +1,7 @@
-import { VK_APP_ID, VK_API_VERSION } from "./config.js?v=20261118-diagnostic58";
-import { state } from "./state.js?v=20261118-diagnostic58";
-import { dom } from "./dom.js?v=20261118-diagnostic58";
-import { logError } from "./helpers.js?v=20261118-diagnostic58";
+import { VK_APP_ID, VK_API_VERSION } from "./config.js?v=20261118-bridge-diagnostic59";
+import { state } from "./state.js?v=20261118-bridge-diagnostic59";
+import { dom } from "./dom.js?v=20261118-bridge-diagnostic59";
+import { logError } from "./helpers.js?v=20261118-bridge-diagnostic59";
 
 let apiStats = createEmptyStats();
 

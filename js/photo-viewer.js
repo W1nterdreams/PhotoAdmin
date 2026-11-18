@@ -1,20 +1,20 @@
-import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261118-diagnostic58";
-import { markUnansweredComments, prepareCommentStatus, markCommentRead } from "./comment-status.js?v=20261118-diagnostic58";
-import { state } from "./state.js?v=20261118-diagnostic58";
-import { dom } from "./dom.js?v=20261118-diagnostic58";
-import { vkApi } from "./vk-api.js?v=20261118-diagnostic58";
-import { getBestPhotoUrl, getPhotoPreviewUrl, escapeHtml } from "./helpers.js?v=20261118-diagnostic58";
-import { getOwnerId } from "./group-context.js?v=20261118-diagnostic58";
+import { armLongPressReleaseGuard, consumeLongPressSyntheticClick } from "./long-press-guard.js?v=20261118-bridge-diagnostic59";
+import { markUnansweredComments, prepareCommentStatus, markCommentRead } from "./comment-status.js?v=20261118-bridge-diagnostic59";
+import { state } from "./state.js?v=20261118-bridge-diagnostic59";
+import { dom } from "./dom.js?v=20261118-bridge-diagnostic59";
+import { vkApi } from "./vk-api.js?v=20261118-bridge-diagnostic59";
+import { getBestPhotoUrl, getPhotoPreviewUrl, escapeHtml } from "./helpers.js?v=20261118-bridge-diagnostic59";
+import { getOwnerId } from "./group-context.js?v=20261118-bridge-diagnostic59";
 import {
     showPhotoViewerScreen,
     pushPhotoHistory,
     replacePhotoHistory
-} from "./navigation.js?v=20261118-diagnostic58";
-import { photoCommentOwnerId } from "./photo-comment-api.js?v=20261118-diagnostic58";
-import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261118-diagnostic58";
-import { invalidatePhotoActivityCaches } from "./cache.js?v=20261118-diagnostic58";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261118-diagnostic58";
-import { renderPhotoDescription } from "./photo-description-links.js?v=20261118-diagnostic58";
+} from "./navigation.js?v=20261118-bridge-diagnostic59";
+import { photoCommentOwnerId } from "./photo-comment-api.js?v=20261118-bridge-diagnostic59";
+import { openVkProfile, openVkTarget, openVkPhoto } from "./vk-links.js?v=20261118-bridge-diagnostic59";
+import { invalidatePhotoActivityCaches } from "./cache.js?v=20261118-bridge-diagnostic59";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261118-bridge-diagnostic59";
+import { renderPhotoDescription } from "./photo-description-links.js?v=20261118-bridge-diagnostic59";
 
 const COMMENT_PAGE_SIZE = 100;
 const LONG_PRESS_MS = 900;
@@ -920,7 +920,7 @@ function openViewerPhotoContext() {
         if (!album?.id) return;
 
         try {
-            const { openAlbum } = await import("./photos.js?v=20261118-diagnostic58");
+            const { openAlbum } = await import("./photos.js?v=20261118-bridge-diagnostic59");
             await openAlbum(album);
         } catch (error) {
             console.warn("Не удалось перейти в альбом фотографии:", error);

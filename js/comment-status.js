@@ -1,6 +1,6 @@
-import { state } from "./state.js?v=20261118-diagnostic58";
-import { vkApi } from "./vk-api.js?v=20261118-diagnostic58";
-import { getOwnerId } from "./group-context.js?v=20261118-diagnostic58";
+import { state } from "./state.js?v=20261118-bridge-diagnostic59";
+import { vkApi } from "./vk-api.js?v=20261118-bridge-diagnostic59";
+import { getOwnerId } from "./group-context.js?v=20261118-bridge-diagnostic59";
 
 const READ_MARK_TTL_MS = 10 * 24 * 60 * 60 * 1000;
 const READ_MARK_DB_NAME = "vk-photo-manager-comment-read-state";

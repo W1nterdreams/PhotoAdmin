@@ -1,8 +1,8 @@
-import { dom } from "./dom.js?v=20261118-diagnostic58";
-import { state } from "./state.js?v=20261118-diagnostic58";
-import { getOwnerId } from "./group-context.js?v=20261118-diagnostic58";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261118-diagnostic58";
-import { openAlbumReorderMode } from "./photo-reorder.js?v=20261118-diagnostic58";
+import { dom } from "./dom.js?v=20261118-bridge-diagnostic59";
+import { state } from "./state.js?v=20261118-bridge-diagnostic59";
+import { getOwnerId } from "./group-context.js?v=20261118-bridge-diagnostic59";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261118-bridge-diagnostic59";
+import { openAlbumReorderMode } from "./photo-reorder.js?v=20261118-bridge-diagnostic59";
 
 function visible(element) {
     return Boolean(element && !element.classList.contains("hidden"));
@@ -148,7 +148,7 @@ export function initMainMenu() {
 
     dom.globalPhotoSearchMenuButton?.addEventListener("click", async () => {
         await closeMenu();
-        const { openGlobalPhotoSearch } = await import("./global-photo-search.js?v=20261118-diagnostic58");
+        const { openGlobalPhotoSearch } = await import("./global-photo-search.js?v=20261118-bridge-diagnostic59");
         void openGlobalPhotoSearch();
     });
 

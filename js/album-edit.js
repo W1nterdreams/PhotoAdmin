@@ -1,11 +1,11 @@
-import { state } from "./state.js?v=20261118-diagnostic58";
-import { dom } from "./dom.js?v=20261118-diagnostic58";
-import { vkApi } from "./vk-api.js?v=20261118-diagnostic58";
-import { getErrorMessage } from "./helpers.js?v=20261118-diagnostic58";
-import { getOwnerId, isGroupMode } from "./group-context.js?v=20261118-diagnostic58";
-import { cacheSet, cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261118-diagnostic58";
-import { renderAlbums } from "./albums.js?v=20261118-diagnostic58";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261118-diagnostic58";
+import { state } from "./state.js?v=20261118-bridge-diagnostic59";
+import { dom } from "./dom.js?v=20261118-bridge-diagnostic59";
+import { vkApi } from "./vk-api.js?v=20261118-bridge-diagnostic59";
+import { getErrorMessage } from "./helpers.js?v=20261118-bridge-diagnostic59";
+import { getOwnerId, isGroupMode } from "./group-context.js?v=20261118-bridge-diagnostic59";
+import { cacheSet, cacheRemove, albumsKey, albumIndexKey } from "./cache.js?v=20261118-bridge-diagnostic59";
+import { renderAlbums } from "./albums.js?v=20261118-bridge-diagnostic59";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261118-bridge-diagnostic59";
 
 let activeAlbum = null;
 let opening = false;
