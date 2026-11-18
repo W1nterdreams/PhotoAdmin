@@ -1,12 +1,12 @@
-import { state } from "./state.js?v=20261116-move-reconcile57";
-import { dom } from "./dom.js?v=20261116-move-reconcile57";
-import { vkApi } from "./vk-api.js?v=20261116-move-reconcile57";
-import { getErrorMessage } from "./helpers.js?v=20261116-move-reconcile57";
-import { loadAlbums } from "./albums.js?v=20261116-move-reconcile57";
-import { closeMenu } from "./main-menu.js?v=20261116-move-reconcile57";
-import { getGroupId, getOwnerId, isGroupMode } from "./group-context.js?v=20261116-move-reconcile57";
-import { invalidateAlbumCaches } from "./cache.js?v=20261116-move-reconcile57";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261116-move-reconcile57";
+import { state } from "./state.js?v=20261118-diagnostic58";
+import { dom } from "./dom.js?v=20261118-diagnostic58";
+import { vkApi } from "./vk-api.js?v=20261118-diagnostic58";
+import { getErrorMessage } from "./helpers.js?v=20261118-diagnostic58";
+import { loadAlbums } from "./albums.js?v=20261118-diagnostic58";
+import { closeMenu } from "./main-menu.js?v=20261118-diagnostic58";
+import { getGroupId, getOwnerId, isGroupMode } from "./group-context.js?v=20261118-diagnostic58";
+import { invalidateAlbumCaches } from "./cache.js?v=20261118-diagnostic58";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261118-diagnostic58";
 
 async function openModal() {
     await closeMenu();

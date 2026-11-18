@@ -1,9 +1,9 @@
-import { getOwnerId } from "./group-context.js?v=20261116-move-reconcile57";
-import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261116-move-reconcile57";
+import { getOwnerId } from "./group-context.js?v=20261118-diagnostic58";
+import { openSwipeOverlay, closeSwipeOverlay } from "./overlay-history.js?v=20261118-diagnostic58";
 import {
     armLongPressReleaseGuard,
     consumeLongPressSyntheticClick
-} from "./long-press-guard.js?v=20261116-move-reconcile57";
+} from "./long-press-guard.js?v=20261118-diagnostic58";
 
 const LONG_PRESS_MS = 900;
 const MOVE_CANCEL_PX = 15;

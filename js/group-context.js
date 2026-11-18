@@ -1,5 +1,5 @@
-import { state } from "./state.js?v=20261116-move-reconcile57";
-import { ALLOW_USERS, ALLOWED_GROUP_IDS } from "./config.js?v=20261116-move-reconcile57";
+import { state } from "./state.js?v=20261118-diagnostic58";
+import { ALLOW_USERS, ALLOWED_GROUP_IDS } from "./config.js?v=20261118-diagnostic58";
 
 let lastAccessDiagnostic = null;
 

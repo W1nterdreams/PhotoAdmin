@@ -1,31 +1,31 @@
-import { dom } from "./dom.js?v=20261116-move-reconcile57";
-import { vkInit, loadUser, getAccessToken } from "./vk-api.js?v=20261116-move-reconcile57";
+import { dom } from "./dom.js?v=20261118-diagnostic58";
+import { vkInit, loadUser, getAccessToken } from "./vk-api.js?v=20261118-diagnostic58";
 import {
     AppAccessDeniedError,
     precheckLaunchAccess,
     initOwnerContext
-} from "./group-context.js?v=20261116-move-reconcile57";
-import { initAlbums, loadAlbums } from "./albums.js?v=20261116-move-reconcile57";
-import { openAlbum } from "./photos.js?v=20261116-move-reconcile57";
-import { initMainMenu } from "./main-menu.js?v=20261116-move-reconcile57";
-import { initAlbumCreate } from "./album-create.js?v=20261116-move-reconcile57";
-import { initAlbumEdit } from "./album-edit.js?v=20261116-move-reconcile57";
-import { initAlbumDelete } from "./album-delete.js?v=20261116-move-reconcile57";
-import { initAlbumReorder } from "./album-reorder.js?v=20261116-move-reconcile57";
-import { initComments } from "./comments.js?v=20261116-move-reconcile57";
-import { initAlbumComments } from "./album-comments.js?v=20261116-move-reconcile57";
-import { initPhotoViewer, openPhotoViewer } from "./photo-viewer.js?v=20261116-move-reconcile57";
-import { initPhotoUpload } from "./photo-upload.js?v=20261116-move-reconcile57";
-import { initPhotoMenu } from "./photo-menu.js?v=20261116-move-reconcile57";
+} from "./group-context.js?v=20261118-diagnostic58";
+import { initAlbums, loadAlbums } from "./albums.js?v=20261118-diagnostic58";
+import { openAlbum } from "./photos.js?v=20261118-diagnostic58";
+import { initMainMenu } from "./main-menu.js?v=20261118-diagnostic58";
+import { initAlbumCreate } from "./album-create.js?v=20261118-diagnostic58";
+import { initAlbumEdit } from "./album-edit.js?v=20261118-diagnostic58";
+import { initAlbumDelete } from "./album-delete.js?v=20261118-diagnostic58";
+import { initAlbumReorder } from "./album-reorder.js?v=20261118-diagnostic58";
+import { initComments } from "./comments.js?v=20261118-diagnostic58";
+import { initAlbumComments } from "./album-comments.js?v=20261118-diagnostic58";
+import { initPhotoViewer, openPhotoViewer } from "./photo-viewer.js?v=20261118-diagnostic58";
+import { initPhotoUpload } from "./photo-upload.js?v=20261118-diagnostic58";
+import { initPhotoMenu } from "./photo-menu.js?v=20261118-diagnostic58";
 import { initPhotoTransfer } from "./photo-transfer.js?v=20261118-single-move58";
-import { initPhotoReorder } from "./photo-reorder.js?v=20261116-move-reconcile57";
-import { initNavigation, showAlbumsScreen } from "./navigation.js?v=20261116-move-reconcile57";
-import { escapeHtml, getErrorMessage, logError } from "./helpers.js?v=20261116-move-reconcile57";
-import { cleanupLegacyCache } from "./cache.js?v=20261116-move-reconcile57";
-import { initGlobalPhotoSearch } from "./global-photo-search.js?v=20261116-move-reconcile57";
-import { initPhotoIndexSync } from "./photo-index-sync.js?v=20261116-move-reconcile57";
-import { initSearchKeyboardDismiss } from "./search-keyboard.js?v=20261116-move-reconcile57";
-import { initializeCommentReadState } from "./comment-status.js?v=20261116-move-reconcile57";
+import { initPhotoReorder } from "./photo-reorder.js?v=20261118-diagnostic58";
+import { initNavigation, showAlbumsScreen } from "./navigation.js?v=20261118-diagnostic58";
+import { escapeHtml, getErrorMessage, logError } from "./helpers.js?v=20261118-diagnostic58";
+import { cleanupLegacyCache } from "./cache.js?v=20261118-diagnostic58";
+import { initGlobalPhotoSearch } from "./global-photo-search.js?v=20261118-diagnostic58";
+import { initPhotoIndexSync } from "./photo-index-sync.js?v=20261118-diagnostic58";
+import { initSearchKeyboardDismiss } from "./search-keyboard.js?v=20261118-diagnostic58";
+import { initializeCommentReadState } from "./comment-status.js?v=20261118-diagnostic58";
 
 function setAppInteractive(enabled) {
     const app = document.getElementById("app");
@@ -112,6 +112,8 @@ function initWorkingUi() {
     initGlobalPhotoSearch();
 }
 
+const startupDiagnostic = window.photoAdminDiagnostic;
+function startupStage(message) { startupDiagnostic?.stage(message); }
 async function startApp() {
     console.log("Starting VK Photo Manager...");
 
@@ -119,23 +121,29 @@ async function startApp() {
     setAppInteractive(false);
 
     // Удаляем старые частичные индексы и устаревшие данные прошлых сборок.
+    startupStage("Очистка старого кэша");
     cleanupLegacyCache();
 
     try {
+        startupStage("VKWebAppInit — инициализация");
         await vkInit();
 
         // Определяем режим запуска:
         // - из разрешённой группы -> управление альбомами сообщества;
         // - напрямую -> личные альбомы пользователя, если ALLOW_USERS=true.
+        startupStage("Проверка параметров запуска");
         const launchContext = precheckLaunchAccess();
 
+        startupStage("VKWebAppGetUserInfo — получение профиля");
         await loadUser();
 
         // В групповом режиме дополнительно запрашиваем groups, чтобы определить
         // всех руководителей сообщества для корректной обработки комментариев.
+        startupStage("VKWebAppGetAuthToken — получение токена");
         await getAccessToken({ includeGroups: launchContext.mode === "group" });
 
         // Формируем единый owner_id: отрицательный для группы, положительный для пользователя.
+        startupStage("Определение сообщества и прав");
         const ownerContext = initOwnerContext(launchContext);
 
         // Очищаем просроченные отметки «Прочитано» без задержки запуска UI.
@@ -150,15 +158,19 @@ async function startApp() {
         }
 
         // Рабочие обработчики вообще не подключаем до подтверждения доступа.
+        startupStage("Подключение интерфейса");
         initWorkingUi();
 
+        startupStage("photos.getAlbums — загрузка альбомов");
         await loadAlbums();
         showAlbumsScreen();
         setAppInteractive(true);
+        startupDiagnostic?.done();
 
         // Глобальный фотоиндекс обслуживается лениво.
         console.log(`VK Photo Manager started in ${ownerContext.mode} mode.`);
     } catch (error) {
+        startupDiagnostic?.error(getErrorMessage(error));
         logError("Application startup error:", error);
 
         if (error instanceof AppAccessDeniedError) {

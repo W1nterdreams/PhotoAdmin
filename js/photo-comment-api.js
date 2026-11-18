@@ -1,6 +1,6 @@
-import { vkApi } from "./vk-api.js?v=20261116-move-reconcile57";
-import { getOwnerId } from "./group-context.js?v=20261116-move-reconcile57";
-import { state } from "./state.js?v=20261116-move-reconcile57";
+import { vkApi } from "./vk-api.js?v=20261118-diagnostic58";
+import { getOwnerId } from "./group-context.js?v=20261118-diagnostic58";
+import { state } from "./state.js?v=20261118-diagnostic58";
 
 function errorCode(error) {
     return Number(

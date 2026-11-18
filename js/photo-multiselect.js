@@ -1,4 +1,4 @@
-import { state } from "./state.js?v=20261116-move-reconcile57";
+import { state } from "./state.js?v=20261118-diagnostic58";
 import { openPhotoTransferMany } from "./photo-transfer.js?v=20261118-single-move58";
 
 let active = false;

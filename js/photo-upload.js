@@ -1,15 +1,15 @@
-import { state } from "./state.js?v=20261116-move-reconcile57";
-import { dom } from "./dom.js?v=20261116-move-reconcile57";
-import { getOwnerId } from "./group-context.js?v=20261116-move-reconcile57";
-import { closeMenu } from "./main-menu.js?v=20261116-move-reconcile57";
-import { openVkTarget } from "./vk-links.js?v=20261116-move-reconcile57";
-import { loadPhotos } from "./photos.js?v=20261116-move-reconcile57";
-import { renderAlbums } from "./albums.js?v=20261116-move-reconcile57";
+import { state } from "./state.js?v=20261118-diagnostic58";
+import { dom } from "./dom.js?v=20261118-diagnostic58";
+import { getOwnerId } from "./group-context.js?v=20261118-diagnostic58";
+import { closeMenu } from "./main-menu.js?v=20261118-diagnostic58";
+import { openVkTarget } from "./vk-links.js?v=20261118-diagnostic58";
+import { loadPhotos } from "./photos.js?v=20261118-diagnostic58";
+import { renderAlbums } from "./albums.js?v=20261118-diagnostic58";
 import {
     invalidateAlbumCaches,
     invalidateAlbumPhotosCache
-} from "./cache.js?v=20261116-move-reconcile57";
-import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261116-move-reconcile57";
+} from "./cache.js?v=20261118-diagnostic58";
+import { markPhotoIndexAlbumDirty } from "./photo-index-db.js?v=20261118-diagnostic58";
 
 function findAlbum(albumId) {
     const id = String(albumId || "");
